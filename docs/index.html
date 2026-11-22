@@ -712,8 +712,9 @@ function okfAddFlag(target,flag,hourTime=null){
 }
 function okfFogHours(place,windowHours=24){
  const now=Date.now()/1000,models=modelOrder.map(id=>forecastModel(place,id)).filter(Boolean);
- const forecastTimes=[...new Set(models.flatMap(m=>m.hours.filter(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&[45,48].includes(h.weather_code)).map(h=>h.t)))].sort((a,b)=>a-b);
- return {validModelCount:models.length,records:forecastTimes.map(t=>{
+ const eligibleModels=models.filter(m=>m.hours.some(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&Number.isInteger(h.weather_code)&&h.weather_code>=0&&h.weather_code<=99));
+ const forecastTimes=[...new Set(eligibleModels.flatMap(m=>m.hours.filter(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&[45,48].includes(h.weather_code)).map(h=>h.t)))].sort((a,b)=>a-b);
+ return {validModelCount:models.length,eligibleModelCount:eligibleModels.length,records:forecastTimes.map(t=>{
   let supported=0,fog=0,rime=false;
   for(const m of models){
    const h=m.hours.find(x=>numeric(x?.t)&&Math.abs(x.t-t)<=1800&&Number.isInteger(x.weather_code)&&x.weather_code>=0&&x.weather_code<=99);
@@ -727,8 +728,9 @@ function okfFogHours(place,windowHours=24){
 function okfRenderFogSummary(place){
  const target=$('okf-fog-summary');target.replaceChildren();
  if(!active()){el(target,'span','','Värsket avalikku andmevoogu ei ole. Uduvõimalust ei saa hinnata.');return}
- const {records,validModelCount}=okfFogHours(place,24);
+ const {records,validModelCount,eligibleModelCount}=okfFogHours(place,24);
  if(!validModelCount){el(target,'span','','Värskeid mudeliprognoose pole; uduvõimalust ei saa hinnata.');return}
+ if(!eligibleModelCount){el(target,'span','','Värsketel mudelitel puuduvad selle ajavahemiku udu hindamiseks ilmakoodid. See ei tõenda udu puudumist.');return}
  if(!records.length){el(target,'span','','🌫️ Värskete mudelite ilmakoodid ei näita järgmise 24 h jooksul udu. See ei välista udu teket.');return}
  el(target,'strong','','🌫️ Udu võimalik järgmise 24 h jooksul');
  const times=el(target,'div','okf-fog-times');
