@@ -318,7 +318,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <section id="roads" class="screen" aria-labelledby="roads-heading">
     <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
     <article class="panel"><div class="panel-title"><div><h3>11 Pärnumaa teeilmajaama</h3><p id="roads-time">Viimane allikakontroll ootel</p></div><span id="roads-summary" class="kicker">Kontrollin mõõtmisi…</span></div>
-     <div class="road-table-desktop table-scroll" tabindex="0" aria-label="Teeilmajaamade tabel, vajadusel keri horisontaalselt"><table class="road-table"><thead><tr><th>Jaam</th><th>Andmete seis</th><th>Mõõdetud (Eesti aeg)</th><th>Teekate °C</th><th>Teekatte seisund</th><th>Õhk °C</th><th>Sademed</th><th>Nähtavus</th><th>Tuul</th><th>Kaart</th></tr></thead><tbody id="road-table-body"><tr><td colspan="10">Ootan mõõtmisi…</td></tr></tbody></table></div>
+     <div class="road-table-desktop table-scroll" tabindex="0" aria-label="Teeilmajaamade tabel, vajadusel keri horisontaalselt"><table class="road-table"><thead><tr><th>Jaam</th><th>Teekate °C</th><th>Teekatte seisund</th><th>Õhk °C</th><th>Sademed</th><th>Nähtavus</th><th>Tuul</th><th>Kaart</th><th>Andmete seis</th><th>Mõõdetud (Eesti aeg)</th></tr></thead><tbody id="road-table-body"><tr><td colspan="10">Ootan mõõtmisi…</td></tr></tbody></table></div>
      <p class="fineprint">Jaamad on kinnitatud Pärnumaa maakonnapiiri järgi. Mõõtmiste värskuse piir on 50 minutit ning allika enda kontrolli aeg eraldi kuni 40 minutit. Teeilmajaama näit kirjeldab ainult mõõtmiskohta.</p>
     </article>
     <article class="panel"><div class="panel-title"><div><h3>Teeilmajaamad telefonis</h3><p>Telefonis avaneb mõõtmiste kaardivaade</p></div><input type="search" id="station-filter" class="station-search" placeholder="Otsi jaama…" aria-label="Otsi teeilmajaama"></div>
@@ -647,12 +647,14 @@ function renderFamilyRoadTable(r){
   const sdate=station?.measured_at_utc?local(station.measured_at_utc):'—';
   const rain=good&&numeric(v.precipitation_mm_h)?fmt(v.precipitation_mm_h)+' mm/h':'—';
   const visible=good&&numeric(v.visibility_m)?fmt(v.visibility_m,0)+' m':'—';
-  const cells=[name,p,sdate,good?fmt(v.road_temp_c):'—',good?detailRoadStatus(v.road_status):'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
+  const cells=[name,good?fmt(v.road_temp_c):'—',good?detailRoadStatus(v.road_status):'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
   for(const value of cells)el(row,'td','',value);
   const td=el(row,'td');
   if(station&&numeric(station.lat)&&numeric(station.lon)&&station.lat>57&&station.lat<60&&station.lon>22&&station.lon<27){
    const link=el(td,'a','','Kaardil ↗');link.href='https://www.openstreetmap.org/?mlat='+station.lat+'&mlon='+station.lon+'#map=13/'+station.lat+'/'+station.lon;link.target='_blank';link.rel='noopener noreferrer';
   }else el(td,'span','','—');
+  el(row,'td','',p);
+  el(row,'td','',sdate);
  }
 }
 function renderFamilySources(w){
