@@ -673,7 +673,7 @@ function okfAttention(h){
  if(numeric(h?.temp)){
   if(h.temp<=-20)flags.push({icon:'🥶',label:'Väga madal temperatuur',level:'high'});
   else if(h.temp<=-10)flags.push({icon:'🥶',label:'Tugev külm',level:'watch'});
-  else if(h.temp<=0)flags.push({icon:'❄️',label:'Null või külmem',level:'watch'});
+  else if(h.temp<=0)flags.push({icon:'❄️',label:'Null või külmem · kuni 0 °C; ei kinnita libedust',level:'watch'});
  }
  if(numeric(h?.precip)){
   if(h.precip>=10)flags.push({icon:'🌧️',label:'Väga tugev tunnisadu',level:'high'});
