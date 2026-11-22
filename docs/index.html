@@ -579,10 +579,10 @@ function renderForecast(){
  const alerts=$('okf-alerts');alerts.replaceChildren();
  let count=0;const unique=new Set();
  if(model){
-  for(const h of day.hours)for(const flag of okfAttention(h)){
+  alertLoop: for(const h of day.hours)for(const flag of okfAttention(h)){
    if(unique.has(flag.label))continue;unique.add(flag.label);
    const card=el(alerts,'div','okf-alert'+(flag.level==='high'?' okf-alert-high':''));el(card,'strong','',flag.icon+' '+flag.label);el(card,'small','','Prognoositud järgmise 24 h jooksul · '+local(h.t));
-   if(++count>=5)break;
+   if(++count>=5)break alertLoop;
   }
  }
  if(!count)el(alerts,'p','okf-subtle',model?'Kinnitatud sisendväljade põhjal tähelepanulävesid ei ületatud. See ei tõenda ohutust.':'Värske prognoosi puudumise tõttu ei ole tähelepanumärke.');
