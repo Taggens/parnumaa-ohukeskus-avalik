@@ -441,6 +441,15 @@ function roads(){const r=active()?state.roads:null;return r&&r.available===true&
 function stationFresh(s){return !!(s&&s.status==='varske'&&fresh(s.measured_at_utc,50)&&s.values&&typeof s.values==='object'&&Object.keys(s.values).length)}
 function air(){const w=weather();return w.live&&fresh(w.live.observed_at_utc,30)?w.live:null}
 function sea(){const w=weather();return w.sea&&w.sea.vertical_datum==='EH2000'&&fresh(w.sea.observed_at_utc,40)?w.sea:null}
+function hourlyRain(){
+ const r=weather().hourly_rain;
+ if(!r||r.station!=='Pärnu'||r.unit!=='mm'||r.timestamp_verified!==true||r.period_hours!==1||
+    !numeric(r.value_mm)||r.value_mm<0||r.value_mm>250||
+    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,25))return null;
+ const start=timestamp(r.period_start_utc),end=timestamp(r.observed_at_utc);
+ if(start===null||end===null||end-start!==3600000)return null;
+ return r;
+}
 function forecastModel(place,selected='auto'){
  const p=weather().places?.[place],models=Array.isArray(p?.models)?p.models:[],now=Date.now()/1000;
  const valid=models.filter(m=>m&&modelOrder.includes(m.id)&&Array.isArray(m.hours)&&fresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+18*3600));
@@ -466,7 +475,7 @@ function publicWindChill(temperatureC,windMs){
 }
 const publicWindPoints=[['N','põhjast'],['NE','kirdest'],['E','idast'],['SE','kagust'],['S','lõunast'],['SW','edelast'],['W','läänest'],['NW','loodest']];
 function renderLive(){
- const a=air(),s=sea(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
+ const a=air(),s=sea(),rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
  const hasGust=!!(a&&numeric(a.gust_ms)&&a.gust_ms>=0&&a.gust_ms<=100);
  const hasTemp=!!(a&&numeric(a.temperature_c)),hasPressure=!!(a&&numeric(a.pressure_hpa)&&a.pressure_hpa>=800&&a.pressure_hpa<=1100);
  const hasHumidity=!!(a&&numeric(a.humidity_pct)&&a.humidity_pct>=0&&a.humidity_pct<=100);
@@ -502,9 +511,13 @@ function renderLive(){
  label('live-direction-age',hasDirection);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
  put('marine-freshness',hasSea?'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)':'Värske EH2000 mõõtmine puudub');
- const confirmedTrend=hasSea&&s.trend_verified===true&&numeric(s.change_last_hour_cm);
+ const comparisonTime=hasSea?timestamp(s.comparison_time_utc):null;
+ const measuredTime=hasSea?timestamp(s.observed_at_utc):null;
+ const trendGap=comparisonTime!==null&&measuredTime!==null?(measuredTime-comparisonTime)/60000:null;
+ const confirmedTrend=hasSea&&s.trend_verified===true&&numeric(s.change_last_hour_cm)&&
+    Math.abs(s.change_last_hour_cm)<=1100&&trendGap!==null&&trendGap>=50&&trendGap<=70;
  put('marine-trend',confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / ~1 h':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
- put('marine-meta',hasSea?'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.':'Meretaseme kõrgussüsteemi ja mõõtmisaja kinnitamine puudub.');
+ put('marine-meta',hasSea?'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.'+(confirmedTrend?' Tunnimuutus võrreldud sama jaama mõõtmisega '+local(s.comparison_time_utc)+'.':' Tunnimuutust ei ole kinnitatud.'):'Meretaseme kõrgussüsteemi ja mõõtmisaja kinnitamine puudub.');
  const level=hasSea?s.level_cm:null;
  const marineCard=$('sea-risk-card');
  marineCard.classList.remove('risk-watch','risk-high','risk-severe');
@@ -517,11 +530,11 @@ function renderLive(){
  const optionalDuration=!!(a&&numeric(a.precip_duration_s)&&a.precip_duration_s>=0);
  put('live-precip-duration',optionalDuration?fmt(a.precip_duration_s,0)+' s':'—');
  label('live-precip-duration-age',optionalDuration);
- // The public export does not yet certify a full-hour observation with its
- // period start/end. Never reinterpret harbor/road rainfall as a full hour.
- put('hourly-rain-value','—');
- put('hourly-rain-freshness','Kinnitatud täistunni mõõtmine puudub');
- put('hourly-rain-time','Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
+ // A validated one-hour source reading may be shown; harbor/road rainfall is
+ // never repurposed as the official Pärnu full-hour accumulation.
+ put('hourly-rain-value',rain?fmt(rain.value_mm,1)+' mm':'—');
+ put('hourly-rain-freshness',rain?'Mõõdetud '+local(rain.observed_at_utc)+' (Eesti aeg)':'Kinnitatud täistunni mõõtmine puudub');
+ put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).':'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
  const banner=$('live-banner');
  banner.classList.toggle('stale',!a);
  banner.textContent=a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
@@ -530,7 +543,7 @@ function renderLive(){
  if(!hasGust)missing.push('tuulepuhangud');
  if(!hasTemp)missing.push('õhutemperatuur');
  if(!hasSea)missing.push('meretase');
- missing.push('tunnisadu');
+ if(!rain)missing.push('tunnisadu');
  const events=[];
  if(hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
  if(level!==null&&level>=100)events.push('Meretase üle kohaliku +'+(level>=180?'180':level>=150?'150':'100')+' cm piiri ('+fmt(level,0)+' cm)');
@@ -796,9 +809,10 @@ function renderFamilyRoadTable(r){
 }
 function renderFamilySources(w){
  const area=$('source-catalog');area.replaceChildren();
- const a=air(),s=sea(),r=roads(),model=forecastModel('parnu');
+ const a=air(),s=sea(),r=roads(),rain=hourlyRain(),model=forecastModel('parnu');
  const entries=[['Pärnu sadama mõõtmised',a?'Värske mõõtmine '+local(a.observed_at_utc):'Värskeid mõõtmisi pole',!!a],
  ['Pärnu meretase EH2000',s?'Värske mõõtmine '+local(s.observed_at_utc):'Värskeid mõõtmisi pole',!!s],
+ ['Pärnu tunnisadu',rain?'Kinnitatud periood '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc):'Tunnisaju viimase perioodi andmed puuduvad või aegunud',!!rain],
  ['Transpordiamet DATEX II',r?'Kontroll '+local(r.checked_at_utc)+' · '+r.stations.filter(stationFresh).length+'/11 jaama':'Värsket mõõtmist ei saa kinnitada',!!r],
  ['Ilmamudelite vastuvõtt',model?'Andmed vastu võetud '+local(model.source_received_at_utc):'Värsket prognoosi pole',!!model]];
  for(const [title,detail,ok] of entries){
