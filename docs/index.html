@@ -223,6 +223,11 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-small{display:block;color:var(--okf-muted);font-size:.68rem;line-height:1.3;margin-top:3px}
 .okf-flag{display:inline-flex;align-items:center;gap:3px;max-width:100%;background:#62471444;border:1px solid #c59b31a6;color:#fbe19e;padding:4px 8px;border-radius:8px;font-size:.74rem;font-weight:700;line-height:1.3;margin:2px;white-space:normal}
 .okf-flag.okf-high{background:#772b2444;color:#ffb5a6;border-color:#d87f68a6}
+/* Perevaate moodi kompaktsed tunniprognoosi tähelepanu-ikoonid */
+.okf-hour-table .okf-flag.okf-flag-icon{display:inline-grid;place-items:center;vertical-align:middle;width:29px;height:29px;min-width:29px;max-width:29px;padding:0;margin:1px 3px;border:1px solid #b18d2e;border-radius:7px;background:#102a3b;color:#f4dda2;font-size:1.17rem;font-weight:400;line-height:1;cursor:pointer;white-space:nowrap}
+.okf-hour-table .okf-flag.okf-flag-icon.okf-high{border-color:#cb7970;background:#3d2835;color:#ffd5c3}
+.okf-hour-table .okf-flag.okf-flag-icon:hover,.okf-hour-table .okf-flag.okf-flag-icon:focus-visible{background:#29475a;outline:2px solid #8be7dc;outline-offset:2px}
+.okf-hour-table td:has(.okf-flag-icon){white-space:nowrap}
 .okf-period-data{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0 15px}
 .okf-period-data>div{border-right:1px solid #1d4356;padding-right:8px}
 .okf-period-data>div:last-child{border-right:0}
@@ -383,7 +388,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="okf-card okf-hero"><div><div class="okf-eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 id="okf-observed-title">Pärnu sadama hetkeilm</h3><div class="okf-temperature" id="okf-observed-temp">—</div><p id="okf-observed-time" class="okf-subtle">Mõõtmine ootel</p></div><div class="okf-measurements"><div>Tuul<strong id="okf-observed-wind">—</strong></div><div>Puhangud<strong id="okf-observed-gust">—</strong></div><div>Õhuniiskus<strong id="okf-observed-humidity">—</strong></div><div>Õhurõhk<strong id="okf-observed-pressure">—</strong></div></div></article>
     <article class="okf-card okf-hero okf-prognosis"><div class="okf-eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="okf-location-title">Asukoht</h3><div class="okf-weather-main"><span id="okf-current-icon" aria-hidden="true">▫️</span><div><p id="okf-current-desc">Prognoosi ootel</p><p class="okf-subtle">Prognoos ei ole jaamamõõtmine ega ametlik hoiatus.</p></div></div></article>
   </div>
-  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div><p class="okf-subtle">Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
+  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div><p id="okf-flag-detail" class="okf-subtle" aria-live="polite">Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
   <div class="okf-forecast-grid">
     <article class="okf-card okf-period"><h3>▣ Järgmised 24 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-24-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-24-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-24-rain">—</strong></div></div><div class="okf-flag-row" id="okf-24-flags"></div><p id="okf-24-status" class="okf-subtle">Ootel</p></article>
     <article class="okf-card okf-period"><h3>▣ Järgmised 48 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-48-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-48-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-48-rain">—</strong></div></div><div class="okf-flag-row" id="okf-48-flags"></div><p id="okf-48-status" class="okf-subtle">Ootel</p></article>
@@ -673,7 +678,7 @@ function okfAttention(h){
  if(numeric(h?.temp)){
   if(h.temp<=-20)flags.push({icon:'🥶',label:'Väga madal temperatuur',level:'high'});
   else if(h.temp<=-10)flags.push({icon:'🥶',label:'Tugev külm',level:'watch'});
-  else if(h.temp<=0)flags.push({icon:'❄️',label:'Null või külmem · kuni 0 °C; ei kinnita libedust',level:'watch'});
+  else if(h.temp<=0)flags.push({icon:'🌡️',label:'Null või külmem · kuni 0 °C; ei kinnita libedust',level:'watch'});
  }
  if(numeric(h?.precip)){
   if(h.precip>=10)flags.push({icon:'🌧️',label:'Väga tugev tunnisadu',level:'high'});
@@ -681,8 +686,17 @@ function okfAttention(h){
  }
  return flags;
 }
-function okfAddFlag(target,flag){
- const n=el(target,'span','okf-flag '+(flag.level==='high'?'okf-high':'okf-watch'),flag.icon+' '+flag.label);
+function okfAddFlag(target,flag,hourTime=null){
+ const compact=hourTime!==null;
+ const n=el(target,compact?'button':'span','okf-flag '+(flag.level==='high'?'okf-high':'okf-watch')+(compact?' okf-flag-icon':''),compact?flag.icon:flag.icon+' '+flag.label);
+ if(compact){
+  n.type='button';
+  n.title=flag.label;
+  n.setAttribute('aria-label',flag.label);
+  n.addEventListener('click',()=>{
+   put('okf-flag-detail','Prognoosiaeg '+local(hourTime)+' · '+flag.label+'. Need on mudelipõhised tähelepanumärgid, mitte kinnitatud teeolud või ametlikud hoiatused; puuduv märk ei tõenda ohutust.');
+  });
+ }
  return n;
 }
 function okfHourTable(hours){
@@ -697,7 +711,7 @@ function okfHourTable(hours){
  build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
  build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
  build('Sadu (1 h)',(h,td)=>{td.textContent=numeric(h.precip)?fmt(h.precip)+' mm':'—'});
- build('Tähelepanu',(h,td)=>{const flags=okfAttention(h);if(!flags.length){td.textContent='—';return}flags.slice(0,2).forEach(f=>okfAddFlag(td,f));if(flags.length>2)el(td,'small','okf-small','+'+(flags.length-2))});
+ build('Tähelepanu',(h,td)=>{const flags=okfAttention(h);if(!flags.length){td.textContent='—';return}flags.slice(0,2).forEach(f=>okfAddFlag(td,f,h.t));if(flags.length>2)el(td,'small','okf-small','+'+(flags.length-2))});
  if(!list.length){const empty=el(body,'tr'),td=el(empty,'td','', 'Värskeid prognoositunde pole.');td.colSpan=2}
 }
 function okfPeriod(model,period){
