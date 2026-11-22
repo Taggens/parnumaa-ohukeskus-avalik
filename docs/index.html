@@ -384,7 +384,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="okf-card okf-period"><h3>▣ Järgmised 48 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-48-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-48-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-48-rain">—</strong></div></div><div class="okf-flag-row" id="okf-48-flags"></div><p id="okf-48-status" class="okf-subtle">Ootel</p></article>
   </div>
   <div class="okf-bottom-grid"><article class="okf-card"><h3>⚠ Olulisemad tähelepanud <small>(prognoosi põhjal)</small></h3><div id="okf-alerts" class="okf-alert-grid"></div><p class="okf-subtle">Kohalikud sõelamärgid, mitte Keskkonnaagentuuri ametlikud hoiatused. Sellest vaatest telefoniteavitusi ei saadeta.</p></article>
-  <article class="okf-card"><h3>▥ Mudelite 24 h puhangud</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Värskus ja mudelite seos kontrollimisel</p><p class="okf-subtle">Põhjalik mudelivõrdlus on ainult administraatori vaates.</p></article></div>
+  <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Siin vaadatakse ühte mudelit korraga. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
   <p class="okf-disclaimer">Andmed pärinevad olemasolevatest Ohukeskuse allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
 </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
@@ -704,16 +704,19 @@ function okfPeriodRender(prefix,period){
  if(unique.length)unique.forEach(f=>okfAddFlag(box,f));
  else el(box,'span','okf-subtle','Tähelepanumärke ei leitud (ei tõenda ohutust).');
 }
-function okfModelSummary(place){
+function okfSelectedModelInfo(place){
  const area=$('okf-model-list');area.replaceChildren();
- let count=0;
- for(const id of modelOrder){
-  const m=forecastModel(place,id),s=okfPeriod(m,24),row=el(area,'div','okf-model-row');
-  el(row,'span','',modelNames[id]);
-  el(row,'strong','',m&&s.gust!==null?fmt(s.gust,0)+' m/s':'—');
-  if(m)count++;
- }
- put('okf-model-note',count+' mudelit värskete allikaandmetega. FMI ja MET Nordic on seotud MEPS-perekonnaga, mitte kaks sõltumatut kinnitust.');
+ const choice=$('okf-model').value,model=forecastModel(place,choice);
+ const name=model?modelNames[model.id]:choice==='auto'?'Automaatne valik':modelNames[choice]||'Valitud mudel';
+ let row=el(area,'div','okf-model-row');
+ el(row,'span','','Valitud mudel');el(row,'strong','',name);
+ row=el(area,'div','okf-model-row');
+ el(row,'span','','Andmed vastu võetud');
+ el(row,'strong','',model?local(model.source_received_at_utc):'—');
+ row=el(area,'div','okf-model-row');
+ el(row,'span','','Mudeli jooks');
+ el(row,'strong','',model&&model.run_utc?local(model.run_utc):'Kinnitamata');
+ put('okf-model-note',!model?'Valitud mudeli värskeid prognoosiandmeid ei ole.':model.related_meps===true?'Seotud MEPS-perekonna mudel, mitte teisest sõltumatu kinnitav prognoos.':'Andmete vastuvõtuaeg ei tõenda iseenesest mudelijooksu aega.');
 }
 function renderForecast(){
  const place=$('okf-place').value,selected=$('okf-model').value,area={parnu:'Pärnu',haademeeste:'Häädemeeste',tostamaa:'Tõstamaa',sindi:'Sindi'}[place]||'Valitud asukoht';
@@ -745,7 +748,7 @@ function renderForecast(){
   }
  }
  if(!count)el(alerts,'p','okf-subtle',model?'Kinnitatud sisendväljade põhjal tähelepanulävesid ei ületatud. See ei tõenda ohutust.':'Värske prognoosi puudumise tõttu ei ole tähelepanumärke.');
- okfModelSummary(place);
+ okfSelectedModelInfo(place);
 }
 
 function renderRoads(){
