@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#081421">
-<meta name="description" content="Pärnumaa Ohukeskuse avalik perevaatega ilmaülevaade, ilmaprognoos ja teeilmajaamad.">
-<title>Pärnumaa Ohukeskus · Avalik ilmaülevaade</title>
+<meta name="description" content="Pärnu Ilmakeskuse avalik hetkeilm, ilmaprognoos, meretase ja Pärnumaa teeilmajaamade mõõtmised.">
+<title>Pärnu Ilmakeskus · Ilmaülevaade</title>
 <link rel="icon" href="./icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./icon-192.png" sizes="192x192">
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="Ohukeskus">
+<meta name="apple-mobile-web-app-title" content="Ilmakeskus">
 <style>
 :root{color-scheme:dark;--bg:#07111f;--sidebar:#091726;--surface:#101f30;--surface2:#13273a;--border:#20384b;--text:#e8f1f7;--muted:#91a3b5;--teal:#65d0c4;--blue:#7ba8ff;--amber:#f8c271;--red:#ef8b83;--radius:15px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
@@ -355,7 +355,7 @@ details.info p{font-size:11px;color:var(--muted)}
 <body>
 <div id="app" class="app-shell">
  <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
-  <div class="branding"><div class="brand-icon" aria-hidden="true">◉</div><div><div class="brand-sub">Pärnumaa</div><div class="brand-title">Ohukeskus</div></div></div>
+  <div class="branding"><div class="brand-icon" aria-hidden="true">◉</div><div><div class="brand-sub">Pärnu</div><div class="brand-title">Ilmakeskus</div></div></div>
   <nav class="nav" id="nav" aria-label="Jaotised">
    <button type="button" class="nav-link active" data-section="live" aria-current="page"><span class="nav-icon">◉</span> Live-ilm</button>
    <button type="button" class="nav-link" data-section="forecast"><span class="nav-icon">≋</span> Ilmaprognoos</button>
@@ -368,7 +368,7 @@ details.info p{font-size:11px;color:var(--muted)}
  <div class="main-wrap">
   <header class="topbar"><div class="top-heading">
    <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Ava menüü" aria-controls="nav" aria-expanded="false">☰</button>
-   <div><div class="eyebrow">PÄRNUMAA / AVALIK ILMASEIRE</div><h1 id="page-title">Live-ilm</h1></div>
+   <div><div class="eyebrow">PÄRNU / AVALIK ILMASEIRE</div><h1 id="page-title">Live-ilm</h1></div>
   </div><div class="top-actions">
    <time id="clock" class="clock"></time><span class="role-indicator">Avalik vaade</span>
    <button type="button" id="refresh" class="refresh-button">↻ <span class="text">Uuenda andmeid</span></button>
@@ -466,7 +466,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <details class="panel compact-details"><summary>Mõõdetud ilma kohalikud tähelepanupiirid</summary><div id="live-risk-summary" role="status">Kohalike piiride kontroll ootel.</div></details>
    </section>
    <section id="forecast" class="screen okf-screen" aria-labelledby="okf-heading">
-  <div class="section-header okf-header"><div><h2 id="okf-heading">🌤️ Ilmaprognoos</h2><p>Pärnumaa Ohukeskuse prognoosivaade. Värsked mõõtmised ja mudeliprognoosid on eraldi.</p></div><div class="okf-choosers">
+  <div class="section-header okf-header"><div><h2 id="okf-heading">🌤️ Ilmaprognoos</h2><p>Pärnu Ilmakeskuse prognoosivaade. Värsked mõõtmised ja mudeliprognoosid on eraldi.</p></div><div class="okf-choosers">
     <label>Asukoht<select id="okf-place" aria-label="Prognoosi asukoht"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></label>
     <label>Mudel<select id="okf-model" aria-label="Ilmaprognoosi mudel"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
   </div></div>
@@ -485,7 +485,7 @@ details.info p{font-size:11px;color:var(--muted)}
   </div>
   <div class="okf-bottom-grid"><article class="okf-card"><h3>⚠ Olulisemad tähelepanud <small>(prognoosi põhjal)</small></h3><div id="okf-alerts" class="okf-alert-grid"></div><p class="okf-subtle">Kohalikud sõelamärgid, mitte Keskkonnaagentuuri ametlikud hoiatused. Sellest vaatest telefoniteavitusi ei saadeta.</p></article>
   <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Kuvatud aeg näitab andmete vastuvõttu, mitte tingimata mudeli arvutusjooksu. Automaatne valik eelistab kõige värskemat vastuvõturühma ja alles siis mudelite eelistusjärjekorda. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
-  <p class="okf-disclaimer">Andmed pärinevad olemasolevatest Ohukeskuse allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
+  <p class="okf-disclaimer">Andmed pärinevad olemasolevatest ilmaandmete allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
 </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
     <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
@@ -505,7 +505,7 @@ details.info p{font-size:11px;color:var(--muted)}
      <article class="panel"><div class="panel-title"><div><h3>Ilm ja meretase</h3><p>Pärnu mõõtmised</p></div></div><p>Pärnu sadama ilmaandmed ning Pärnu meretaseme mõõtmised EH2000 süsteemis.</p><div class="stat-foot" id="sources-live-time">Ilmamõõtmine: kinnitamata</div><div class="stat-foot" id="sources-sea-time">Meretase: kinnitamata</div></article>
      <article class="panel"><div class="panel-title"><div><h3>Ilmaprognoos</h3><p>Kuus mudelit neljas piirkonnas</p></div></div><p>ECMWF IFS, DWD ICON-EU, NOAA GFS, MET Nordic ja DMI HARMONIE (Open-Meteo vahendusel), FMI HARMONIE–MEPS.</p><div class="stat-foot" id="sources-forecast-time">Prognoosi värskus: kinnitamata</div></article>
      <article class="panel"><div class="panel-title"><div><h3>Teeilma mõõtmised</h3><p>Transpordiamet · DATEX II</p></div></div><p>11 kontrollitud Pärnumaa teeilmajaama. Mõõtmisajad ja andmete olemasolu võivad jaamade lõikes erineda.</p><div class="stat-foot" id="sources-roads-time">Viimane kontroll: kinnitamata</div><p><a target="_blank" rel="noopener noreferrer" href="https://tarktee.ee/">Ametlik teeinfo ↗</a></p></article>
-     <article class="panel"><div class="panel-title"><div><h3>Ametlikud hoiatused</h3><p>Hoiatusi ei järeldata teeilma- ega mudeliandmetest</p></div></div><p>Avalik Ohukeskus ei väljasta praegu automaatset ametliku hoiatuse olekut. Kehtivaid hoiatusi kontrolli otse Ilmateenistusest.</p><p><a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/">Ilmateenistuse hoiatused ↗</a></p></article>
+     <article class="panel"><div class="panel-title"><div><h3>Ametlikud hoiatused</h3><p>Hoiatusi ei järeldata teeilma- ega mudeliandmetest</p></div></div><p>Pärnu Ilmakeskus ei väljasta praegu automaatset ametliku hoiatuse olekut. Kehtivaid hoiatusi kontrolli otse Ilmateenistusest.</p><p><a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/">Ilmateenistuse hoiatused ↗</a></p></article>
     </div>
     <article class="panel"><div class="panel-title"><div><h3>Mudelite ja piirkondade kontrolliajad</h3><p>Sarnane perelehe Allikate jaotise tabeliga</p></div></div>
       <details class="info"><summary>Ava kuue mudeli allikate ajad</summary><div class="table-scroll" style="margin-top:14px"><table><thead><tr><th>Mudel</th><th>Piirkond</th><th>Värskus</th><th>Viimati vastu võetud</th></tr></thead><tbody id="sources-model-table"><tr><td colspan="4">Ootan prognoose…</td></tr></tbody></table></div>
@@ -513,7 +513,7 @@ details.info p{font-size:11px;color:var(--muted)}
       </details>
     </article>
    </section>
-   <footer class="footer"><span>Pärnumaa Ohukeskus · Avalik vaade · Andmete puudumine ≠ ohutu olukord</span><span id="footer-updated">—</span></footer>
+   <footer class="footer"><span>Pärnu Ilmakeskus · Avalik vaade · Andmete puudumine ≠ ohutu olukord</span><span id="footer-updated">—</span></footer>
   </main>
  </div>
 </div>
