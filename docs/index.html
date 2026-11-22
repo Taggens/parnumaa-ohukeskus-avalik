@@ -306,31 +306,34 @@ details.info p{font-size:11px;color:var(--muted)}
 
 
 /* Avaliku Live-ilma Pärnu lahe tuulekompass. */
-#live .bay-compass{margin-top:19px;padding:19px;background:linear-gradient(145deg,#143146,#0d2335);border:1px solid #375d72;border-radius:14px}
-#live .bay-compass h4{font-size:17px;margin:0;color:#effcff}
-#live .bay-compass header p{font-size:12px;color:#b0cfdb;margin:3px 0 0}
-#live .bay-layout{display:grid;grid-template-columns:minmax(0,375px) minmax(0,1fr);gap:20px;align-items:center;margin-top:12px}
-#live .bay-map{width:100%;max-width:375px;margin:auto}
+#live .bay-compass{margin-top:0;padding:12px 14px;background:linear-gradient(145deg,#143146,#0d2335);border:1px solid #375d72;border-radius:14px}
+#live .bay-compass h4{font-size:15px;margin:0;color:#effcff}
+#live .bay-compass header p{font-size:11px;color:#b0cfdb;margin:2px 0 0}
+#live .bay-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;align-items:center;margin-top:6px}
+#live .bay-map{width:100%;max-width:210px;margin:auto}
 #live .bay-map svg{display:block;width:100%;height:auto}
 #live .bay-map .tick{stroke:#bedfeb;stroke-width:1.5}
 #live .bay-map .tick.major{stroke:#f4fbff;stroke-width:2.5}
-#live .bay-map .cardinal{font-size:16px;font-weight:800;fill:#effbff;stroke:#103148;stroke-width:4px;paint-order:stroke;text-anchor:middle;dominant-baseline:middle}
-#live .bay-bearing{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-#live .bay-bearing strong{color:#eafaff;font-size:clamp(2rem,3.5vw,2.85rem);line-height:1.2}
-#live .bay-bearing span{font-size:14px;font-weight:700;color:#b8d9e6}
-#live .bay-status{display:inline-block;background:#25485b;border:1px solid #507a91;color:#ecf9ff;border-radius:10px;padding:8px 12px;margin:14px 0 8px;font-size:14px}
+#live .bay-map .cardinal{font-size:26px;font-weight:800;fill:#effbff;stroke:#103148;stroke-width:5px;paint-order:stroke;text-anchor:middle;dominant-baseline:middle}
+#live .bay-bearing{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+#live .bay-bearing strong{color:#eafaff;font-size:clamp(1.6rem,2.5vw,2rem);line-height:1.2}
+#live .bay-bearing span{font-size:12px;font-weight:700;color:#b8d9e6}
+#live .bay-status{display:inline-block;background:#25485b;border:1px solid #507a91;color:#ecf9ff;border-radius:8px;padding:5px 9px;margin:6px 0 5px;font-size:12px;line-height:1.3}
 #live .bay-status.inward{background:#4a3628;border-color:#a68154;color:#ffebca}
 #live .bay-status.outward{background:#18403e;border-color:#548f88;color:#c6f7e8}
 #live .bay-status.cross{background:#243956;border-color:#6486b3;color:#dfedff}
 #live .bay-status.stale{background:#493d29;border-color:#94794d;color:#fce6b9}
-#live .bay-detail{color:#c4dce7;font-size:13px;line-height:1.6;margin:0}
-#live .bay-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-#live .bay-stats>div{background:#112c40;border:1px solid #3a596b;border-radius:10px;padding:10px 13px;min-width:120px}
-#live .bay-stats small{color:#b3d3df;font-size:11px;display:block}
-#live .bay-stats strong{display:block;color:#eefaff;font-size:20px}
-#live .bay-age{margin:13px 0 0;color:#a9d7e4;font-size:11px;line-height:1.6}
-#live .bay-note{margin:9px 0 0;color:#a4bdca;font-size:11px;line-height:1.6}
-@media(max-width:760px){#live .bay-layout{grid-template-columns:1fr;gap:8px}#live .bay-compass{padding:14px}#live .bay-map{max-width:340px}}
+#live .bay-detail{color:#c4dce7;font-size:12px;line-height:1.4;margin:0}
+#live .bay-stats{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+#live .bay-stats>div{background:#112c40;border:1px solid #3a596b;border-radius:8px;padding:6px 9px;min-width:90px}
+#live .bay-stats small{color:#b3d3df;font-size:10px;display:block}
+#live .bay-stats strong{display:block;color:#eefaff;font-size:17px;line-height:1.25}
+#live .bay-age{margin:6px 0 0;color:#a9d7e4;font-size:10px;line-height:1.35}
+#live .bay-help{margin-top:5px;color:#a4bdca;font-size:11px;line-height:1.45}
+#live .bay-help summary{cursor:pointer;color:#9cded6;font-size:11px}
+#live .bay-help p{margin:5px 0 0}
+@media(max-width:760px){#live .bay-layout{grid-template-columns:150px minmax(0,1fr);gap:10px}#live .bay-map{max-width:150px}}
+@media(max-width:420px){#live .bay-compass{padding:10px}#live .bay-layout{grid-template-columns:minmax(110px,42%) minmax(0,1fr);gap:8px}#live .bay-bearing strong{font-size:1.45rem}#live .bay-bearing span{font-size:11px}#live .bay-stats{gap:4px}#live .bay-stats>div{padding:4px 6px;min-width:0;flex:1 1 100%}#live .bay-stats strong{font-size:15px}#live .bay-stats small{display:inline;margin-right:5px}#live .bay-detail{font-size:11px}}
 
 /* Kompass võtab avaliku Live-ilma tuulenäitude koha. */
 #live .primary-live-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
@@ -392,7 +395,7 @@ details.info p{font-size:11px;color:var(--muted)}
      <div class="live-banner" id="live-banner" role="status">TalTechi mõõteandmete kontroll on ootel.</div>
      <div class="live-grid primary-live-grid">
      <section class="bay-compass" aria-labelledby="bay-compass-title">
-      <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahe suhtes</h4><p>Kaardilt on näha, kas tuul liigub Pärnu poole või lahest välja.</p></header>
+      <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahel</h4></header>
       <div class="bay-layout">
        <div class="bay-map">
         <svg id="wind-bay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" role="img" aria-label="Pärnu lahe lihtsustatud kaart. Kinnitatud tuulesuund on ootel.">
@@ -429,7 +432,7 @@ details.info p{font-size:11px;color:var(--muted)}
         <p id="bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
         <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="bay-speed">—</strong></div><div><small>Puhangud</small><strong id="bay-gust">—</strong></div></div>
         <p id="bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
-        <p class="bay-note">Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p>
+        <details class="bay-help"><summary>Suuna selgitus</summary><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
        </div>
       </div>
      </section>
