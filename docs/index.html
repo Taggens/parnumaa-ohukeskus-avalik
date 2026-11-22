@@ -384,7 +384,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="okf-card okf-period"><h3>▣ Järgmised 48 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-48-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-48-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-48-rain">—</strong></div></div><div class="okf-flag-row" id="okf-48-flags"></div><p id="okf-48-status" class="okf-subtle">Ootel</p></article>
   </div>
   <div class="okf-bottom-grid"><article class="okf-card"><h3>⚠ Olulisemad tähelepanud <small>(prognoosi põhjal)</small></h3><div id="okf-alerts" class="okf-alert-grid"></div><p class="okf-subtle">Kohalikud sõelamärgid, mitte Keskkonnaagentuuri ametlikud hoiatused. Sellest vaatest telefoniteavitusi ei saadeta.</p></article>
-  <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Siin vaadatakse ühte mudelit korraga. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
+  <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Kuvatud aeg näitab andmete vastuvõttu, mitte tingimata mudeli arvutusjooksu. Automaatne valik eelistab kõige värskemat vastuvõturühma ja alles siis mudelite eelistusjärjekorda. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
   <p class="okf-disclaimer">Andmed pärinevad olemasolevatest Ohukeskuse allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
 </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
@@ -454,7 +454,22 @@ function forecastModel(place,selected='auto'){
  const p=weather().places?.[place],models=Array.isArray(p?.models)?p.models:[],now=Date.now()/1000;
  const valid=models.filter(m=>m&&modelOrder.includes(m.id)&&Array.isArray(m.hours)&&fresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+18*3600));
  if(selected!=='auto')return valid.find(m=>m.id===selected)||null;
- return modelOrder.map(id=>valid.find(m=>m.id===id)).find(Boolean)||null;
+ if(!valid.length)return null;
+ // This is source reception time, never an inferred model-run time.
+ const newest=Math.max(...valid.map(m=>timestamp(m.source_received_at_utc)));
+ const recent=valid.filter(m=>newest-timestamp(m.source_received_at_utc)<=30*60000);
+ return modelOrder.map(id=>recent.find(m=>m.id===id)).find(Boolean)||null;
+}
+function sourceAgeLabel(sourceTime){
+ const ms=timestamp(sourceTime);
+ if(ms===null)return 'vastuvõtuaeg teadmata';
+ const minutes=Math.max(0,Math.round((Date.now()-ms)/60000));
+ return minutes<60?minutes+' min tagasi':Math.floor(minutes/60)+' h '+(minutes%60)+' min tagasi';
+}
+function runTimeLabel(model){
+ if(!model||!model.run_utc)return 'Lähtejooksu aeg teadmata';
+ const run=timestamp(model.run_utc),received=timestamp(model.source_received_at_utc);
+ return run!==null&&received!==null&&run<=received+300000&&run>=received-7*86400000?'Allika märgitud jooks '+local(model.run_utc):'Lähtejooksu aeg kinnitamata';
 }
 function upcoming(place,selected='auto',windowHours=12){
  const model=forecastModel(place,selected),now=Date.now()/1000;
@@ -712,18 +727,19 @@ function okfSelectedModelInfo(place){
  el(row,'span','','Valitud mudel');el(row,'strong','',name);
  row=el(area,'div','okf-model-row');
  el(row,'span','','Andmed vastu võetud');
- el(row,'strong','',model?local(model.source_received_at_utc):'—');
+ el(row,'strong','',model?local(model.source_received_at_utc)+' · '+sourceAgeLabel(model.source_received_at_utc):'—');
  row=el(area,'div','okf-model-row');
- el(row,'span','','Mudeli jooks');
- el(row,'strong','',model&&model.run_utc?local(model.run_utc):'Kinnitamata');
- put('okf-model-note',!model?'Valitud mudeli värskeid prognoosiandmeid ei ole.':model.related_meps===true?'Seotud MEPS-perekonna mudel, mitte teisest sõltumatu kinnitav prognoos.':'Andmete vastuvõtuaeg ei tõenda iseenesest mudelijooksu aega.');
+ el(row,'span','','Mudeli lähtejooks');
+ el(row,'strong','',runTimeLabel(model));
+ const note=!model?'Valitud mudeli värskeid prognoosiandmeid ei ole.':model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
+ put('okf-model-note',note+(choice==='auto'?' Automaatvalik eelistab viimase 30 minuti kõige värskemat andmepaketi rühma.':''));
 }
 function renderForecast(){
  const place=$('okf-place').value,selected=$('okf-model').value,area={parnu:'Pärnu',haademeeste:'Häädemeeste',tostamaa:'Tõstamaa',sindi:'Sindi'}[place]||'Valitud asukoht';
  const {model,hours}=upcoming(place,selected,48),first=hours[0]||null,actual=place==='parnu'?air():null;
  put('okf-state',!active()?'Andmeedastus aegunud või puudub':model?'Mudeliprognoos saadaval':'Värske prognoos puudub');
  put('okf-source',model?'Valitud mudel: '+modelNames[model.id]:'Valitud mudel: '+(selected==='auto'?'automaatne':modelNames[selected]||'—')+' · värskeid andmeid pole');
- put('okf-updated',model?'Andmed vastu võetud '+local(model.source_received_at_utc)+' (Eesti aeg)':'Vastuvõtuaeg kinnitamata');
+ put('okf-updated',model?'Andmed vastu võetud '+local(model.source_received_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(model.source_received_at_utc):'Vastuvõtuaeg kinnitamata');
  put('okf-observed-title',actual?'Pärnu sadama hetkeilm':place==='parnu'?'Pärnu sadama hetkeilm':'Vaatlus puudub');
  put('okf-observed-temp',actual?temp(actual.temperature_c):'—');
  put('okf-observed-wind',actual?wind(actual.wind_ms):'—');
