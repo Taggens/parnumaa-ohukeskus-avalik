@@ -508,26 +508,30 @@ function publicWindChill(temperatureC,windMs){
 }
 const publicWindPoints=[['N','põhjast'],['NE','kirdest'],['E','idast'],['SE','kagust'],['S','lõunast'],['SW','edelast'],['W','läänest'],['NW','loodest']];
 function renderLive(){
- const a=air(),s=sea(),rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
+ // Keep current-risk checks on fresh observations. Up to 60-minute-old verified
+ // readings may be shown as historical, never as current conditions or alerts.
+ const freshAir=air(),pastAir=!freshAir&&active()&&state.weather.live&&fresh(state.weather.live.observed_at_utc,60)?state.weather.live:null;
+ const a=freshAir||pastAir,isAirStale=!!(a&&!freshAir);
+ const s=sea(),rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
  const hasGust=!!(a&&numeric(a.gust_ms)&&a.gust_ms>=0&&a.gust_ms<=100);
  const hasTemp=!!(a&&numeric(a.temperature_c)),hasPressure=!!(a&&numeric(a.pressure_hpa)&&a.pressure_hpa>=800&&a.pressure_hpa<=1100);
  const hasHumidity=!!(a&&numeric(a.humidity_pct)&&a.humidity_pct>=0&&a.humidity_pct<=100);
  const hasDirection=!!(a&&numeric(a.wind_direction_deg)&&a.wind_direction_deg>=0&&a.wind_direction_deg<=360);
  const hasSea=!!(s&&numeric(s.level_cm));
- const airStamp=a?'Mõõdetud '+local(a.observed_at_utc)+' (Eesti aeg)':'Värske jaamamõõtmine puudub';
+ const airStamp=a?(isAirStale?'⚠ Varasem mõõtmine ':'Mõõdetud ')+local(a.observed_at_utc)+' (Eesti aeg)'+(isAirStale?' · '+sourceAgeLabel(a.observed_at_utc)+' · MITTE HETKEILM':''):'Värske jaamamõõtmine puudub';
  const label=(id,available)=>put(id,available?airStamp:'Värske mõõtmine puudub');
- put('live-time',a?'Viimane mõõtmine '+local(a.observed_at_utc):'Värske mõõtmine puudub');
+ put('live-time',a?(isAirStale?'⚠ Viimane varasem mõõtmine ':'Viimane mõõtmine ')+local(a.observed_at_utc)+(isAirStale?' · ei ole hetkeilm':''):'Värske mõõtmine puudub');
  put('live-wind',hasWind?wind(a.wind_ms):'—');label('live-wind-age',hasWind);
  put('live-gust',hasGust?wind(a.gust_ms):'—');label('live-gust-age',hasGust);
  put('live-temperature',hasTemp?temp(a.temperature_c):'—');label('live-temperature-age',hasTemp);
  setTemperatureClass('live-temperature-tile',hasTemp?a.temperature_c:null);
- put('live-temperature-note',!hasTemp?'⚠ Mõõtmine aegunud või kinnitamata':a.temperature_c<=-20?'❄ −20 °C või külmem':a.temperature_c<=-10?'❄ −10 °C või külmem':a.temperature_c<0?'❄ Miinuskraadid':'TalTechi mõõdetud õhutemperatuur');
+ put('live-temperature-note',!hasTemp?'⚠ Mõõtmine aegunud või kinnitamata':isAirStale?'⚠ Varasem mõõtmine, mitte hetkeilm':a.temperature_c<=-20?'❄ −20 °C või külmem':a.temperature_c<=-10?'❄ −10 °C või külmem':a.temperature_c<0?'❄ Miinuskraadid':'TalTechi mõõdetud õhutemperatuur');
  put('live-pressure',hasPressure?fmt(a.pressure_hpa,1)+' hPa':'—');label('live-pressure-age',hasPressure);
  put('live-humidity',hasHumidity?fmt(a.humidity_pct,0)+' %':'—');label('live-humidity-age',hasHumidity);
  const chill=hasTemp&&hasWind?publicWindChill(a.temperature_c,a.wind_ms):null;
  put('live-windchill',chill!==null?temp(chill):'—');
  put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
- put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
+ put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
  setTemperatureClass('live-windchill-tile',chill);
  const arrow=$('live-direction-arrow');
  arrow.classList.toggle('hidden',!hasDirection);
@@ -536,7 +540,7 @@ function renderLive(){
   const point=publicWindPoints[Math.round((a.wind_direction_deg%360)/45)%8];
   put('live-direction',fmt(a.wind_direction_deg,0)+'°');
   put('live-direction-name','Tuul '+point[1]+' ('+point[0]+')');
-  put('live-direction-explain','Nool näitab, kuhu tuul puhub.');
+  put('live-direction-explain','Nool näitab, kuhu tuul puhub.'+(isAirStale?' ⚠ Varasem mõõtmine, mitte hetkeilm.':''));
  }else{
   put('live-direction','—');put('live-direction-name','Ilmakaar kinnitamata');
   put('live-direction-explain','Suunanoole jaoks puudub avalikus andmevoos kinnitatud mõõtmine.');
@@ -569,16 +573,19 @@ function renderLive(){
  put('hourly-rain-freshness',rain?'Mõõdetud '+local(rain.observed_at_utc)+' (Eesti aeg)':'Kinnitatud täistunni mõõtmine puudub');
  put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).':'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
  const banner=$('live-banner');
- banner.classList.toggle('stale',!a);
- banner.textContent=a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
+ banner.classList.toggle('stale',!freshAir);
+ banner.textContent=isAirStale?'⚠ Sadamajaama viimane teadaolev mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg) on aegunud. Näidud on ajaloolised, mitte hetkeilm ega hoiatusalus.':a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
  const missing=[];
- if(!hasWind)missing.push('keskmine tuul');
- if(!hasGust)missing.push('tuulepuhangud');
- if(!hasTemp)missing.push('õhutemperatuur');
+ if(isAirStale)missing.push('värsked sadamajaama mõõtmised');
+ else {
+  if(!hasWind)missing.push('keskmine tuul');
+  if(!hasGust)missing.push('tuulepuhangud');
+  if(!hasTemp)missing.push('õhutemperatuur');
+ }
  if(!hasSea)missing.push('meretase');
  if(!rain)missing.push('tunnisadu');
  const events=[];
- if(hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
+ if(freshAir&&hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
  if(level!==null&&level>=100)events.push('Meretase üle kohaliku +'+(level>=180?'180':level>=150?'150':'100')+' cm piiri ('+fmt(level,0)+' cm)');
  const situation=$('live-situation');
  situation.classList.remove('normal','watch','incomplete');
@@ -587,7 +594,7 @@ function renderLive(){
  put('live-situation-detail',(events.length?events.join(' · ')+'. ':'')+(missing.length?'Puuduvad või aegunud: '+missing.join(', ')+'. ':'')+'Need on kohalikud tähelepanupiirid, mitte ametlikud hoiatused.');
  const risk=$('live-risk-summary');risk.replaceChildren();
  el(risk,'h3','','Avalikus Live-ilmas jälgitavad kohalikud tähelepanupiirid');
- el(risk,'p','',hasWind?'Keskmine tuul: '+fmt(a.wind_ms)+' m/s; tähelepanupiir 15 m/s.':'Keskmise tuule tähelepanupiiri ei saa mõõtmise puudumisel kontrollida.');
+ el(risk,'p','',freshAir&&hasWind?'Keskmine tuul: '+fmt(a.wind_ms)+' m/s; tähelepanupiir 15 m/s.':'Keskmise tuule tähelepanupiiri ei saa värske mõõtmise puudumisel kontrollida.');
  el(risk,'p','',level===null?'Meretase: kinnitatud mõõtmine puudub.':'Meretase: '+(level>=0?'+':'')+fmt(level,0)+' cm EH2000; kohalikud tähelepanupiirid +100, +150 ja +180 cm.');
  el(risk,'p','','Kinnitatud tunnisadu ja administraatori teavitusseaded ei ole avalikus andmevoos. Näidatud tasemed ei ole ametlikud hoiatused.');
 }
