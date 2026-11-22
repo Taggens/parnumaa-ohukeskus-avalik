@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Pärnumaa Ohukeskus",
-  "short_name": "Ohukeskus",
-  "description": "Pärnumaa Ohukeskuse avalik ilmaülevaade",
+  "name": "Pärnu Ilmakeskus",
+  "short_name": "Ilmakeskus",
+  "description": "Pärnu Ilmakeskuse avalik ilmaülevaade",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
