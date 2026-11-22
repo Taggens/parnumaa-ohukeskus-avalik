@@ -1,6 +1,6 @@
-# Pärnumaa Ohukeskus · avalik prooviversioon
+# Pärnu Ilmakeskus · avalik prooviversioon
 
-Avalik ainult lugemiseks mõeldud veebileht. Kolm jaotist: **Ilmaülevaade**, **Ilmaprognoos** ja **Teeolud**.
+Avalik ainult lugemiseks mõeldud Pärnu-keskne ilmaveeb. Jaotised: **Live-ilm**, **Ilmaprognoos**, **Teeolud** ja **Andmeallikad**. Teeolude vaade hõlmab ka Pärnumaa teeilmajaamu.
 
 ## Veebilehe avaldamine
 
