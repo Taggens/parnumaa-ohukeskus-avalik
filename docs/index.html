@@ -189,6 +189,7 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-choosers select,.okf-hour-choice select{background:#092633;color:var(--okf-ink);border:1px solid var(--okf-edge);border-radius:9px;min-width:150px;padding:8px 10px;max-width:100%}
 .okf-trust-line{display:flex;flex-wrap:wrap;gap:9px 18px;margin:0 0 15px;font-size:.78rem;color:var(--okf-muted)}
 .okf-trust-line span:first-child{color:var(--okf-turq)}
+.okf-display-tip{margin:-5px 0 12px;color:var(--okf-muted);font-size:.76rem;line-height:1.55}
 .okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:16px}
 .okf-bottom-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr)}
 .okf-card{background:linear-gradient(145deg,#11283b,#0b1d2d 95%);border:1px solid #215164;border-radius:16px;padding:20px 22px;min-width:0;box-shadow:0 7px 18px #00000012}
@@ -495,6 +496,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <label>Mudel<select id="okf-model" aria-label="Ilmaprognoosi mudel"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
   </div></div>
   <div class="okf-trust-line"><span id="okf-state">Andmete kontroll ootel</span><span id="okf-source">Mudelivalik ootel</span><span id="okf-updated">Aeg ootel</span></div>
+  <p class="okf-display-tip">ℹ️ Prognoositabelit on kõige mugavam vaadata tahvelarvutis või arvutis. Telefonis saad tabelit külgsuunas kerida.</p>
 
   <details class="okf-guide" id="forecast-guide">
    <summary>📖 Kuidas ilmaandmeid ja prognoose lugeda? · KKK ja legend</summary>
