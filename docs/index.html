@@ -552,7 +552,17 @@ function hourlyRain(){
 }
 function forecastModel(place,selected='auto'){
  const p=weather().places?.[place],models=Array.isArray(p?.models)?p.models:[],now=Date.now()/1000;
- const valid=models.filter(m=>m&&modelOrder.includes(m.id)&&Array.isArray(m.hours)&&fresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+18*3600));
+ // MEPS ei ilmu 35-minutilise intervalliga: vastuvõtu lubatud vanus
+ // katab mitmetunnise mudelitsükli. Eraldi kontrollime tegeliku jooksu vanust.
+ const valid=models.filter(m=>{
+  if(!m||!modelOrder.includes(m.id)||!Array.isArray(m.hours))return false;
+  if(!fresh(m.source_received_at_utc,m.id==='fmi_meps'?210:240))return false;
+  if(m.id==='fmi_meps'){
+   const run=timestamp(m.run_utc),age=run===null?Infinity:Date.now()-run;
+   if(age< -300000||age>9*3600000)return false;
+  }
+  return m.hours.some(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+18*3600);
+ });
  if(selected!=='auto')return valid.find(m=>m.id===selected)||null;
  if(!valid.length)return null;
  // This is source reception time, never an inferred model-run time.
@@ -962,7 +972,8 @@ function okfSelectedModelInfo(place){
  row=el(area,'div','okf-model-row');
  el(row,'span','','Mudeli lähtejooks');
  el(row,'strong','',runTimeLabel(model));
- const note=!model?'Valitud mudeli värskeid prognoosiandmeid ei ole.':model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
+ const raw=!model&&choice!=='auto'?weather().places?.[place]?.models?.find(m=>m&&m.id===choice):null;
+ const note=!model?(raw?'Selle mudeli viimane andmepakett võeti vastu '+local(raw.source_received_at_utc)+' ('+sourceAgeLabel(raw.source_received_at_utc)+'). Uuendatud prognoosi pole kinnitatud; proovi Automaatset valikut.':'Valitud mudeli värskeid prognoosiandmeid ei ole.'):model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
  put('okf-model-note',note+(choice==='auto'?' Automaatvalik eelistab viimase 30 minuti kõige värskemat andmepaketi rühma.':''));
 }
 function renderForecast(){
