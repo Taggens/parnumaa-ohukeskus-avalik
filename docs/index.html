@@ -235,6 +235,13 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-model-row:last-child{border-bottom:0}
 .okf-bottom-grid .subtle-button{margin-top:13px}
 .okf-disclaimer{font-size:.77rem;color:var(--okf-muted);line-height:1.6;margin:0 0 20px}
+.okf-weather-icon{display:block;width:36px;height:36px;margin:0 auto;flex-shrink:0;overflow:visible}
+.okf-weather-icon.okf-icon-large{width:70px;height:70px}
+.okf-weather-main>span{display:grid;place-items:center;font-size:initial;flex-shrink:0;min-width:70px}
+.okf-hour-table .okf-small{max-width:95px;margin:6px auto 0;line-height:1.35;font-size:.71rem;overflow-wrap:normal;hyphens:auto}
+.okf-hour-table td{min-width:92px}
+.okf-weather-main p{line-height:1.45}
+@media(max-width:520px){.okf-weather-icon.okf-icon-large{width:58px;height:58px}.okf-weather-main>span{min-width:58px}}
 @media(max-width:1000px){.okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{grid-template-columns:1fr}}
 @media(max-width:520px){.okf-screen .okf-header{align-items:stretch}.okf-choosers{width:100%}.okf-choosers label{flex:1;min-width:130px}.okf-choosers select{min-width:0;width:100%}.okf-card{padding:16px}.okf-hero{flex-direction:column}.okf-measurements{min-width:0}.okf-period-data strong{font-size:1.1rem}.okf-weather-main>span{font-size:3.5rem}.okf-temperature{font-size:2.5rem}}
 
@@ -397,29 +404,84 @@ function renderLive(){
  title.textContent=a&&s?'Pärnu mõõtmised on ajakohased':'Osa mõõtmisi puudub või on aegunud';
  description.textContent=a&&s?'Õhutemperatuuri, tuule ja meretaseme mõõtmisajad on eraldi kontrollitud.':'Puuduv mõõtmine ei tähenda ohutuid ilmaolusid.';
 }
-function okfWeather(h,modelCode){
+function okfWeather(h){
  const c=Number.isInteger(h?.weather_code)?h.weather_code:null;
- const rain=numeric(h?.precip)&&h.precip>=0.1;
+ const precip=numeric(h?.precip)&&h.precip>=0.1;
  if(c!==null){
-  if([95,96,99].includes(c))return {icon:'⛈️',label:'Äike, rahe võimalik'};
-  if([56,57,66,67].includes(c))return {icon:'🧊',label:'Jäätuv sadu'};
-  if([68,69].includes(c))return {icon:'🌨️',label:'Segasadu'};
-  if([71,73,75,77,85,86].includes(c))return {icon:'🌨️',label:'Lumesadu'};
-  if([51,53,55].includes(c))return {icon:'🌦️',label:'Uduvihm'};
-  if([61,63,65,80,81,82].includes(c))return {icon:'🌧️',label:'Vihm'};
+  if([95,96,99].includes(c))return {kind:'thunder',label:'Äike'};
+  if([56,57,66,67].includes(c))return {kind:'freeze',label:'Jäätuv sadu'};
+  if([68,69].includes(c))return {kind:'sleet',label:'Segasadu'};
+  if([71,73,75,77,85,86].includes(c))return {kind:'snow',label:'Lumesadu'};
+  if([51,53,55].includes(c))return {kind:'drizzle',label:'Uduvihm'};
+  if([61,63,65,80,81,82].includes(c))return {kind:'rain',label:'Vihm'};
+  if(c===0)return {kind:'sun',label:'Selge'};
+  if(c===1||c===2)return {kind:'partial',label:'Osaliselt pilves'};
+  if(c===3)return {kind:'cloud',label:'Pilves'};
+  if(c===45||c===48)return {kind:'fog',label:'Udu'};
  }
- if(rain)return {icon:'🌦️',label:'Sadu, liik teadmata'};
- if(c===0)return {icon:'☀️',label:'Selge'};
- if(c===1||c===2)return {icon:'🌤️',label:'Osaliselt pilves'};
- if(c===3)return {icon:'☁️',label:'Pilves'};
- if(c===45||c===48)return {icon:'🌫️',label:'Udu'};
+ if(precip)return {kind:'precip',label:'Sadu, liik teadmata'};
  if(numeric(h?.cloud)&&h.cloud>=0&&h.cloud<=100){
-  if(h.cloud<=10)return {icon:'☀️',label:'Vähene pilvisus'};
-  if(h.cloud<=40)return {icon:'🌤️',label:'Osaliselt pilves'};
-  if(h.cloud<=75)return {icon:'⛅',label:'Vahelduv pilvisus'};
-  return {icon:'☁️',label:'Pilves'};
+  if(h.cloud<=10)return {kind:'sun',label:'Vähene pilvisus'};
+  if(h.cloud<=40)return {kind:'partial',label:'Osaliselt pilves'};
+  if(h.cloud<=75)return {kind:'partial',label:'Vahelduv pilvisus'};
+  return {kind:'cloud',label:'Pilves'};
  }
- return {icon:'▫️',label:'Ilma liik kinnitamata'};
+ return {kind:'unknown',label:'Ilma liik määramata'};
+}
+function okfSvgIcon(target,weather,isLarge=false){
+ target.replaceChildren();
+ const namespace='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(namespace,'svg');
+ svg.setAttribute('viewBox','0 0 64 64');
+ svg.setAttribute('class','okf-weather-icon'+(isLarge?' okf-icon-large':''));
+ svg.setAttribute('role','img');
+ svg.setAttribute('aria-label',weather.label);
+ const draw=(tag,attributes)=>{
+  const node=document.createElementNS(namespace,tag);
+  for(const [key,value] of Object.entries(attributes))node.setAttribute(key,String(value));
+  svg.append(node);
+  return node;
+ };
+ const sun=()=>{
+  draw('circle',{cx:24,cy:24,r:10,fill:'#f7c96c',stroke:'#fce3a1','stroke-width':2});
+  for(let a=0;a<360;a+=45){
+   const rad=a*Math.PI/180;
+   draw('line',{x1:24+14*Math.cos(rad),y1:24+14*Math.sin(rad),x2:24+19*Math.cos(rad),y2:24+19*Math.sin(rad),stroke:'#f9ce77','stroke-width':2.7,'stroke-linecap':'round'});
+  }
+ };
+ const cloud=()=>{
+  draw('path',{d:'M17 47H45C52 47 57 42 57 35C57 28 52 23 45 23C42 16 36 12 28 12C19 12 12 18 11 27C5 29 3 33 3 38C3 44 9 47 17 47Z',fill:'#244d60',stroke:'#bbdce7','stroke-width':2.6,'stroke-linejoin':'round'});
+ };
+ const rain=(shape='rain')=>{
+  if(shape==='snow'){
+   for(const cx of [17,32,47]){draw('line',{x1:cx-4,y1:54,x2:cx+4,y2:62,stroke:'#b6e2ff','stroke-width':2});draw('line',{x1:cx+4,y1:54,x2:cx-4,y2:62,stroke:'#b6e2ff','stroke-width':2});}
+  }else if(shape==='sleet'){
+   for(const cx of [17,32,47])draw('circle',{cx,cy:57,r:2.8,fill:'#a8d7ff'});
+  }else if(shape==='precip'){
+   for(const cx of [17,32,47])draw('circle',{cx,cy:57,r:2.4,fill:'#96d3e5'});
+  }else{
+   for(const cx of [17,32,47])draw('line',{x1:cx+2,y1:53,x2:cx-2,y2:61,stroke:'#75d4f0','stroke-width':3,'stroke-linecap':'round'});
+  }
+ };
+ const kind=weather.kind;
+ if(kind==='unknown'){
+  draw('circle',{cx:32,cy:32,r:24,fill:'#183a4c',stroke:'#79a9bc','stroke-width':2.5});
+  draw('path',{d:'M24 24C24 15 40 13 43 23C46 30 34 34 32 39',fill:'none',stroke:'#bdd6e3','stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round'});
+  draw('circle',{cx:32,cy:47,r:2.5,fill:'#bdd6e3'});
+ }else if(kind==='sun'){sun()}
+ else if(kind==='partial'){sun();cloud()}
+ else{
+  cloud();
+  if(kind==='rain'||kind==='drizzle'||kind==='precip')rain(kind);
+  if(kind==='snow')rain('snow');
+  if(kind==='sleet'||kind==='freeze')rain('sleet');
+  if(kind==='fog'){
+   for(const cy of [54,60])draw('line',{x1:9,y1:cy,x2:54,y2:cy,stroke:'#afcbd5','stroke-width':2.3,'stroke-linecap':'round'});
+  }
+  if(kind==='thunder')draw('path',{d:'M35 49L27 59H34L30 64L43 54H35Z',fill:'#f6cf70',stroke:'#f3bf59','stroke-width':1});
+ }
+ target.append(svg);
+ return svg;
 }
 function okfAttention(h){
  const flags=[],code=Number.isInteger(h?.weather_code)?h.weather_code:null;
@@ -455,7 +517,7 @@ function okfHourTable(hours){
  for(const h of list)el(tr,'th','',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit'}).format(new Date(h.t*1000)));
  const body=el(root,'tbody');
  const build=(label,renderer)=>{const row=el(body,'tr');el(row,'th','',label);for(const h of list){const td=el(row,'td');renderer(h,td)}};
- build('Ilm',(h,td)=>{const w=okfWeather(h);const symbol=el(td,'span','okf-weather-symbol',w.icon);symbol.title=w.label;el(td,'small','okf-small',w.label)});
+ build('Ilm',(h,td)=>{const w=okfWeather(h);const holder=el(td,'span','okf-weather-symbol');okfSvgIcon(holder,w);el(td,'small','okf-small',w.kind==='unknown'?'Andmed puuduvad':w.label)});
  build('Temperatuur',(h,td)=>{td.textContent=numeric(h.temp)?fmt(h.temp,0)+' °C':'—'});
  build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
  build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
@@ -513,8 +575,8 @@ function renderForecast(){
  put('okf-observed-time',actual?'Pärnu sadama mõõtmine '+local(actual.observed_at_utc)+' (Eesti aeg)':place!=='parnu'?'Selle asukoha jaoks pole kinnitatud jaamamõõtmist.':'Pärnu sadama värske mõõtmine puudub.');
  put('okf-location-title',area);
  const kind=okfWeather(first);
- put('okf-current-icon',first?kind.icon:'▫️');
- put('okf-current-desc',first?kind.label+' · '+temp(first.temp)+' (valitud mudeli lähim prognoositund)':'Prognoosiandmed puuduvad');
+ okfSvgIcon($('okf-current-icon'),kind,true);
+ put('okf-current-desc',first?temp(first.temp)+' · '+kind.label:'Prognoosiandmed puuduvad');
  okfHourTable(hours);
  const day=okfPeriod(model,24),twoDays=okfPeriod(model,48);
  okfPeriodRender('okf-24',day);okfPeriodRender('okf-48',twoDays);
