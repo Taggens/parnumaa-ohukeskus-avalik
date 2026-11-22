@@ -399,15 +399,16 @@ function renderOverview(){
  }
 }
 function renderLive(){
- const a=air(),s=sea(),r=roads(),n=r?r.stations.filter(stationFresh).length:0;
- put('live-temp',a?temp(a.temperature_c):'—');put('live-air-time',a?'Mõõdetud '+local(a.observed_at_utc):'Värske mõõtmine puudub');setTemperatureClass('live-air-card',a?.temperature_c);
- put('live-wind',a&&numeric(a.wind_ms)&&numeric(a.gust_ms)?fmt(a.wind_ms)+' / '+fmt(a.gust_ms)+' m/s':'—');put('live-wind-time',a?'Mõõdetud '+local(a.observed_at_utc):'Värske mõõtmine puudub');
- put('live-sea',s&&numeric(s.level_cm)?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');put('live-sea-time',s?'Mõõdetud '+local(s.observed_at_utc):'Värske EH2000 mõõtmine puudub');
- put('live-road',r?n+' / 11':'—');put('live-road-time',r?'Kontrollitud '+local(r.checked_at_utc):'Värsket kontrolli ei ole');
+ const a=air(),s=sea();
+ put('live-temp',a?temp(a.temperature_c):'—');
+ put('live-air-time',a?'Mõõdetud '+local(a.observed_at_utc):'Värske mõõtmine puudub');
+ setTemperatureClass('live-air-card',a?.temperature_c);
+ put('live-sea',s&&numeric(s.level_cm)?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
+ put('live-sea-time',s?'Mõõdetud '+local(s.observed_at_utc):'Värske EH2000 mõõtmine puudub');
  $('live-banner').classList.toggle('ok',!!(a&&s));
- const h=$('live-banner').querySelector('strong'),p=$('live-banner').querySelector('p');
- h.textContent=a&&s?'Pärnu õhu- ja meremõõtmised on ajakohased':'Osa mõõtmisi on puudu või aegunud';
- p.textContent=a&&s?'Iga näidu juures on tegelik mõõtmisaeg.':'Puuduv mõõtmine ei tähenda ohutuid ilmastikuolusid.';
+ const title=$('live-banner').querySelector('strong'),description=$('live-banner').querySelector('p');
+ title.textContent=a&&s?'Pärnu mõõtmised on ajakohased':'Osa mõõtmisi puudub või on aegunud';
+ description.textContent=a&&s?'Õhutemperatuuri, tuule ja meretaseme mõõtmisajad on eraldi kontrollitud.':'Puuduv mõõtmine ei tähenda ohutuid ilmaolusid.';
 }
 function renderForecast(){
  const selected=$('model-select').value,hourLimit=Number($('forecast-hours-choice').value)||12,{model,hours}=upcoming($('place').value,selected,hourLimit),tbody=$('forecast-hours');tbody.replaceChildren();
