@@ -700,6 +700,7 @@ function okfAddFlag(target,flag,hourTime=null){
  return n;
 }
 function okfHourTable(hours){
+ put('okf-flag-detail','Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.');
  const root=$('okf-hour-table');root.replaceChildren();
  const selected=Number($('okf-hours').value)===24?24:12,list=hours.slice(0,selected);
  const head=el(root,'thead'),tr=el(head,'tr');el(tr,'th','','Aeg');
