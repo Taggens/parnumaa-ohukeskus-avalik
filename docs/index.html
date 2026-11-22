@@ -352,6 +352,28 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}
 @media(max-width:1050px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}#live .primary-live-grid>.bay-compass{grid-column:1}#live .weather-measurements-grid{grid-column:1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:3;grid-row:1}}
 @media(max-width:620px){#live .weather-measurements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1/-1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:1;grid-row:2}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:9px;padding-top:8px}}
+
+/* Prognoosi KKK ja legend. Vaikimisi suletud ja ka telefonis loetav. */
+.okf-guide{margin:0 0 17px;border:1px solid #365768;border-radius:12px;background:#112638;overflow:hidden}
+.okf-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none;padding:13px 16px;color:#d5f6f0;font-weight:720;font-size:14px}
+.okf-guide>summary::-webkit-details-marker{display:none}
+.okf-guide>summary::after{content:"+";display:inline-block;font-size:20px;line-height:1;color:#9bd9d4}
+.okf-guide[open]>summary::after{content:"−"}
+.okf-guide-content{padding:0 16px 16px}
+.okf-guide-intro{margin:0 0 12px;color:#acc6d4;font-size:12px;line-height:1.6}
+.okf-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.okf-guide-item{min-width:0;border:1px solid #2c485c;border-radius:9px;background:#102233}
+.okf-guide-item>summary{cursor:pointer;padding:12px 13px;color:#d7ebf5;font-weight:680;font-size:12px;line-height:1.5}
+.okf-guide-item>summary:hover{color:#aff1e6}
+.okf-guide-answer{padding:0 13px 12px;color:#b9d1df;font-size:12px;line-height:1.65}
+.okf-guide-answer p{margin:0 0 8px}
+.okf-guide-answer p:last-child{margin-bottom:0}
+.okf-guide-answer ul{margin:0;padding-left:19px}
+.okf-guide-answer li{margin:3px 0}
+.okf-guide-answer strong{color:#e1f2f8}
+.okf-guide-note{margin:12px 0 0;color:#b8cbd8;font-size:11px;line-height:1.6}
+@media(max-width:760px){.okf-guide-grid{grid-template-columns:minmax(0,1fr)}.okf-guide>summary{padding:12px 13px}.okf-guide-content{padding:0 12px 13px}}
+
 </style>
 </head>
 <body>
@@ -473,6 +495,58 @@ details.info p{font-size:11px;color:var(--muted)}
     <label>Mudel<select id="okf-model" aria-label="Ilmaprognoosi mudel"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
   </div></div>
   <div class="okf-trust-line"><span id="okf-state">Andmete kontroll ootel</span><span id="okf-source">Mudelivalik ootel</span><span id="okf-updated">Aeg ootel</span></div>
+
+  <details class="okf-guide" id="forecast-guide">
+   <summary>📖 Kuidas ilmaandmeid ja prognoose lugeda? · KKK ja legend</summary>
+   <div class="okf-guide-content">
+    <p class="okf-guide-intro">Lühikesed selgitused ilmaikoonide, numbrite ja andmete usaldusväärsuse kohta. Ava sind huvitav küsimus.</p>
+    <div class="okf-guide-grid">
+     <details class="okf-guide-item">
+      <summary>🌡️ Mis vahe on mõõdetud ilmal ja prognoosil?</summary>
+      <div class="okf-guide-answer"><p><strong>Mõõdetud ilm</strong> näitab ilmajaama tegelikku mõõtmist kindlal ajal ja kindlas kohas. Prognoosilehel puudutab see Pärnu sadamajaama, mitte automaatselt kogu linna.</p><p><strong>Ilmaprognoos</strong> on arvutimudeli hinnang tulevaste tundide ilma kohta. See ei ole jaamamõõtmine ega garanteeritud tulemus.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌤️ Mida ilmaikoonid tähendavad?</summary>
+      <div class="okf-guide-answer"><ul>
+       <li><strong>☀️ / 🌙</strong> Selge või vähese pilvisusega ilm. Öösel kuvatakse päikese asemel kuu.</li>
+       <li><strong>🌤️ / ☁️</strong> Osaliselt pilves või pilves. Öises osalise pilvisuse ikoonis on kuu ja pilv.</li>
+       <li><strong>🌧️</strong> Vihm või uduvihm; <strong>❄️</strong> lumi; <strong>🌨️</strong> segasadu; <strong>🧊</strong> jäätuv sadu.</li>
+       <li><strong>🌫️</strong> Udu või härmatist tekitav udu; <strong>⛈️</strong> äike.</li>
+       <li><strong>?</strong> Ilma liiki ei saa olemasolevate andmete põhjal määrata.</li>
+      </ul><p>Ikoon kirjeldab valitud mudeli prognoosi, mitte kinnitatud hetkeilma. Ülaltoodud sümbolid on selgitavad näited.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌬️ Mida tähendavad tuul, puhangud ja m/s?</summary>
+      <div class="okf-guide-answer"><p><strong>Tuul (m/s)</strong> näitab mudeli prognoositud keskmist tuulekiirust. <strong>Puhang</strong> on lühiajaline tugevam tuulehoog, mis võib keskmisest tuulest märksa suurem olla.</p><p>Näiteks 5 m/s tuult ja 12 m/s puhangud ei tähenda, et tuul puhub kogu aeg 12 m/s.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌧️ Mida tähendavad sademed ja 24/48 tunni kokkuvõte?</summary>
+      <div class="okf-guide-answer"><p><strong>Sadu (1 h)</strong> on prognoositud sajukogus ühe tunni jooksul millimeetrites. Näiteks 2 mm vastab ligikaudu 2 liitrile veele ruutmeetri kohta.</p><p><strong>24/48 tunni kokkuvõtted</strong> näitavad vahemiku temperatuuriulatust, suurimat tuulepuhangut ja sademete summat ainult piisava tunnikatvuse korral. Kui vajalikud andmed puuduvad, jätab leht kokkuvõtte arvutamata.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🛰️ Mis on ECMWF, ICON, GFS ja HARMONIE?</summary>
+      <div class="okf-guide-answer"><p>Need on erinevad arvutuslikud ilmaprognoosimudelid. Lehel saab valida ECMWF IFS-i, DWD ICON-EU, NOAA GFS-i, MET Nordicu ning DMI ja FMI HARMONIE mudelite vahel.</p><p>Prognoosid võivad erineda eri lähteandmete ja arvutusviiside tõttu. <strong>Automaatne valik</strong> valib ühe sobiva värske mudeli, mitte kuue mudeli keskmist ega ühist kinnitatud ennustust.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>⚠️ Mida tähendavad tähelepanumärgid?</summary>
+      <div class="okf-guide-answer"><p>Need on <strong>kohalikud, mudeliprognoosi põhjal arvutatud tähelepanumärgid</strong>, näiteks tugev puhang, külm, udu või jäätuva saju võimalus. Need ei ole Keskkonnaagentuuri ametlikud ilmahoiatused.</p><p>Märgi puudumine ei kinnita ohutut ilma. Avalikust prognoosivaatest telefoni push-teavitusi ei saadeta.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌊 Kuidas lugeda meretaset ja lahe tuulekompassi?</summary>
+      <div class="okf-guide-answer"><p><strong>Meretase</strong> on sentimeetrites EH2000 kõrgussüsteemis, mitte vee sügavus. Meie kohalikud tähelepanupiirid on <strong>+100 cm kollane, +150 cm oranž, +180 cm punane</strong>. Need ei ole ametlikud hoiatusastmed.</p><p><strong>Kompassi punane nool</strong> näitab suunda, kuhu tuul liigub. Kraadid näitavad meteoroloogilist suunda ehk kust tuul tuleb. Märked „puhub lahte” ja „puhub lahest välja” on ligikaudsed. Tuulesuund üksi ei näita üleujutusohtu.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🕒 Miks näen kriipsu või kirja „andmed aegunud”?</summary>
+      <div class="okf-guide-answer"><p><strong>—</strong> tähendab, et usaldusväärset näitu ei saa praegu kuvada, näiteks puuduvate, kontrollimata või aegunud andmete tõttu.</p><p><strong>„MITTE HETKETASE”</strong> või „varasem mõõtmine” tähistab kontrollitud, kuid vananenud näitu, mida ei kasutata värske ohuolukorra kinnitamiseks. <strong>Prognoosi vastuvõtuaeg</strong> ei ole tingimata mudeli arvutusjooksu aeg.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🚗 Kas teeilmajaama näit kinnitab sõiduohutust?</summary>
+      <div class="okf-guide-answer"><p>Ei. Teeilmajaam mõõdab tingimusi ainult oma asukohas. Sama tee mujal võib olla libedam või kuivem. Puuduv või aegunud näit ei tähenda ohutuid teeolusid.</p><p>Ametlikku teeinfot vaata <a href="https://tarktee.ee/" target="_blank" rel="noopener noreferrer">Tark Teest</a>.</p></div>
+     </details>
+    </div>
+    <p class="okf-guide-note">Pärnu Ilmakeskus on informatiivne ilmaveeb. Ametlikke ilmahoiatusi vaata <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistusest</a>.</p>
+   </div>
+  </details>
   <div class="okf-top-grid">
     <article class="okf-card okf-hero"><div><div class="okf-eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 id="okf-observed-title">Pärnu sadama hetkeilm</h3><div class="okf-temperature" id="okf-observed-temp">—</div><p id="okf-observed-time" class="okf-subtle">Mõõtmine ootel</p></div><div class="okf-measurements"><div>Tuul<strong id="okf-observed-wind">—</strong></div><div>Puhangud<strong id="okf-observed-gust">—</strong></div><div>Õhuniiskus<strong id="okf-observed-humidity">—</strong></div><div>Õhurõhk<strong id="okf-observed-pressure">—</strong></div></div></article>
     <article class="okf-card okf-hero okf-prognosis"><div class="okf-eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="okf-location-title">Asukoht</h3><div class="okf-weather-main"><span id="okf-current-icon" aria-hidden="true">▫️</span><div><p id="okf-current-desc">Prognoosi ootel</p><p class="okf-subtle">Prognoos ei ole jaamamõõtmine ega ametlik hoiatus.</p></div></div></article>
