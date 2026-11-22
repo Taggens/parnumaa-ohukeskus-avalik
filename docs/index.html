@@ -170,6 +170,9 @@ details.info p{font-size:11px;color:var(--muted)}
 .forecast-hour-picker{display:flex;align-items:center;gap:8px;font-size:11px;color:#a7c3cd}
 .forecast-hour-picker select{min-width:93px}
 .road-table th{white-space:nowrap}.road-table td{white-space:nowrap}.road-table td:first-child{font-weight:700}
+/* Arvuti tabel: jää ja libedus ainult värske kinnitatud teeilmajaama näidu korral. */
+.road-table tbody tr.road-hazard td{background:#3b2630;border-bottom-color:#7f5056;color:#f1d9e2}
+.road-table tbody tr.road-hazard td:nth-child(3){color:#ffd5c5;font-weight:800}
 .road-mobile-cards{display:none}
 .source-catalog{display:grid;gap:10px}
 .source-entry{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;background:#112b3b;border:1px solid #305067;border-radius:11px}
@@ -569,7 +572,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
     <article class="panel"><div class="panel-title"><div><h3>11 Pärnumaa teeilmajaama</h3><p id="roads-time">Viimane allikakontroll ootel</p></div><span id="roads-summary" class="kicker">Kontrollin mõõtmisi…</span></div>
      <div class="road-table-desktop table-scroll" tabindex="0" aria-label="Teeilmajaamade tabel, vajadusel keri horisontaalselt"><table class="road-table"><thead><tr><th>Jaam</th><th>Teekate °C</th><th>Teekatte seisund</th><th>Õhk °C</th><th>Sademed</th><th>Nähtavus</th><th>Tuul</th><th>Kaart</th><th>Andmete seis</th><th>Mõõdetud (Eesti aeg)</th></tr></thead><tbody id="road-table-body"><tr><td colspan="10">Ootan mõõtmisi…</td></tr></tbody></table></div>
-     <p class="fineprint">Jaamad on kinnitatud Pärnumaa maakonnapiiri järgi. Mõõtmiste värskuse piir on 50 minutit ning allika enda kontrolli aeg eraldi kuni 40 minutit. Teeilmajaama näit kirjeldab ainult mõõtmiskohta.</p>
+     <p class="fineprint">Jaamad on kinnitatud Pärnumaa maakonnapiiri järgi. Mõõtmiste värskuse piir on 50 minutit ning allika enda kontrolli aeg eraldi kuni 40 minutit. Punakas tabelirida ja ⚠ tähistavad värskel jaamamõõtmisel märgitud jääd või libedust. Teeilmajaama näit kirjeldab ainult mõõtmiskohta.</p>
     </article>
     <article class="panel"><div class="panel-title"><div><h3>Teeilmajaamad telefonis</h3><p>Telefonis avaneb mõõtmiste kaardivaade</p></div><input type="search" id="station-filter" class="station-search" placeholder="Otsi jaama…" aria-label="Otsi teeilmajaama"></div>
      <div id="station-list" class="station-grid road-mobile-cards"></div>
@@ -1156,12 +1159,14 @@ function renderFamilyRoadTable(r){
  for(const name of stationNames){
   const station=arr.find(s=>s&&s.name===name);
   const good=stationFresh(station),v=good?station.values:{};
-  const row=el(root,'tr');
+  const road=good?roadStateInfo(v.road_status):null;
+  const hazard=!!(good&&road.hazardous);
+  const row=el(root,'tr',hazard?'road-hazard':'');
   const p=good?'Värske':station?.status==='puudub'?'Puudub':'Aegunud';
   const sdate=station?.measured_at_utc?local(station.measured_at_utc):'—';
   const rain=good&&numeric(v.precipitation_mm_h)?fmt(v.precipitation_mm_h)+' mm/h':'—';
   const visible=good&&numeric(v.visibility_m)?fmt(v.visibility_m,0)+' m':'—';
-  const cells=[name,good?fmt(v.road_temp_c):'—',good?detailRoadStatus(v.road_status):'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
+  const cells=[name,good?fmt(v.road_temp_c):'—',good?(hazard?'⚠ ':'')+road.text:'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
   for(const value of cells)el(row,'td','',value);
   const td=el(row,'td');
   if(station&&numeric(station.lat)&&numeric(station.lon)&&station.lat>57&&station.lat<60&&station.lon>22&&station.lon<27){
