@@ -176,12 +176,12 @@ select{min-width:200px}
     <div class="forecast-picker"><label for="place">Piirkond</label><select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></div>
     <div class="forecast-picker"><label for="model-select">Ilmamudel</label><select id="model-select">
       <option value="auto">Automaatne valik</option>
-      <option value="fmi_meps">FMI MEPS</option>
       <option value="ecmwf_ifs025">ECMWF IFS</option>
-      <option value="icon_eu">ICON-EU</option>
-      <option value="metno_nordic">MET Norway</option>
+      <option value="icon_eu">DWD ICON-EU</option>
+      <option value="gfs_global">NOAA GFS</option>
+      <option value="metno_nordic">MET Nordic</option>
       <option value="dmi_harmonie_arome_europe">DMI HARMONIE</option>
-      <option value="gfs_global">GFS</option>
+      <option value="fmi_meps">FMI HARMONIE–MEPS</option>
     </select></div>
   </div>
   <p class="soft-label forecast-explain">Vali üks kuuest mudelist või jäta sisse automaatne valik. Iga valik näitab ainult selle mudeli prognoosi.</p>
@@ -205,7 +205,7 @@ select{min-width:200px}
 'use strict';
 const names=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme','Papiniidu','Reiu','Ristiküla','Ünnaste','Võiste'];
 const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
-const modelLabels={fmi_meps:'FMI MEPS',ecmwf_ifs025:'ECMWF IFS',icon_eu:'ICON-EU',metno_nordic:'MET Norway',dmi_harmonie_arome_europe:'DMI HARMONIE',gfs_global:'GFS'};
+const modelLabels={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
 const $=id=>document.getElementById(id);
 const put=(id,val)=>{$(id).textContent=val};
 const item=(parent,tag,className,val)=>{const e=document.createElement(tag);if(className)e.className=className;if(val!==undefined)e.textContent=val;parent.append(e);return e};
@@ -227,7 +227,7 @@ function roadData(){
 function freshStation(s){return !!(s&&s.status==='varske'&&isFresh(s.measured_at_utc,50)&&s.values&&typeof s.values==='object'&&Object.keys(s.values).length)}
 function modelFor(place,requested='auto'){
  const weather=weatherData(),p=weather.places&&weather.places[place],models=p&&Array.isArray(p.models)?p.models:[],now=Date.now()/1000;
- const order=['fmi_meps','ecmwf_ifs025','icon_eu','metno_nordic','dmi_harmonie_arome_europe','gfs_global'];
+ const order=['ecmwf_ifs025','icon_eu','gfs_global','metno_nordic','dmi_harmonie_arome_europe','fmi_meps'];
  if(requested!=='auto'&&!order.includes(requested))return null;
  const usable=models.filter(m=>m&&order.includes(m.id)&&Array.isArray(m.hours)&&isFresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&typeof h.t==='number'&&h.t>=now-60&&h.t<now+18*3600));
  if(requested!=='auto')return usable.find(m=>m.id===requested)||null;
