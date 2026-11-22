@@ -286,6 +286,8 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .sea-level-watch{color:#f3db7a;font-weight:700}
 #live .sea-level-high{color:#f3a270;font-weight:700}
 #live .sea-level-severe{color:#ff7985;font-weight:700}
+#live #sea-risk-card.is-stale .stat-value{color:#a7c0cc}
+#live #sea-risk-card.is-stale .observation-stamp{color:#f0c882;font-weight:700}
 #live .reading-trend{font-weight:700;font-size:.91rem;color:#aee7de;margin:6px 0}
 #live .reading-details{border-top:1px solid #355367;margin-top:14px;padding-top:11px;line-height:1.5}
 #live .reading-details summary,#live .compact-details summary{cursor:pointer;color:#b9eee3;font-weight:650;font-size:.82rem}
@@ -655,7 +657,12 @@ function renderLive(){
  // readings may be shown as historical, never as current conditions or alerts.
  const freshAir=air(),pastAir=!freshAir&&active()&&state.weather.live&&fresh(state.weather.live.observed_at_utc,60)?state.weather.live:null;
  const a=freshAir||pastAir,isAirStale=!!(a&&!freshAir);
- const s=sea(),rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
+ // Hoia värske meretaseme piir 40 min. Kuni 2 h vanune kontrollitud
+ // mõõtmine võib jääda nähtavaks AINULT varasema näiduna, mitte hoiatusalusena.
+ const freshSea=sea(),pastSea=!freshSea&&active()&&state.weather.sea&&
+   state.weather.sea.vertical_datum==='EH2000'&&fresh(state.weather.sea.observed_at_utc,120)?state.weather.sea:null;
+ const s=freshSea||pastSea,isSeaStale=!!(s&&!freshSea);
+ const rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
  const hasGust=!!(a&&numeric(a.gust_ms)&&a.gust_ms>=0&&a.gust_ms<=100);
  const hasTemp=!!(a&&numeric(a.temperature_c)),hasPressure=!!(a&&numeric(a.pressure_hpa)&&a.pressure_hpa>=800&&a.pressure_hpa<=1100);
  const hasHumidity=!!(a&&numeric(a.humidity_pct)&&a.humidity_pct>=0&&a.humidity_pct<=100);
@@ -676,17 +683,18 @@ function renderLive(){
  setTemperatureClass('live-windchill-tile',chill);
  renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
- put('marine-freshness',hasSea?'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)':'Värske EH2000 mõõtmine puudub');
+ put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):'Värske EH2000 mõõtmine puudub või on aegunud');
  const comparisonTime=hasSea?timestamp(s.comparison_time_utc):null;
  const measuredTime=hasSea?timestamp(s.observed_at_utc):null;
  const trendGap=comparisonTime!==null&&measuredTime!==null?(measuredTime-comparisonTime)/60000:null;
- const confirmedTrend=hasSea&&s.trend_verified===true&&numeric(s.change_last_hour_cm)&&
+ const confirmedTrend=hasSea&&!isSeaStale&&s.trend_verified===true&&numeric(s.change_last_hour_cm)&&
     Math.abs(s.change_last_hour_cm)<=1100&&trendGap!==null&&trendGap>=50&&trendGap<=70;
- put('marine-trend',confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / ~1 h':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
- put('marine-meta',hasSea?'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.'+(confirmedTrend?' Tunnimuutus võrreldud sama jaama mõõtmisega '+local(s.comparison_time_utc)+'.':' Tunnimuutust ei ole kinnitatud.'):'Meretaseme kõrgussüsteemi ja mõõtmisaja kinnitamine puudub.');
- const level=hasSea?s.level_cm:null;
+ put('marine-trend',isSeaStale?'Tunnimuutus: vananenud mõõtmise põhjal ei kuvata':confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / ~1 h':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
+ put('marine-meta',hasSea?(isSeaStale?'Viimane kontrollitud mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'. See on varasem näit, mitte hetketase, ja seda ei kasutata ohu tähelepanupiiride kontrolliks.':'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.'+(confirmedTrend?' Tunnimuutus võrreldud sama jaama mõõtmisega '+local(s.comparison_time_utc)+'.':' Tunnimuutust ei ole kinnitatud.')):'Meretaseme värske mõõtmine puudub või on aegunud.');
+ const level=hasSea&&!isSeaStale?s.level_cm:null;
  const marineCard=$('sea-risk-card');
  marineCard.classList.remove('risk-watch','risk-high','risk-severe');
+ marineCard.classList.toggle('is-stale',isSeaStale);
  if(level!==null&&level>=180)marineCard.classList.add('risk-severe');
  else if(level!==null&&level>=150)marineCard.classList.add('risk-high');
  else if(level!==null&&level>=100)marineCard.classList.add('risk-watch');
@@ -711,7 +719,7 @@ function renderLive(){
   if(!hasGust)missing.push('tuulepuhangud');
   if(!hasTemp)missing.push('õhutemperatuur');
  }
- if(!hasSea)missing.push('meretase');
+ if(!freshSea||!numeric(freshSea.level_cm))missing.push('värske meretase');
  if(!rain)missing.push('tunnisadu');
  const events=[];
  if(freshAir&&hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
@@ -724,7 +732,7 @@ function renderLive(){
  const risk=$('live-risk-summary');risk.replaceChildren();
  el(risk,'h3','','Avalikus Live-ilmas jälgitavad kohalikud tähelepanupiirid');
  el(risk,'p','',freshAir&&hasWind?'Keskmine tuul: '+fmt(a.wind_ms)+' m/s; tähelepanupiir 15 m/s.':'Keskmise tuule tähelepanupiiri ei saa värske mõõtmise puudumisel kontrollida.');
- el(risk,'p','',level===null?'Meretase: kinnitatud mõõtmine puudub.':'Meretase: '+(level>=0?'+':'')+fmt(level,0)+' cm EH2000; kohalikud tähelepanupiirid +100, +150 ja +180 cm.');
+ el(risk,'p','',level===null?(isSeaStale?'Meretase: viimane kontrollitud mõõtmine '+local(s.observed_at_utc)+' on aegunud; kohalikke tähelepanupiire selle põhjal ei hinnata.':'Meretase: värske kontrollitud mõõtmine puudub; kohalikke tähelepanupiire ei saa hinnata.'):'Meretase: '+(level>=0?'+':'')+fmt(level,0)+' cm EH2000; kohalikud tähelepanupiirid +100, +150 ja +180 cm.');
  el(risk,'p','','Kinnitatud tunnisadu ja administraatori teavitusseaded ei ole avalikus andmevoos. Näidatud tasemed ei ole ametlikud hoiatused.');
 }
 
