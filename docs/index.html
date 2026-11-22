@@ -335,12 +335,21 @@ details.info p{font-size:11px;color:var(--muted)}
 @media(max-width:760px){#live .bay-layout{grid-template-columns:150px minmax(0,1fr);gap:10px}#live .bay-map{max-width:150px}}
 @media(max-width:420px){#live .bay-compass{padding:10px}#live .bay-layout{grid-template-columns:minmax(110px,42%) minmax(0,1fr);gap:8px}#live .bay-bearing strong{font-size:1.45rem}#live .bay-bearing span{font-size:11px}#live .bay-stats{gap:4px}#live .bay-stats>div{padding:4px 6px;min-width:0;flex:1 1 100%}#live .bay-stats strong{font-size:15px}#live .bay-stats small{display:inline;margin-right:5px}#live .bay-detail{font-size:11px}}
 
-/* Kompass võtab avaliku Live-ilma tuulenäitude koha. */
-#live .primary-live-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
-#live .primary-live-grid>.bay-compass{grid-column:1/-1;margin-top:0;min-width:0}
-#live .primary-live-grid>.live-tile{min-width:0}
-@media(max-width:900px){#live .primary-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}}
+/* Kompaktne Live-ilma töölaud: tuulekompassi kõrval ilmajaama mõõtmised. */
+#live .primary-live-grid{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:stretch;gap:12px}
+#live .primary-live-grid>.bay-compass{grid-column:1;margin:0;min-width:0}
+#live .weather-measurements-grid{grid-column:2;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+#live .weather-measurements-grid>.live-tile{min-width:0;min-height:0;padding:12px 13px}
+#live .weather-measurements-grid>.live-tile .live-label{margin-bottom:6px;font-size:11px}
+#live .weather-measurements-grid>.live-tile strong{font-size:21px}
+#live .weather-measurements-grid>.live-tile small{margin-top:5px;line-height:1.35}
+#live .weather-measurements-grid>#live-temperature-tile{grid-row:1/3;grid-column:1}
+#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:12px;padding-top:10px}
+#live .weather-measurements-grid>#live-temperature-tile .live-secondary strong{font-size:21px}
+#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}
+#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}
+@media(max-width:1050px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}#live .primary-live-grid>.bay-compass{grid-column:1}#live .weather-measurements-grid{grid-column:1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:3;grid-row:1}}
+@media(max-width:620px){#live .weather-measurements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1/-1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:1;grid-row:2}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:9px;padding-top:8px}}
 </style>
 </head>
 <body>
@@ -436,11 +445,13 @@ details.info p{font-size:11px;color:var(--muted)}
        </div>
       </div>
      </section>
+      <div class="weather-measurements-grid" aria-label="Muud sadamajaama mõõtmised">
       <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
        <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
       </div>
-      <div class="live-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      <div class="live-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      </div>
      </div>
 
      <details class="reading-details extra-measurements"><summary>TalTechi täiendavad sademenäidud (mõõteperiood kinnitamata)</summary>
