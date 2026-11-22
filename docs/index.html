@@ -743,6 +743,38 @@ function okfWeather(h){
  }
  return {kind:'unknown',label:'Ilma liik määramata'};
 }
+
+/* Prognoosi päikese/kuu ikooni jaoks arvutame Päikese kõrguse tunniajast (UTC).
+   Päikesetõus ja -loojang sõltuvad kuupäevast ning valitud Pärnumaa asukohast.
+   -0,833° sisaldab päikeseketta ja atmosfääri murdumise tavapärast parandust. */
+const okfPlaceCoordinates={
+ parnu:[58.3859,24.4971],haademeeste:[58.0788,24.4960],
+ tostamaa:[58.3325,23.9973],sindi:[58.4030,24.6677]
+};
+function okfDaylight(utcSeconds,place){
+ if(!numeric(utcSeconds)||!okfPlaceCoordinates[place])return null;
+ const [latitude,longitude]=okfPlaceCoordinates[place],rad=Math.PI/180;
+ const julianDay=utcSeconds/86400+2440587.5,days=julianDay-2451545;
+ const anomaly=(357.528+0.9856003*days)*rad;
+ const eclipticLongitude=(280.460+0.9856474*days+1.915*Math.sin(anomaly)+0.020*Math.sin(2*anomaly))*rad;
+ const obliquity=(23.439-0.0000004*days)*rad;
+ const rightAscension=Math.atan2(Math.cos(obliquity)*Math.sin(eclipticLongitude),Math.cos(eclipticLongitude));
+ const declination=Math.asin(Math.sin(obliquity)*Math.sin(eclipticLongitude));
+ const siderealTime=(280.46061837+360.98564736629*days)*rad;
+ const hourAngle=siderealTime+longitude*rad-rightAscension;
+ const lat=latitude*rad;
+ const elevation=Math.asin(Math.sin(lat)*Math.sin(declination)+Math.cos(lat)*Math.cos(declination)*Math.cos(hourAngle));
+ return elevation>=-0.833*rad;
+}
+function okfWeatherAtTime(h,place){
+ const weather=okfWeather(h),daylight=okfDaylight(h?.t,place);
+ if(daylight===false){
+  if(weather.kind==='sun')return {...weather,kind:'moon',label:'Selge öö'};
+  if(weather.kind==='partial')return {...weather,kind:'moon-partial',label:'Öösel osaliselt pilves'};
+ }
+ return weather;
+}
+
 function okfSvgIcon(target,weather,isLarge=false){
  target.replaceChildren();
  const namespace='http://www.w3.org/2000/svg';
@@ -763,6 +795,9 @@ function okfSvgIcon(target,weather,isLarge=false){
    const rad=a*Math.PI/180;
    draw('line',{x1:24+14*Math.cos(rad),y1:24+14*Math.sin(rad),x2:24+19*Math.cos(rad),y2:24+19*Math.sin(rad),stroke:'#f9ce77','stroke-width':2.7,'stroke-linecap':'round'});
   }
+ };
+ const moon=()=>{
+  draw('path',{d:'M31 8C21 11 16 20 17 30C18 40 27 48 39 46C29 42 24 35 24 27C24 18 27 12 31 8Z',fill:'#e7f2ff',stroke:'#bdd8ef','stroke-width':2,'stroke-linejoin':'round'});
  };
  const cloud=()=>{
   draw('path',{d:'M17 47H45C52 47 57 42 57 35C57 28 52 23 45 23C42 16 36 12 28 12C19 12 12 18 11 27C5 29 3 33 3 38C3 44 9 47 17 47Z',fill:'#244d60',stroke:'#bbdce7','stroke-width':2.6,'stroke-linejoin':'round'});
@@ -785,6 +820,8 @@ function okfSvgIcon(target,weather,isLarge=false){
   draw('circle',{cx:32,cy:47,r:2.5,fill:'#bdd6e3'});
  }else if(kind==='sun'){sun()}
  else if(kind==='partial'){sun();cloud()}
+ else if(kind==='moon'){moon()}
+ else if(kind==='moon-partial'){moon();cloud()}
  else{
   cloud();
   if(kind==='rain'||kind==='drizzle'||kind==='precip')rain(kind);
@@ -867,7 +904,7 @@ function okfRenderFogSummary(place){
  if(records.length>6)el(target,'span','','Lisaks '+(records.length-6)+' prognoositundi.');
  el(target,'small','okf-subtle','Arvestatud ainult sama tunni kehtiva ilmakoodiga mudeleid; ilma ilmakoodita mudel ei tähenda udu puudumist. Mudelid ei ole alati sõltumatud. See pole kinnitatud nähtavus ega ametlik hoiatus.');
 }
-function okfHourTable(hours){
+function okfHourTable(hours,place){
  put('okf-flag-detail','Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.');
  const root=$('okf-hour-table');root.replaceChildren();
  const selected=Number($('okf-hours').value)===24?24:12,list=hours.slice(0,selected);
@@ -875,7 +912,7 @@ function okfHourTable(hours){
  for(const h of list)el(tr,'th','',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit'}).format(new Date(h.t*1000)));
  const body=el(root,'tbody');
  const build=(label,renderer)=>{const row=el(body,'tr');el(row,'th','',label);for(const h of list){const td=el(row,'td');renderer(h,td)}};
- build('Ilm',(h,td)=>{const w=okfWeather(h);const holder=el(td,'span','okf-weather-symbol');okfSvgIcon(holder,w);el(td,'small','okf-small',w.kind==='unknown'?'Andmed puuduvad':w.label)});
+ build('Ilm',(h,td)=>{const w=okfWeatherAtTime(h,place);const holder=el(td,'span','okf-weather-symbol');okfSvgIcon(holder,w);el(td,'small','okf-small',w.kind==='unknown'?'Andmed puuduvad':w.label)});
  build('Temperatuur',(h,td)=>{td.textContent=numeric(h.temp)?fmt(h.temp,0)+' °C':'—'});
  build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
  build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
@@ -942,10 +979,10 @@ function renderForecast(){
  put('okf-observed-pressure',actual&&numeric(actual.pressure_hpa)?fmt(actual.pressure_hpa,0)+' hPa':'—');
  put('okf-observed-time',actual?'Pärnu sadama mõõtmine '+local(actual.observed_at_utc)+' (Eesti aeg)':place!=='parnu'?'Selle asukoha jaoks pole kinnitatud jaamamõõtmist.':'Pärnu sadama värske mõõtmine puudub.');
  put('okf-location-title',area);
- const kind=okfWeather(first);
+ const kind=okfWeatherAtTime(first,place);
  okfSvgIcon($('okf-current-icon'),kind,true);
  put('okf-current-desc',first?temp(first.temp)+' · '+kind.label:'Prognoosiandmed puuduvad');
- okfHourTable(hours);
+ okfHourTable(hours,place);
  okfRenderFogSummary(place);
  const day=okfPeriod(model,24),twoDays=okfPeriod(model,48);
  okfPeriodRender('okf-24',day);okfPeriodRender('okf-48',twoDays);
