@@ -140,6 +140,41 @@ details.info p{font-size:11px;color:var(--muted)}
 @media(max-width:720px){.app-shell{display:block}.sidebar{height:auto;min-height:0;position:fixed;z-index:1001;bottom:0;left:0;top:0;width:255px;transform:translateX(-100%);transition:transform .2s;box-shadow:8px 0 40px #0008}.sidebar.open{transform:translateX(0)}#drawer-scrim.open{display:block;position:fixed;inset:0;z-index:1000;background:#03101bcc}.menu-toggle{display:inline-block}.topbar{padding:15px 18px;min-height:78px}.top-heading h1{font-size:17px}.clock{display:none}.top-actions{gap:8px}.refresh-button{padding:9px}.refresh-button .text{display:none}.content{padding:19px 15px}.intro{gap:8px}.section-header{align-items:flex-start;flex-wrap:wrap}.stat-grid{gap:10px}.stat-card{padding:15px;min-height:125px}.stat-value{font-size:24px}.panel{padding:16px}.station-grid{grid-template-columns:1fr}.live-priority-grid,.trust-grid{grid-template-columns:1fr}.footer{display:block;line-height:1.8}}
 @media(max-width:420px){.role-indicator{display:none}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-caption{font-size:10px}.station-search{width:100%}.forecast-controls label{width:100%}.forecast-controls select{width:100%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sidebar{transition:none}}
+
+/* Family-page inspired information blocks; no private pages or server data are embedded. */
+.family-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 17px}
+.family-row .stat-card{min-height:136px}
+.family-note{border:1px solid #375268;background:#102739;color:#bdd1df;border-radius:11px;padding:15px 17px;font-size:12px;margin:12px 0 20px}
+.family-note strong{color:#f2f7fa}
+.family-live-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.family-live-tile{background:#132b3e;border:1px solid #2b4558;border-radius:12px;padding:17px;min-width:0}
+.family-live-tile small{font-size:11px;display:block;color:#a2baca}
+.family-live-tile strong{font-size:24px;letter-spacing:-.04em;display:block;margin:10px 0 5px}
+.family-live-tile p{font-size:11px;color:#a5bac8;margin:6px 0 0}
+.family-model-trust{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#afc5d0;font-size:11px;margin:-2px 0 16px}
+.forecast-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.forecast-big{display:block;font-size:36px;font-weight:780;letter-spacing:-.05em;margin:14px 0 8px}
+.forecast-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}
+.forecast-mini-grid>div{padding:12px;border:1px solid #315269;background:#102a3b;border-radius:10px}
+.forecast-mini-grid small{display:block;color:#a4bcca;font-size:10px}
+.forecast-mini-grid strong{display:block;margin-top:6px;font-size:15px}
+.forecast-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:14px 0}
+.forecast-summary-grid>div{background:#142d41;border:1px solid #2c4a61;border-radius:11px;padding:15px}
+.forecast-summary-grid small{display:block;font-size:11px;color:#a6bdca}
+.forecast-summary-grid strong{display:block;font-size:21px;margin-top:8px}
+.forecast-hour-picker{display:flex;align-items:center;gap:8px;font-size:11px;color:#a7c3cd}
+.forecast-hour-picker select{min-width:93px}
+.road-table th{white-space:nowrap}.road-table td{white-space:nowrap}.road-table td:first-child{font-weight:700}
+.road-mobile-cards{display:none}
+.source-catalog{display:grid;gap:10px}
+.source-entry{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;background:#112b3b;border:1px solid #305067;border-radius:11px}
+.source-entry strong{display:block;font-size:12px}.source-entry small{display:block;color:#acc2ce;font-size:11px;margin-top:3px}
+.source-badge{font-size:10px;font-weight:750;white-space:nowrap;color:#a9eee0;border:1px solid #408477;border-radius:99px;padding:5px 9px}
+.source-badge.missing{color:#ffdca8;border-color:#b28d5c}
+@media(max-width:1120px){.family-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.family-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.forecast-top-grid{grid-template-columns:1fr}.road-table-desktop{display:none}.road-mobile-cards{display:grid}.forecast-summary-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.family-live-grid,.family-row{grid-template-columns:1fr 1fr}.family-row .stat-card{padding:13px;min-height:110px}.forecast-summary-grid{grid-template-columns:1fr}.forecast-mini-grid{grid-template-columns:1fr 1fr}.forecast-big{font-size:30px}}
+
 </style>
 </head>
 <body>
@@ -187,6 +222,11 @@ details.info p{font-size:11px;color:var(--muted)}
      <article class="stat-card" id="sea-card"><div class="stat-caption">Pärnu meretase · EH2000</div><div class="stat-value" id="obs-sea">—</div><div class="stat-foot" id="obs-sea-time">Mõõtmisaeg kinnitamata</div><div class="stat-foot" id="sea-attention">Kohalik tähelepanutase: kontrollimata</div></article>
      <article class="stat-card"><div class="stat-caption">Pärnumaa teeilmajaamade mõõtmised</div><div class="stat-value" id="overview-road-count">—</div><div class="stat-foot" id="overview-road-time">Allika kontroll ootel</div></article>
     </div>
+    <div class="family-row">
+     <article class="stat-card"><div class="stat-caption">Kasutatavaid mudeliprognoose · Pärnu</div><div class="stat-value" id="home-model-count">—</div><div class="stat-foot">Kuus mudelit, mitu neist sama andmevahendaja kaudu</div></article>
+     <article class="stat-card"><div class="stat-caption">Suurim mudeli puhang · järgmine 24 h</div><div class="stat-value" id="home-gust24">—</div><div class="stat-foot" id="home-gust24-info">Automaatse mudelivaliku prognoos</div></article>
+     <article class="stat-card"><div class="stat-caption">Sademed · järgmine 24 h</div><div class="stat-value" id="home-precip24">—</div><div class="stat-foot" id="home-precip24-info">Täielikku ajavahemikku kontrollitakse</div></article>
+    </div>
     <div class="split-grid">
      <article class="panel"><div class="panel-title"><div><h3>Ilmaprognoos lähitundideks</h3><p>Pärnu · valitud ilmaprognoos</p></div><button type="button" class="subtle-button" data-goto="forecast">Tunniprognoos →</button></div><div id="overview-preview" class="table-scroll"><div class="empty">Prognoos ootel…</div></div><p id="overview-model-caption" class="fineprint">Mudeli andmed kinnitamata.</p></article>
      <article class="panel"><div class="panel-title"><div><h3>Mõõtmised ja allikad</h3><p>Tegelikud mõõtmisajad ja andmete päritolu</p></div><button type="button" class="subtle-button" data-goto="sources">Allikad →</button></div>
@@ -197,49 +237,91 @@ details.info p{font-size:11px;color:var(--muted)}
     <div class="panel"><div class="panel-title"><div><h3>Oluline teada</h3><p>Ohukeskuse avalik vaade on informatiivne</p></div><span class="kicker">SELGE INFO</span></div><p style="margin:0;color:#bdd1dc;font-size:12px">Üksiku teeilmajaama mõõtmine ei kirjelda kõiki teelõike. Ilmamudeli prognoos ei ole ametlik hoiatus. Kui mõni mõõtmine või allikas on aegunud, kuvatakse see eraldi, mitte ei eeldata ohu puudumist.</p></div>
    </section>
    <section id="live" class="screen" aria-labelledby="live-heading">
-    <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Kontrollitud mõõtmised. Allika mõõtmisaeg ja avaldamisaeg on erinevad.</p></div><span class="kicker">MÕÕTMISED</span></div>
+    <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Pärnu sadama mõõtmised. Tegelik mõõtmisaeg ja avaldamisaeg on eraldi kontrollitud.</p></div><span class="chip">Kontrollitud mõõteajad</span></div>
     <div class="banner" id="live-banner"><strong>Ootan mõõtmisi</strong><p>Aegunud ja puuduvad mõõtmised jäävad eraldi märgituks.</p></div>
     <div class="live-priority-grid">
-     <article class="panel priority-reading" id="live-air-card"><div class="priority-heading"><h3>Õhutemperatuur</h3><span class="reading-source">Pärnu sadam</span></div><span class="stat-value" id="live-temp">—</span><p id="live-air-time" class="observation-stamp">Mõõtmisaeg kinnitamata</p><div class="reading-subline">Tegelik ilmajaama mõõtmine, mitte mudeli prognoos.</div></article>
-     <article class="panel priority-reading"><div class="priority-heading"><h3>Tuul ja puhang</h3><span class="reading-source">Pärnu sadam</span></div><span class="stat-value" id="live-wind">—</span><p id="live-wind-time" class="observation-stamp">Mõõtmisaeg kinnitamata</p><div class="reading-subline">Keskmine tuul / puhang meetrites sekundis.</div></article>
-     <article class="panel priority-reading" id="live-sea-card"><div class="priority-heading"><h3>Pärnu meretase · EH2000</h3><span class="reading-source">Pärnu</span></div><span class="stat-value" id="live-sea">—</span><p id="live-sea-time" class="observation-stamp">Mõõtmisaeg kinnitamata</p><div class="reading-subline" id="live-sea-risk">Kohalik tähelepanutase: kontrollimata</div><details class="reading-details"><summary>Mida tähendavad meretaseme värvid?</summary><p>Ohukeskuse kohalikud tähelepanupiirid algavad +100, +150 ja +180 cm tasemest EH2000. Need ei ole riiklikud ametlikud hoiatusastmed.</p></details></article>
-     <article class="panel priority-reading"><div class="priority-heading"><h3>Teeilmajaamad</h3><span class="reading-source">Transpordiamet</span></div><span class="stat-value" id="live-road">—</span><p class="observation-stamp" id="live-road-time">Mõõtmisallikas kontrollimata</p><div class="reading-subline">Teeilmajaamade mõõtmised leiad eraldi Teeolude jaotisest.</div><button type="button" class="subtle-button" data-goto="roads" style="margin-top:14px">Ava Teeolud →</button></article>
+     <article class="panel priority-reading"><div class="priority-heading"><h3>Viimase täistunni sadu · Pärnu</h3><span class="reading-source">Keskkonnaagentuur</span></div>
+      <span class="stat-value">—</span><p class="observation-stamp">Kinnitatud tunnisaju andmeid avalikus ekspordis veel pole.</p>
+      <details class="reading-details"><summary>Allikas ja mõõteperiood</summary><p>Viimase täistunni sadu peab pärinema kontrollitud tunnivaatlusest. Teeilmajaama sajuintensiivsus ei asenda seda mõõtmist.</p><p><a href="https://www.ilmateenistus.ee/ilm/ilmavaatlused/vaatlusandmed/tunniandmed/" target="_blank" rel="noopener noreferrer">Vaata tunniandmeid ↗</a></p></details>
+     </article>
+     <article class="panel priority-reading" id="live-sea-card"><div class="priority-heading"><h3>Meretase · Pärnu</h3><span class="reading-source">EH2000</span></div><span class="stat-value" id="live-sea">—</span><p class="observation-stamp" id="live-sea-time">Mõõtmisaeg kinnitamata</p>
+      <div class="reading-subline" id="live-sea-risk">Kohalik tähelepanutase: kontrollimata</div>
+      <details class="reading-details"><summary>Piirid, allikas ja selgitus</summary><p>Ohukeskuse kohalikud tähelepanupiirid: +100 cm kollane, +150 cm oranž, +180 cm punane (EH2000). Need ei ole ametlikud hoiatusastmed.</p><p><a href="https://on-line.msi.ttu.ee/meretase/graph.php?jaam=parnu" target="_blank" rel="noopener noreferrer">Pärnu meretaseme graafik ↗</a></p></details>
+     </article>
     </div>
+    <article class="panel"><div class="panel-title"><div><h3>TalTechi sadamajaama mõõtmised</h3><p id="live-measurement-heading">Viimane jaamamõõtmine kinnitamata</p></div><span class="kicker">PÄRNU SADAM</span></div>
+     <div class="family-live-grid">
+      <div class="family-live-tile"><small>Keskmine tuul</small><strong id="live-mean-wind">—</strong><p id="live-mean-wind-time">Mõõtmisaja kontroll ootel</p></div>
+      <div class="family-live-tile"><small>Tuulepuhangud</small><strong id="live-gust-only">—</strong><p id="live-gust-only-time">Mõõtmisaja kontroll ootel</p></div>
+      <div class="family-live-tile" id="live-air-card"><small>Õhutemperatuur</small><strong id="live-temp">—</strong><p id="live-air-time">Mõõtmisaja kontroll ootel</p></div>
+      <div class="family-live-tile"><small>Õhurõhk ja õhuniiskus</small><strong>—</strong><p>Neid välju avalik andmeeksport veel ei sisalda.</p></div>
+     </div>
+     <details class="reading-details" style="margin-top:19px"><summary>Lisamõõtmised ja tehnilised piirangud</summary><p>Tuule suunda, tunni sajukogust, õhurõhku ja õhuniiskust ei näidata ilma kinnitatud mõõtmise ja ajatemplita. Käesolev avalik versioon ei väida nende kohta arvulisi tulemusi.</p><p><a href="https://on-line.msi.ttu.ee/parnu/" target="_blank" rel="noopener noreferrer">TalTechi algallikas ja graafikud ↗</a></p></details>
+    </article>
+    <div class="family-note"><strong>Oluline:</strong> sadamajaama mõõtmine kirjeldab mõõtmiskohta. See ei ole Pärnumaa üldine ilmaolukorra ega ohutuse hinnang.</div>
    </section>
    <section id="forecast" class="screen" aria-labelledby="forecast-heading">
-    <div class="section-header"><div><h2 id="forecast-heading">Ilmaprognoos</h2><p>Vali piirkond ja üks kuuest mudelist. Vaikimisi kasutatakse automaatset valikut.</p></div></div>
-    <article class="panel">
+    <div class="section-header"><div><h2 id="forecast-heading">🌤️ Ilmaprognoos</h2><p>Perelehega sama ülesehitus: jaamamõõtmine, valitud mudel, tunnitabel ja 24 tunni kokkuvõte.</p></div></div>
+    <div class="panel">
      <div class="forecast-controls">
-      <label>Piirkond<select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></label>
-      <label>Ilmamudel<select id="model-select">
-       <option value="auto">Automaatne valik</option>
-       <option value="ecmwf_ifs025">ECMWF IFS</option>
-       <option value="icon_eu">DWD ICON-EU</option>
-       <option value="gfs_global">NOAA GFS</option>
-       <option value="metno_nordic">MET Nordic</option>
-       <option value="dmi_harmonie_arome_europe">DMI HARMONIE</option>
-       <option value="fmi_meps">FMI HARMONIE–MEPS</option>
-      </select></label>
+      <label>Asukoht<select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></label>
+      <label>Mudel<select id="model-select"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
+     </div><p class="family-model-trust"><span class="dot" aria-hidden="true"></span><span id="forecast-data-status">Andmevoo kontroll ootel</span><span id="forecast-selected-name">Valitud mudel: —</span></p>
+    </div>
+    <div class="forecast-top-grid">
+     <article class="panel"><div class="eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 style="margin:12px 0 0;font-size:15px">Pärnu sadama hetkeilm</h3><strong class="forecast-big" id="forecast-observed-temp">—</strong><p class="observation-stamp" id="forecast-observed-time">Mõõtmise kontroll ootel</p>
+      <div class="forecast-mini-grid"><div><small>Keskmine tuul</small><strong id="forecast-observed-wind">—</strong></div><div><small>Puhangud</small><strong id="forecast-observed-gust">—</strong></div></div>
+     </article>
+     <article class="panel"><div class="eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="forecast-location-title" style="margin:12px 0 0;font-size:15px">Asukoht</h3><strong class="forecast-big" id="forecast-nearest-temp">—</strong><p class="observation-stamp" id="forecast-nearest-time">Prognoosi kontroll ootel</p>
+      <div class="forecast-mini-grid"><div><small>Tuul</small><strong id="forecast-nearest-wind">—</strong></div><div><small>Sadu tunnis</small><strong id="forecast-nearest-rain">—</strong></div></div>
+      <p class="fineprint">See on mudeliprognoos, mitte jaamamõõtmine ega ametlik hoiatus.</p>
+     </article>
+    </div>
+    <article class="panel">
+     <div class="panel-title"><div><h3>◷ Tunniprognoos</h3><p>Valitud mudel, Eesti aeg, telefonis horisontaalselt keritav tabel</p></div>
+      <label class="forecast-hour-picker">Näita <select id="forecast-hours-choice"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label>
      </div>
-     <div class="panel-title"><div><h3 id="forecast-model-title">Ootan ilmaprognoosi…</h3><p id="forecast-meta">Allika andmete kontroll</p></div><span class="kicker">JÄRGMISED 12 H</span></div>
-     <div class="table-scroll table-hours"><table><thead><tr><th scope="col">Kell</th><th scope="col">Temperatuur</th><th scope="col">Tuul</th><th scope="col">Puhang</th><th scope="col">Sadu</th></tr></thead><tbody id="forecast-hours"><tr><td colspan="5">Laadin andmeid…</td></tr></tbody></table></div>
-     <p class="fineprint">Prognoosi allika andmete vastuvõtmise aeg ei ole kinnitatud mudelijooksu aeg. Kui valitud mudel on aegunud, ei asendata seda märkamatult teise mudeliga. Sadu: mm/h; tuul: m/s.</p>
+     <div class="panel-title"><div><h3 id="forecast-model-title">Ootan prognoosiandmeid</h3><p id="forecast-meta">Andmeallika kontroll ootel</p></div><span class="kicker">VALITUD MUDEL</span></div>
+     <div class="table-scroll table-hours" tabindex="0" aria-label="Tunniprognoos, vajadusel keri horisontaalselt"><table><thead><tr><th>Aeg</th><th>Temperatuur</th><th>Tuul</th><th>Puhang</th><th>Sademed (1 h)</th></tr></thead><tbody id="forecast-hours"><tr><td colspan="5">Laadin prognoosi…</td></tr></tbody></table></div>
+     <p class="fineprint">Tunninäidud pärinevad valitud mudelist. Mudelite täpne lähtejooks ei pruugi olla kinnitatud. Ühe mudeli näit ei tähenda mitme sõltumatu allika kinnitust.</p>
     </article>
+    <div class="split-grid">
+     <article class="panel"><div class="panel-title"><div><h3>▣ Järgmised 24 tundi</h3><p>Ainult valitud mudel ja olemasolevad tunnid</p></div><span class="kicker">24 H</span></div>
+      <div class="forecast-summary-grid"><div><small>Temperatuurivahemik</small><strong id="forecast-24-temp">—</strong></div><div><small>Suurim puhang</small><strong id="forecast-24-gust">—</strong></div><div><small>Sadu kokku</small><strong id="forecast-24-rain">—</strong></div></div>
+      <p class="fineprint" id="forecast-24-status">Ootan täielikku 24 tunni prognoosi…</p>
+     </article>
+     <article class="panel"><div class="panel-title"><div><h3>▣ Järgmised 48 tundi</h3><p>Perelehe pikem prognoosivaade</p></div></div>
+      <div class="empty">Praegune avalik andmeeksport sisaldab kuni 26 prognoositundi. Täielikku 48 tunni kokkuvõtet ei saa sellest veel korrektselt arvutada.</div>
+      <p class="fineprint">Laiendame 48 tunni vaate siis, kui sama andmeedastus sisaldab kinnitatud 48 tunni katvust. Numbrite asemel ei näita oletusi.</p>
+     </article>
+    </div>
+    <div class="family-note"><strong>Tähelepanumärgid:</strong> nullilähedane temperatuur ei tõenda jäidet. Prognoos ei ole ametlik ilmahoiatus. Mudeli valik on mõeldud ühe prognoosi vaatamiseks; põhjalik mudelite võrdlustööriist jääb administraatorile.</div>
    </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
-    <div class="section-header"><div><h2 id="roads-heading">Teeolud</h2><p>11 Pärnumaa teeilmajaama Transpordiameti DATEX II mõõtmised.</p></div><input type="search" id="station-filter" class="station-search" placeholder="Otsi jaama nime…" aria-label="Otsi teeilmajaama" autocomplete="off"></div>
-    <div class="intro"><span id="roads-summary" class="pill">Kontrollin mõõtmisi…</span><span id="roads-time">Allika kontroll ootel</span></div>
-    <div id="station-list" class="station-grid"></div>
-    <article class="panel" style="margin-top:19px"><div class="panel-title"><div><h3>Teekatte mõõtmised ei ole sõidutingimuste garantii</h3><p>Jaama asukoht ja andmete värskus on olulised</p></div></div><p class="fineprint" style="margin-top:0">Värskeks loetakse ainult viimase 50 minuti mõõtmised, kui andmeedastus ja allikakontroll on samuti värsked. Puuduv näit ei tähenda kuiva teekatet ega ohutut sõitu.</p></article>
+    <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
+    <article class="panel"><div class="panel-title"><div><h3>11 Pärnumaa teeilmajaama</h3><p id="roads-time">Viimane allikakontroll ootel</p></div><span id="roads-summary" class="kicker">Kontrollin mõõtmisi…</span></div>
+     <div class="road-table-desktop table-scroll" tabindex="0" aria-label="Teeilmajaamade tabel, vajadusel keri horisontaalselt"><table class="road-table"><thead><tr><th>Jaam</th><th>Andmete seis</th><th>Mõõdetud (Eesti aeg)</th><th>Teekate °C</th><th>Teekatte seisund</th><th>Õhk °C</th><th>Sademed</th><th>Nähtavus</th><th>Tuul</th><th>Kaart</th></tr></thead><tbody id="road-table-body"><tr><td colspan="10">Ootan mõõtmisi…</td></tr></tbody></table></div>
+     <p class="fineprint">Jaamad on kinnitatud Pärnumaa maakonnapiiri järgi. Mõõtmiste värskuse piir on 50 minutit ning allika enda kontrolli aeg eraldi kuni 40 minutit. Teeilmajaama näit kirjeldab ainult mõõtmiskohta.</p>
+    </article>
+    <article class="panel"><div class="panel-title"><div><h3>Teeilmajaamad telefonis</h3><p>Telefonis avaneb mõõtmiste kaardivaade</p></div><input type="search" id="station-filter" class="station-search" placeholder="Otsi jaama…" aria-label="Otsi teeilmajaama"></div>
+     <div id="station-list" class="station-grid road-mobile-cards"></div>
+     <p class="fineprint">Puuduv või vananenud mõõtmine ei tähenda ohutut teeolukorda. Liiklussündmusi avalikus vaates ei kuvata.</p>
+    </article>
    </section>
    <section id="sources" class="screen" aria-labelledby="sources-heading">
     <div class="section-header"><div><h2 id="sources-heading">Andmeallikad</h2><p>Pärnu mõõtmiste, ilmaprognooside ja teeilmaandmete päritolu.</p></div></div>
+    <article class="panel"><div class="panel-title"><div><h3>Allikate viimane teadaolev seis</h3><p>Mõõtmiste ja ilmaprognooside vastuvõtmise aeg, mitte oletuslik turvaseis</p></div><span class="kicker">ALLIKATE TERVIS</span></div><div id="source-catalog" class="source-catalog"><div class="empty">Ootan allikaid…</div></div></article>
     <div class="split-grid">
      <article class="panel"><div class="panel-title"><div><h3>Ilm ja meretase</h3><p>Pärnu mõõtmised</p></div></div><p>Pärnu sadama ilmaandmed ning Pärnu meretaseme mõõtmised EH2000 süsteemis.</p><div class="stat-foot" id="sources-live-time">Ilmamõõtmine: kinnitamata</div><div class="stat-foot" id="sources-sea-time">Meretase: kinnitamata</div></article>
      <article class="panel"><div class="panel-title"><div><h3>Ilmaprognoos</h3><p>Kuus mudelit neljas piirkonnas</p></div></div><p>ECMWF IFS, DWD ICON-EU, NOAA GFS, MET Nordic ja DMI HARMONIE (Open-Meteo vahendusel), FMI HARMONIE–MEPS.</p><div class="stat-foot" id="sources-forecast-time">Prognoosi värskus: kinnitamata</div></article>
      <article class="panel"><div class="panel-title"><div><h3>Teeilma mõõtmised</h3><p>Transpordiamet · DATEX II</p></div></div><p>11 kontrollitud Pärnumaa teeilmajaama. Mõõtmisajad ja andmete olemasolu võivad jaamade lõikes erineda.</p><div class="stat-foot" id="sources-roads-time">Viimane kontroll: kinnitamata</div><p><a target="_blank" rel="noopener noreferrer" href="https://tarktee.ee/">Ametlik teeinfo ↗</a></p></article>
      <article class="panel"><div class="panel-title"><div><h3>Ametlikud hoiatused</h3><p>Hoiatusi ei järeldata teeilma- ega mudeliandmetest</p></div></div><p>Avalik Ohukeskus ei väljasta praegu automaatset ametliku hoiatuse olekut. Kehtivaid hoiatusi kontrolli otse Ilmateenistusest.</p><p><a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/">Ilmateenistuse hoiatused ↗</a></p></article>
     </div>
+    <article class="panel"><div class="panel-title"><div><h3>Mudelite ja piirkondade kontrolliajad</h3><p>Sarnane perelehe Allikate jaotise tabeliga</p></div></div>
+      <details class="info"><summary>Ava kuue mudeli allikate ajad</summary><div class="table-scroll" style="margin-top:14px"><table><thead><tr><th>Mudel</th><th>Piirkond</th><th>Värskus</th><th>Viimati vastu võetud</th></tr></thead><tbody id="sources-model-table"><tr><td colspan="4">Ootan prognoose…</td></tr></tbody></table></div>
+       <p class="fineprint">Vastuvõtuaeg ei ole mudeli lähtejooksu aeg. Tabel ei ole mudelite tulemuste võrdlus.</p>
+      </details>
+    </article>
    </section>
    <footer class="footer"><span>Pärnumaa Ohukeskus · Avalik vaade · Andmete puudumine ≠ ohutu olukord</span><span id="footer-updated">—</span></footer>
   </main>
@@ -275,9 +357,10 @@ function forecastModel(place,selected='auto'){
  if(selected!=='auto')return valid.find(m=>m.id===selected)||null;
  return modelOrder.map(id=>valid.find(m=>m.id===id)).find(Boolean)||null;
 }
-function upcoming(place,selected='auto'){
+function upcoming(place,selected='auto',windowHours=12){
  const model=forecastModel(place,selected),now=Date.now()/1000;
- return {model,hours:model?model.hours.filter(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<=now+12*3600).sort((a,b)=>a.t-b.t).slice(0,12):[]};
+ const hours=model?model.hours.filter(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<=now+windowHours*3600).sort((a,b)=>a.t-b.t).slice(0,windowHours):[];
+ return {model,hours};
 }
 function setTemperatureClass(id,v){
  const card=$(id);card.classList.remove('temp-frost','temp-strong','temp-deep');
@@ -327,7 +410,7 @@ function renderLive(){
  p.textContent=a&&s?'Iga näidu juures on tegelik mõõtmisaeg.':'Puuduv mõõtmine ei tähenda ohutuid ilmastikuolusid.';
 }
 function renderForecast(){
- const selected=$('model-select').value,{model,hours}=upcoming($('place').value,selected),tbody=$('forecast-hours');tbody.replaceChildren();
+ const selected=$('model-select').value,hourLimit=Number($('forecast-hours-choice').value)||12,{model,hours}=upcoming($('place').value,selected,hourLimit),tbody=$('forecast-hours');tbody.replaceChildren();
  put('forecast-model-title',model?'Tunniprognoos · '+modelNames[model.id]:selected==='auto'?'Värske prognoos puudub':modelNames[selected]+' · andmed puuduvad');
  put('forecast-meta',model?'Mudeli andmed vastu võetud '+local(model.source_received_at_utc)+' · Eesti aeg':'Valitud mudeli andmed on aegunud või puuduvad. Teist mudelit automaatselt ei asendata.');
  if(!hours.length){let tr=el(tbody,'tr'),td=el(tr,'td','','Värsket tunniprognoosi praegu ei ole.');td.colSpan=5;return}
@@ -361,6 +444,97 @@ function renderSources(){
  put('sources-forecast-time',m?'Prognoosi andmed saadud '+local(m.source_received_at_utc):'Värske prognoos puudub');
  put('sources-roads-time',r?'DATEX II viimane kontroll '+local(r.checked_at_utc):'Värsked teeilma mõõtmised puuduvad');
 }
+
+function detailRoadStatus(v){
+ if(typeof v!=='string')return '—';
+ return v.split(',').map(t=>roadLabels[t.trim()]||'Määratlemata').join(', ');
+}
+function lookahead24(place,selected='auto'){
+ const {model,hours}=upcoming(place,selected,24);
+ const complete=hours.length>=23;
+ const ts=hours.filter(h=>numeric(h.temp)).map(h=>h.temp);
+ const gusts=hours.filter(h=>numeric(h.gust)).map(h=>h.gust);
+ const rain=hours.filter(h=>numeric(h.precip)).map(h=>h.precip);
+ return {model,hours,complete,tempRange:complete&&ts.length>=23?fmt(Math.min(...ts))+'…'+fmt(Math.max(...ts))+' °C':'—',gust:complete&&gusts.length>=23?wind(Math.max(...gusts)):'—',precip:complete&&rain.length>=23?fmt(rain.reduce((a,b)=>a+b,0))+' mm':'—'};
+}
+function renderFamilyExtras(){
+ const w=weather(),a=air(),r=roads(),place=$('place').value,selected=$('model-select').value;
+ const ownPlace={parnu:'Pärnu',haademeeste:'Häädemeeste',tostamaa:'Tõstamaa',sindi:'Sindi'}[place]||'Piirkond';
+ const f=upcoming(place,selected),nearest=f.hours[0],summary=lookahead24(place,selected);
+ put('forecast-data-status',f.model?'Mudeli andmed olemas · vastuvõtt '+local(f.model.source_received_at_utc):'Valitud mudeli andmed puuduvad või aegunud');
+ put('forecast-selected-name','Valitud mudel: '+(f.model?modelNames[f.model.id]:selected==='auto'?'automaatne':modelNames[selected]||'tundmatu'));
+ put('forecast-location-title',ownPlace);
+ put('forecast-observed-temp',a?temp(a.temperature_c):'—');
+ put('forecast-observed-time',a?'Pärnu sadam, mõõdetud '+local(a.observed_at_utc):'Värske Pärnu sadama mõõtmine puudub');
+ put('forecast-observed-wind',a?wind(a.wind_ms):'—');
+ put('forecast-observed-gust',a?wind(a.gust_ms):'—');
+ put('forecast-nearest-temp',nearest?temp(nearest.temp):'—');
+ put('forecast-nearest-time',nearest?'Prognoos kell '+local(nearest.t):'Lähimat prognoositundi pole');
+ put('forecast-nearest-wind',nearest?wind(nearest.wind):'—');
+ put('forecast-nearest-rain',nearest&&numeric(nearest.precip)?fmt(nearest.precip)+' mm':'—');
+ put('forecast-24-temp',summary.tempRange);
+ put('forecast-24-gust',summary.gust);
+ put('forecast-24-rain',summary.precip);
+ put('forecast-24-status',summary.complete?'Kasutati '+summary.hours.length+' järjestikust olemasolevat tunnikirjet. Tegelik mudelijooks võib olla kinnitamata.':'Täielikku 24 tunni andmekatvust ei ole. Osalist summat ei esitata täieliku prognoosina.');
+ put('live-measurement-heading',a?'Viimane mõõtmine '+local(a.observed_at_utc):'Mõõtmisaja kontroll ootel');
+ put('live-mean-wind',a?wind(a.wind_ms):'—');
+ put('live-gust-only',a?wind(a.gust_ms):'—');
+ put('live-mean-wind-time',a?'Mõõdetud '+local(a.observed_at_utc):'Andmed aegunud või puuduvad');
+ put('live-gust-only-time',a?'Mõõdetud '+local(a.observed_at_utc):'Andmed aegunud või puuduvad');
+ const models=w.places?.parnu?.models||[];
+ const usable=models.filter(m=>m&&modelOrder.includes(m.id)&&Array.isArray(m.hours)&&fresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>numeric(h.t)&&h.t>=Date.now()/1000-60&&h.t<Date.now()/1000+18*3600));
+ put('home-model-count',active()?usable.length+' / 6':'—');
+ const home=lookahead24('parnu');
+ put('home-gust24',home.gust);
+ put('home-gust24-info',home.complete&&home.model?modelNames[home.model.id]+' · üks valitud mudel':'24 tunni täielik prognoos puudub');
+ put('home-precip24',home.precip);
+ put('home-precip24-info',home.complete?'Sama mudeli tunnikoguste summa':'Puudulik katvus; summat ei esitata');
+ renderFamilyRoadTable(r);
+ renderFamilySources(w);
+}
+function renderFamilyRoadTable(r){
+ const root=$('road-table-body');root.replaceChildren();
+ const arr=r?r.stations:[];
+ for(const name of stationNames){
+  const station=arr.find(s=>s&&s.name===name);
+  const good=stationFresh(station),v=good?station.values:{};
+  const row=el(root,'tr');
+  const p=good?'Värske':station?.status==='puudub'?'Puudub':'Aegunud';
+  const sdate=station?.measured_at_utc?local(station.measured_at_utc):'—';
+  const rain=good&&numeric(v.precipitation_mm_h)?fmt(v.precipitation_mm_h)+' mm/h':'—';
+  const visible=good&&numeric(v.visibility_m)?fmt(v.visibility_m,0)+' m':'—';
+  const cells=[name,p,sdate,good?fmt(v.road_temp_c):'—',good?detailRoadStatus(v.road_status):'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
+  for(const value of cells)el(row,'td','',value);
+  const td=el(row,'td');
+  if(station&&numeric(station.lat)&&numeric(station.lon)&&station.lat>57&&station.lat<60&&station.lon>22&&station.lon<27){
+   const link=el(td,'a','','Kaardil ↗');link.href='https://www.openstreetmap.org/?mlat='+station.lat+'&mlon='+station.lon+'#map=13/'+station.lat+'/'+station.lon;link.target='_blank';link.rel='noopener noreferrer';
+  }else el(td,'span','','—');
+ }
+}
+function renderFamilySources(w){
+ const area=$('source-catalog');area.replaceChildren();
+ const a=air(),s=sea(),r=roads(),model=forecastModel('parnu');
+ const entries=[['Pärnu sadama mõõtmised',a?'Värske mõõtmine '+local(a.observed_at_utc):'Värskeid mõõtmisi pole',!!a],
+ ['Pärnu meretase EH2000',s?'Värske mõõtmine '+local(s.observed_at_utc):'Värskeid mõõtmisi pole',!!s],
+ ['Transpordiamet DATEX II',r?'Kontroll '+local(r.checked_at_utc)+' · '+r.stations.filter(stationFresh).length+'/11 jaama':'Värsket mõõtmist ei saa kinnitada',!!r],
+ ['Ilmamudelite vastuvõtt',model?'Andmed vastu võetud '+local(model.source_received_at_utc):'Värsket prognoosi pole',!!model]];
+ for(const [title,detail,ok] of entries){
+  const itemRoot=el(area,'div','source-entry'),div=el(itemRoot,'div');
+  el(div,'strong','',title);el(div,'small','',detail);
+  el(itemRoot,'span','source-badge'+(ok?'':' missing'),ok?'Värske':'Vajab kontrolli');
+ }
+ const body=$('sources-model-table');body.replaceChildren();
+ const places=[['parnu','Pärnu'],['haademeeste','Häädemeeste'],['tostamaa','Tõstamaa'],['sindi','Sindi']];
+ for(const [code,title] of places){
+  const models=w.places?.[code]?.models||[];
+  for(const id of modelOrder){
+   const m=models.find(x=>x?.id===id),ok=!!(m&&fresh(m.source_received_at_utc,id==='fmi_meps'?35:240)&&Array.isArray(m.hours)&&m.hours.some(x=>numeric(x?.t)&&x.t>Date.now()/1000-60));
+   const row=el(body,'tr');
+   for(const val of [modelNames[id],title,ok?'Värske':'Puudub / aegunud',m?.source_received_at_utc?local(m.source_received_at_utc):'—'])el(row,'td','',val);
+  }
+ }
+}
+
 function show(){
  const ok=active(),a=air(),s=sea(),r=roads();
  $('side-dot').className='dot'+(ok?'':' warning');put('side-state',ok?'Andmeedastus ajakohane':'Andmed aegunud või puuduvad');
@@ -370,7 +544,7 @@ function show(){
  const first=$('data-message').querySelector('strong'),detail=$('data-message').querySelector('p');
  first.textContent=ok?'Avalik andmeedastus on ajakohane':'Avalik andmeedastus puudub või on aegunud';
  detail.textContent=ok?'Ilmamõõtmiste, mudelite ja teeilmajaamade värskus on eraldi kontrollitud.':'Ära tõlgenda puuduvaid või aegunud näite ohutute oludena. Vaata ametlikke allikaid.';
- renderOverview();renderLive();renderForecast();renderRoads();renderSources();
+ renderOverview();renderLive();renderForecast();renderRoads();renderSources();renderFamilyExtras();
 }
 const sections=Object.keys(titles);
 function selectSection(id,changeHash=true){
@@ -389,7 +563,7 @@ $('menu-toggle').addEventListener('click',()=>{const open=$('sidebar').classList
 $('drawer-scrim').addEventListener('click',closeMenu);
 document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu()});
 window.addEventListener('hashchange',()=>selectSection(location.hash.slice(1),false));
-$('place').addEventListener('change',renderForecast);$('model-select').addEventListener('change',renderForecast);
+$('place').addEventListener('change',()=>{renderForecast();renderFamilyExtras()});$('model-select').addEventListener('change',()=>{renderForecast();renderFamilyExtras()});$('forecast-hours-choice').addEventListener('change',renderForecast);
 $('station-filter').addEventListener('input',renderRoads);
 function tickClock(){put('clock',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}).format(new Date()))}
 async function load(){
