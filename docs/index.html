@@ -626,7 +626,7 @@ function hourlyRain(){
  const r=weather().hourly_rain;
  if(!r||r.station!=='Pärnu'||r.unit!=='mm'||r.timestamp_verified!==true||r.period_hours!==1||
     !numeric(r.value_mm)||r.value_mm<0||r.value_mm>250||
-    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,25))return null;
+    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,35))return null;
  const start=timestamp(r.period_start_utc),end=timestamp(r.observed_at_utc);
  if(start===null||end===null||end-start!==3600000)return null;
  return r;
