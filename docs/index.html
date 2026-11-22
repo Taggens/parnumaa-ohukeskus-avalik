@@ -78,7 +78,7 @@ h1 span{color:var(--teal)}
 .mini-hour small{color:var(--muted)}
 .info-note{border-left:3px solid #6ebfb3;background:#102e3a;padding:15px 18px;color:var(--muted);border-radius:0 12px 12px 0;margin-top:22px;font-size:.87rem}
 .forecast-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.forecast-top label{font-weight:700;font-size:.89rem}
+.forecast-top label{font-weight:700;font-size:.89rem}.forecast-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.forecast-explain{margin:-6px 0 18px}.forecast-picker select{max-width:100%}
 select,input[type="search"]{background:#102f3e;border:1px solid #4b707c;color:var(--ink);border-radius:12px;padding:11px 14px;min-height:46px}
 select{min-width:200px}
 .forecast-shell{border:1px solid var(--line);border-radius:20px;background:#112d3b;overflow:hidden}
@@ -172,7 +172,19 @@ select{min-width:200px}
 
 <section class="panel" id="forecast" role="tabpanel" aria-labelledby="tab-forecast" hidden>
   <div class="section-header"><div><h2>Ilm järgmise 12 tunni jooksul</h2><p>Vali piirkond ja vaata lihtsalt loetavat tunniprognoosi.</p></div></div>
-  <div class="forecast-top"><label for="place">Piirkond</label><select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></div>
+  <div class="forecast-top">
+    <div class="forecast-picker"><label for="place">Piirkond</label><select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></div>
+    <div class="forecast-picker"><label for="model-select">Ilmamudel</label><select id="model-select">
+      <option value="auto">Automaatne valik</option>
+      <option value="fmi_meps">FMI MEPS</option>
+      <option value="ecmwf_ifs025">ECMWF IFS</option>
+      <option value="icon_eu">ICON-EU</option>
+      <option value="metno_nordic">MET Norway</option>
+      <option value="dmi_harmonie_arome_europe">DMI HARMONIE</option>
+      <option value="gfs_global">GFS</option>
+    </select></div>
+  </div>
+  <p class="soft-label forecast-explain">Vali üks kuuest mudelist või jäta sisse automaatne valik. Iga valik näitab ainult selle mudeli prognoosi.</p>
   <div class="forecast-shell">
     <div class="forecast-source"><strong id="forecast-label">Ootan prognoosiandmeid</strong><small id="forecast-meta">Kontrollime mudeli andmete vanust.</small></div>
     <div class="table-scroll"><table class="hour-table"><thead><tr><th scope="col">Kell</th><th scope="col">Õhk</th><th scope="col">Tuul</th><th scope="col">Puhang</th><th scope="col">Sadu</th></tr></thead><tbody id="forecast-hours"><tr><td colspan="5">Laadin prognoosi…</td></tr></tbody></table></div>
@@ -213,10 +225,12 @@ function roadData(){
  return road&&road.available===true&&isFresh(road.checked_at_utc,40)&&Array.isArray(road.stations)?road:null;
 }
 function freshStation(s){return !!(s&&s.status==='varske'&&isFresh(s.measured_at_utc,50)&&s.values&&typeof s.values==='object'&&Object.keys(s.values).length)}
-function modelFor(place){
+function modelFor(place,requested='auto'){
  const weather=weatherData(),p=weather.places&&weather.places[place],models=p&&Array.isArray(p.models)?p.models:[],now=Date.now()/1000;
- const usable=models.filter(m=>m&&Array.isArray(m.hours)&&isFresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&typeof h.t==='number'&&h.t>=now-60&&h.t<now+18*3600));
  const order=['fmi_meps','ecmwf_ifs025','icon_eu','metno_nordic','dmi_harmonie_arome_europe','gfs_global'];
+ if(requested!=='auto'&&!order.includes(requested))return null;
+ const usable=models.filter(m=>m&&order.includes(m.id)&&Array.isArray(m.hours)&&isFresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.some(h=>h&&typeof h.t==='number'&&h.t>=now-60&&h.t<now+18*3600));
+ if(requested!=='auto')return usable.find(m=>m.id===requested)||null;
  usable.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
  return usable[0]||null;
 }
@@ -282,16 +296,17 @@ function renderStations(stations){
   }
  }
 }
-function forecastHours(place){
- const model=modelFor(place),now=Date.now()/1000;
+function forecastHours(place,requested='auto'){
+ const model=modelFor(place,requested),now=Date.now()/1000;
  const hours=model?model.hours.filter(h=>h&&safeNum(h.t)&&h.t>=now-60&&h.t<=now+12*3600).sort((a,b)=>a.t-b.t).slice(0,12):[];
  return {model,hours};
 }
 function renderForecast(){
- const {model,hours}=forecastHours($('place').value),body=$('forecast-hours');
+ const selected=$('model-select').value;
+ const {model,hours}=forecastHours($('place').value,selected),body=$('forecast-hours');
  body.replaceChildren();
- put('forecast-label',model?'Tunniprognoos · '+(modelLabels[model.id]||'Ilmamudel'):'Värske tunniprognoos puudub');
- put('forecast-meta',model?'Mudeli andmed saadud '+displayTime(model.source_received_at_utc,true)+' · aeg Eesti aja järgi':'Allika värskeid andmeid ei ole praegu saadaval');
+ put('forecast-label',model?'Tunniprognoos · '+(modelLabels[model.id]||'Ilmamudel'):selected==='auto'?'Värske tunniprognoos puudub':(modelLabels[selected]||'Valitud mudel')+' · andmed puuduvad');
+ put('forecast-meta',model?'Mudeli andmed saadud '+displayTime(model.source_received_at_utc,true)+' · aeg Eesti aja järgi':selected==='auto'?'Ühelgi mudelil ei ole praegu kasutatavat värsket prognoosi.':'Valitud mudeli andmed on aegunud või puuduvad. Vali teine mudel või automaatne valik.');
  if(!hours.length){const r=item(body,'tr');const c=item(r,'td','','Värske prognoos puudub. Proovi hiljem uuesti.');c.colSpan=5;return}
  for(const h of hours){
   const tr=item(body,'tr');
@@ -303,7 +318,7 @@ function renderForecast(){
  }
 }
 function renderPreview(){
- const {model,hours}=forecastHours('parnu');
+ const {model,hours}=forecastHours('parnu',$('model-select').value);
  put('preview-source',model?'Pärnu · '+(modelLabels[model.id]||'Ilmamudel')+' · andmed '+displayTime(model.source_received_at_utc,true):'Värsket prognoosi hetkel ei ole');
  const wrap=$('mini-hours');wrap.replaceChildren();
  if(!hours.length){item(wrap,'span','soft-label','Prognoosiandmed puuduvad');return}
@@ -325,6 +340,7 @@ document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click
 document.querySelectorAll('[data-open]').forEach(btn=>btn.addEventListener('click',()=>{chooseTab(btn.dataset.open);document.querySelector('.tabs').scrollIntoView({block:'start',behavior:'smooth'})}));
 $('station-filter').addEventListener('input',()=>renderStations(roadData()?.stations||[]));
 $('place').addEventListener('change',renderForecast);
+$('model-select').addEventListener('change',()=>{renderForecast();renderPreview()});
 window.addEventListener('hashchange',()=>chooseTab(window.location.hash.slice(1),false));
 chooseTab(window.location.hash.slice(1)||'overview',false);
 async function reload(){
