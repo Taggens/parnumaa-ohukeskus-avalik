@@ -250,6 +250,11 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-weather-main>span{display:grid;place-items:center;font-size:initial;flex-shrink:0;min-width:70px}
 .okf-hour-table .okf-small{max-width:95px;margin:6px auto 0;line-height:1.35;font-size:.71rem;overflow-wrap:normal;hyphens:auto}
 .okf-hour-table td{min-width:92px}
+.okf-fog-summary{margin:12px 0 8px;color:#b7d8e2;font-size:.8rem;line-height:1.55}
+.okf-fog-summary strong{color:#eaf8fd;font-weight:750}
+.okf-fog-times{display:flex;gap:7px;flex-wrap:wrap;margin:7px 0}
+.okf-fog-time{padding:5px 9px;border:1px solid #567b88;background:#102b3b;border-radius:8px;color:#e1f4f9;white-space:normal}
+.okf-fog-time.strong{border-color:#d2a85e;color:#ffe5af}
 .okf-weather-main p{line-height:1.45}
 @media(max-width:520px){.okf-weather-icon.okf-icon-large{width:58px;height:58px}.okf-weather-main>span{min-width:58px}}
 @media(max-width:1000px){.okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{grid-template-columns:1fr}}
@@ -388,7 +393,10 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="okf-card okf-hero"><div><div class="okf-eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 id="okf-observed-title">Pärnu sadama hetkeilm</h3><div class="okf-temperature" id="okf-observed-temp">—</div><p id="okf-observed-time" class="okf-subtle">Mõõtmine ootel</p></div><div class="okf-measurements"><div>Tuul<strong id="okf-observed-wind">—</strong></div><div>Puhangud<strong id="okf-observed-gust">—</strong></div><div>Õhuniiskus<strong id="okf-observed-humidity">—</strong></div><div>Õhurõhk<strong id="okf-observed-pressure">—</strong></div></div></article>
     <article class="okf-card okf-hero okf-prognosis"><div class="okf-eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="okf-location-title">Asukoht</h3><div class="okf-weather-main"><span id="okf-current-icon" aria-hidden="true">▫️</span><div><p id="okf-current-desc">Prognoosi ootel</p><p class="okf-subtle">Prognoos ei ole jaamamõõtmine ega ametlik hoiatus.</p></div></div></article>
   </div>
-  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div><p id="okf-flag-detail" class="okf-subtle" aria-live="polite">Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
+  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div>
+  <div id="okf-fog-summary" class="okf-fog-summary" role="status" aria-live="polite">Kontrollin mudelite uduprognoosi…</div>
+  <p id="okf-visibility-note" class="okf-subtle">Mudelite nähtavuskauguse prognoos pole praeguses andmevoos saadaval.</p>
+  <p id="okf-flag-detail" class="okf-subtle" aria-live="polite">Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
   <div class="okf-forecast-grid">
     <article class="okf-card okf-period"><h3>▣ Järgmised 24 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-24-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-24-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-24-rain">—</strong></div></div><div class="okf-flag-row" id="okf-24-flags"></div><p id="okf-24-status" class="okf-subtle">Ootel</p></article>
     <article class="okf-card okf-period"><h3>▣ Järgmised 48 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-48-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-48-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-48-rain">—</strong></div></div><div class="okf-flag-row" id="okf-48-flags"></div><p id="okf-48-status" class="okf-subtle">Ootel</p></article>
@@ -597,7 +605,8 @@ function okfWeather(h){
   if(c===0)return {kind:'sun',label:'Selge'};
   if(c===1||c===2)return {kind:'partial',label:'Osaliselt pilves'};
   if(c===3)return {kind:'cloud',label:'Pilves'};
-  if(c===45||c===48)return {kind:'fog',label:'Udu'};
+  if(c===45)return {kind:'fog',label:'Udu'};
+  if(c===48)return {kind:'fog',label:'Härmatist tekitav udu'};
  }
  if(precip)return {kind:'precip',label:'Sadu, liik teadmata'};
  if(numeric(h?.cloud)&&h.cloud>=0&&h.cloud<=100){
@@ -666,6 +675,8 @@ function okfSvgIcon(target,weather,isLarge=false){
 function okfAttention(h){
  const flags=[],code=Number.isInteger(h?.weather_code)?h.weather_code:null;
  if(code!==null){
+  if(code===45)flags.push({icon:'🌫️',label:'Udu võimalik · mudeliprognoos, mitte kinnitatud nähtavus',level:'watch'});
+  if(code===48)flags.push({icon:'🌫️',label:'Härmatist tekitav udu võimalik · mudeliprognoos, ei kinnita jäidet',level:'watch'});
   if([56,57,66,67].includes(code))flags.push({icon:'🧊',label:'Jäätuv sadu',level:'high'});
   else if([68,69].includes(code))flags.push({icon:'🌨️',label:'Segasadu',level:'watch'});
   else if([71,73,75,77,85,86].includes(code))flags.push({icon:'❄️',label:'Lumesadu',level:'watch'});
@@ -699,6 +710,35 @@ function okfAddFlag(target,flag,hourTime=null){
  }
  return n;
 }
+function okfFogHours(place,windowHours=24){
+ const now=Date.now()/1000,models=modelOrder.map(id=>forecastModel(place,id)).filter(Boolean);
+ const forecastTimes=[...new Set(models.flatMap(m=>m.hours.filter(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&[45,48].includes(h.weather_code)).map(h=>h.t)))].sort((a,b)=>a-b);
+ return {validModelCount:models.length,records:forecastTimes.map(t=>{
+  let supported=0,fog=0,rime=false;
+  for(const m of models){
+   const h=m.hours.find(x=>numeric(x?.t)&&Math.abs(x.t-t)<=1800&&Number.isInteger(x.weather_code)&&x.weather_code>=0&&x.weather_code<=99);
+   if(!h)continue;
+   supported++;
+   if([45,48].includes(h.weather_code)){fog++;if(h.weather_code===48)rime=true;}
+  }
+  return {t,supported,fog,rime};
+ }).filter(r=>r.supported>0&&r.fog>0)};
+}
+function okfRenderFogSummary(place){
+ const target=$('okf-fog-summary');target.replaceChildren();
+ if(!active()){el(target,'span','','Värsket avalikku andmevoogu ei ole. Uduvõimalust ei saa hinnata.');return}
+ const {records,validModelCount}=okfFogHours(place,24);
+ if(!validModelCount){el(target,'span','','Värskeid mudeliprognoose pole; uduvõimalust ei saa hinnata.');return}
+ if(!records.length){el(target,'span','','🌫️ Värskete mudelite ilmakoodid ei näita järgmise 24 h jooksul udu. See ei välista udu teket.');return}
+ el(target,'strong','','🌫️ Udu võimalik järgmise 24 h jooksul');
+ const times=el(target,'div','okf-fog-times');
+ for(const r of records.slice(0,6)){
+  const text=local(r.t)+' · '+r.fog+'/'+r.supported+' mudelit'+(r.rime?' · härmatisega udu võimalik':'');
+  el(times,'span','okf-fog-time'+(r.fog>=2?' strong':''),text);
+ }
+ if(records.length>6)el(target,'span','','Lisaks '+(records.length-6)+' prognoositundi.');
+ el(target,'small','okf-subtle','Arvestatud ainult sama tunni kehtiva ilmakoodiga mudeleid; ilma ilmakoodita mudel ei tähenda udu puudumist. Mudelid ei ole alati sõltumatud. See pole kinnitatud nähtavus ega ametlik hoiatus.');
+}
 function okfHourTable(hours){
  put('okf-flag-detail','Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.');
  const root=$('okf-hour-table');root.replaceChildren();
@@ -712,6 +752,12 @@ function okfHourTable(hours){
  build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
  build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
  build('Sadu (1 h)',(h,td)=>{td.textContent=numeric(h.precip)?fmt(h.precip)+' mm':'—'});
+ const availableVisibility=list.some(h=>numeric(h?.visibility_m)&&h.visibility_m>=0&&h.visibility_m<=100000);
+ if(availableVisibility)build('Nähtavus (mudel)',(h,td)=>{
+  const v=h?.visibility_m;
+  td.textContent=numeric(v)&&v>=0&&v<=100000?(v>=1000?fmt(v/1000,1)+' km':fmt(v,0)+' m'):'—';
+ });
+ put('okf-visibility-note',availableVisibility?'Nähtavuskaugus on valitud mudeli prognoos, mitte jaamas mõõdetud nähtavus. Puuduvad tunnid on tähistatud kriipsuga.':'Mudelite nähtavuskauguse arvväärtusi praegune andmevoog ei sisalda. Uduilmakood ei anna täpset nähtavuskaugust.');
  build('Tähelepanu',(h,td)=>{const flags=okfAttention(h);if(!flags.length){td.textContent='—';return}flags.slice(0,2).forEach(f=>okfAddFlag(td,f,h.t));if(flags.length>2)el(td,'small','okf-small','+'+(flags.length-2))});
  if(!list.length){const empty=el(body,'tr'),td=el(empty,'td','', 'Värskeid prognoositunde pole.');td.colSpan=2}
 }
@@ -772,6 +818,7 @@ function renderForecast(){
  okfSvgIcon($('okf-current-icon'),kind,true);
  put('okf-current-desc',first?temp(first.temp)+' · '+kind.label:'Prognoosiandmed puuduvad');
  okfHourTable(hours);
+ okfRenderFogSummary(place);
  const day=okfPeriod(model,24),twoDays=okfPeriod(model,48);
  okfPeriodRender('okf-24',day);okfPeriodRender('okf-48',twoDays);
  const alerts=$('okf-alerts');alerts.replaceChildren();
