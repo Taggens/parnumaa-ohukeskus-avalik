@@ -286,11 +286,6 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .sea-level-watch{color:#f3db7a;font-weight:700}
 #live .sea-level-high{color:#f3a270;font-weight:700}
 #live .sea-level-severe{color:#ff7985;font-weight:700}
-#live .wind-direction-visual{display:flex;align-items:center;gap:18px}
-#live .wind-direction-arrow{display:inline-flex;width:42px;height:42px;border-radius:50%;align-items:center;justify-content:center;background:#183d50;border:1px solid #4b8e9d;color:#7df1db;font-size:34px;font-weight:700;line-height:1;transform-origin:50% 50%;transition:transform .25s ease}
-#live .wind-direction-arrow.hidden{display:none}
-#live #live-direction-name{color:#dcf2f5;font-size:12px;font-weight:650}
-#live #live-direction-explain{font-size:10px;opacity:.82}
 #live .reading-trend{font-weight:700;font-size:.91rem;color:#aee7de;margin:6px 0}
 #live .reading-details{border-top:1px solid #355367;margin-top:14px;padding-top:11px;line-height:1.5}
 #live .reading-details summary,#live .compact-details summary{cursor:pointer;color:#b9eee3;font-weight:650;font-size:.82rem}
@@ -307,7 +302,7 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .risk-severe{border-color:#c45066;background:linear-gradient(155deg,#55232e,#301b27)}
 @media(max-width:1050px){#live .live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:750px){#live .situation-banner{padding:15px}#live .live-priority-grid{grid-template-columns:1fr}}
-@media(max-width:620px){#live .live-panel{padding:14px}#live .live-grid{gap:10px}#live .live-tile{padding:14px;min-height:100px}#live .live-tile strong{font-size:20px}#live .wind-direction-arrow{width:36px;height:36px;font-size:29px}#live .wind-direction-visual{gap:12px}}
+@media(max-width:620px){#live .live-panel{padding:14px}#live .live-grid{gap:10px}#live .live-tile{padding:14px;min-height:100px}#live .live-tile strong{font-size:20px}}
 
 
 /* Avaliku Live-ilma Pärnu lahe tuulekompass. */
@@ -336,6 +331,13 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .bay-age{margin:13px 0 0;color:#a9d7e4;font-size:11px;line-height:1.6}
 #live .bay-note{margin:9px 0 0;color:#a4bdca;font-size:11px;line-height:1.6}
 @media(max-width:760px){#live .bay-layout{grid-template-columns:1fr;gap:8px}#live .bay-compass{padding:14px}#live .bay-map{max-width:340px}}
+
+/* Kompass võtab avaliku Live-ilma tuulenäitude koha. */
+#live .primary-live-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+#live .primary-live-grid>.bay-compass{grid-column:1/-1;margin-top:0;min-width:0}
+#live .primary-live-grid>.live-tile{min-width:0}
+@media(max-width:900px){#live .primary-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -388,18 +390,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="panel live-panel">
      <div class="panel-title"><div><h3>TalTechi sadamajaama mõõtmised</h3><p id="live-time">Jaama mõõtmisaja kontroll on ootel…</p></div></div>
      <div class="live-banner" id="live-banner" role="status">TalTechi mõõteandmete kontroll on ootel.</div>
-     <div class="live-grid">
-      <div class="live-tile" id="live-wind-tile"><div class="live-label">Keskmine tuul</div><strong id="live-wind">—</strong><small id="live-wind-age" class="observation-stamp">Mõõtmine ootel</small>
-       <div class="live-secondary" id="live-gust-tile"><div class="live-label">Puhangud (lisainfo)</div><strong id="live-gust">—</strong><small id="live-gust-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      </div>
-      <div class="live-tile"><div class="live-label">Tuule suund</div><div class="wind-direction-visual"><strong id="live-direction">—</strong><span aria-hidden="true" id="live-direction-arrow" class="wind-direction-arrow hidden">↑</span></div><small id="live-direction-name">Ilmakaar ootel</small><small id="live-direction-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Suuna selgitus</summary><p id="live-direction-explain">Nool näitab, kuhu tuul puhub.</p></details></div>
-      <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
-       <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
-      </div>
-      <div class="live-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      <div class="live-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
-     </div>
-
+     <div class="live-grid primary-live-grid">
      <section class="bay-compass" aria-labelledby="bay-compass-title">
       <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahe suhtes</h4><p>Kaardilt on näha, kas tuul liigub Pärnu poole või lahest välja.</p></header>
       <div class="bay-layout">
@@ -442,6 +433,13 @@ details.info p{font-size:11px;color:var(--muted)}
        </div>
       </div>
      </section>
+      <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
+       <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
+      </div>
+      <div class="live-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+     </div>
+
      <details class="reading-details extra-measurements"><summary>TalTechi täiendavad sademenäidud (mõõteperiood kinnitamata)</summary>
       <div class="live-grid">
        <div class="live-tile"><div class="live-label">Sademete hulk · periood teadmata</div><strong id="live-precip">—</strong><small class="observation-stamp" id="live-precip-age">Mõõtmine ootel</small></div>
@@ -642,8 +640,6 @@ function renderLive(){
  const airStamp=a?(isAirStale?'⚠ Varasem mõõtmine ':'Mõõdetud ')+local(a.observed_at_utc)+' (Eesti aeg)'+(isAirStale?' · '+sourceAgeLabel(a.observed_at_utc)+' · MITTE HETKEILM':''):'Värske jaamamõõtmine puudub';
  const label=(id,available)=>put(id,available?airStamp:'Värske mõõtmine puudub');
  put('live-time',a?(isAirStale?'⚠ Viimane varasem mõõtmine ':'Viimane mõõtmine ')+local(a.observed_at_utc)+(isAirStale?' · ei ole hetkeilm':''):'Värske mõõtmine puudub');
- put('live-wind',hasWind?wind(a.wind_ms):'—');label('live-wind-age',hasWind);
- put('live-gust',hasGust?wind(a.gust_ms):'—');label('live-gust-age',hasGust);
  put('live-temperature',hasTemp?temp(a.temperature_c):'—');label('live-temperature-age',hasTemp);
  setTemperatureClass('live-temperature-tile',hasTemp?a.temperature_c:null);
  put('live-temperature-note',!hasTemp?'⚠ Mõõtmine aegunud või kinnitamata':isAirStale?'⚠ Varasem mõõtmine, mitte hetkeilm':a.temperature_c<=-20?'❄ −20 °C või külmem':a.temperature_c<=-10?'❄ −10 °C või külmem':a.temperature_c<0?'❄ Miinuskraadid':'TalTechi mõõdetud õhutemperatuur');
@@ -654,19 +650,6 @@ function renderLive(){
  put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
  put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
  setTemperatureClass('live-windchill-tile',chill);
- const arrow=$('live-direction-arrow');
- arrow.classList.toggle('hidden',!hasDirection);
- if(hasDirection){
-  arrow.style.transform='rotate('+((a.wind_direction_deg+180)%360)+'deg)';
-  const point=publicWindPoints[Math.round((a.wind_direction_deg%360)/45)%8];
-  put('live-direction',fmt(a.wind_direction_deg,0)+'°');
-  put('live-direction-name','Tuul '+point[1]+' ('+point[0]+')');
-  put('live-direction-explain','Nool näitab, kuhu tuul puhub.'+(isAirStale?' ⚠ Varasem mõõtmine, mitte hetkeilm.':''));
- }else{
-  put('live-direction','—');put('live-direction-name','Ilmakaar kinnitamata');
-  put('live-direction-explain','Suunanoole jaoks puudub avalikus andmevoos kinnitatud mõõtmine.');
- }
- label('live-direction-age',hasDirection);
  renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
  put('marine-freshness',hasSea?'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)':'Värske EH2000 mõõtmine puudub');
