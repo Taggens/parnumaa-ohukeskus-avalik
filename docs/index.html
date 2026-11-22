@@ -566,8 +566,8 @@ function renderForecast(){
  put('okf-observed-temp',actual?temp(actual.temperature_c):'—');
  put('okf-observed-wind',actual?wind(actual.wind_ms):'—');
  put('okf-observed-gust',actual?wind(actual.gust_ms):'—');
- put('okf-observed-humidity','—');
- put('okf-observed-pressure','—');
+ put('okf-observed-humidity',actual&&numeric(actual.humidity_pct)?fmt(actual.humidity_pct,0)+' %':'—');
+ put('okf-observed-pressure',actual&&numeric(actual.pressure_hpa)?fmt(actual.pressure_hpa,0)+' hPa':'—');
  put('okf-observed-time',actual?'Pärnu sadama mõõtmine '+local(actual.observed_at_utc)+' (Eesti aeg)':place!=='parnu'?'Selle asukoha jaoks pole kinnitatud jaamamõõtmist.':'Pärnu sadama värske mõõtmine puudub.');
  put('okf-location-title',area);
  const kind=okfWeather(first);
