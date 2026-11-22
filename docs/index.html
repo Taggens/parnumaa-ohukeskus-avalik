@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#091b28">
+<meta name="description" content="Pärnumaa Ohukeskuse avalik prooviversioon: kohalik ilm, ilmaprognoos ja teeilmajaamade andmed.">
+<title>Pärnumaa Ohukeskus · Avalik prooviversioon</title>
+<style>
+:root{color-scheme:dark;--bg:#071824;--surface:#102a38;--surface2:#153442;--ink:#e9f5fa;--mute:#a9c0ca;--accent:#73d2cb;--line:#294a59;--warn:#ffd07b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% -10%,#123d50 0%,transparent 40%),var(--bg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}
+a{color:var(--accent)}.wrap{max-width:1120px;margin:auto;padding:0 22px}.top{border-bottom:1px solid var(--line);background:#0a1c28dd}.head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:15px;padding-bottom:15px}.brand{font-size:1.25rem;font-weight:800;letter-spacing:.02em}.brand span{display:block;font-size:.7rem;color:var(--accent);letter-spacing:.22em}.pilot{border:1px solid #537781;border-radius:99px;padding:5px 12px;font-size:.75rem;color:var(--mute)}.hero{padding:54px 0 26px}.kicker{font-size:.72rem;color:var(--accent);letter-spacing:.17em;font-weight:800;text-transform:uppercase}.hero h1{font-size:clamp(2.1rem,5vw,3.8rem);line-height:1.12;letter-spacing:-.04em;max-width:800px;margin:12px 0}.lead{color:var(--mute);max-width:740px;font-size:1.08rem}.meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px;color:var(--mute);font-size:.88rem}.pill{border:1px solid var(--line);background:var(--surface);padding:7px 12px;border-radius:99px}button,select{font:inherit}button{cursor:pointer}.action{border:1px solid #568884;background:#173a45;color:var(--ink);border-radius:10px;padding:8px 15px}.notice{margin:6px 0 20px;padding:16px 18px;border:1px solid #81684b;border-radius:14px;background:#312b1f;color:#ffe2ad}.notice.good{border-color:#286f66;background:#123c3d;color:#c4f4e8}.tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 17px}.tabs button{flex:none;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--mute);padding:12px 18px;font-weight:700}.tabs button[aria-selected=true]{background:#1b555a;border-color:#5aa9a2;color:white}.panel{padding:14px 0 45px}.panel[hidden]{display:none}h2{font-size:1.7rem;margin:0 0 6px;line-height:1.3}h3{font-size:1.03rem;margin:0 0 12px}.sub{color:var(--mute);margin:0 0 24px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:linear-gradient(150deg,var(--surface),#0c2431);border:1px solid var(--line);border-radius:17px;padding:20px;min-width:0}.metric .label{color:var(--mute);font-size:.85rem}.metric .number{font-size:2.4rem;line-height:1.2;font-weight:800;margin:13px 0 10px;letter-spacing:-.04em}.small{color:var(--mute);font-size:.82rem}.span2{grid-column:span 2}.status{font-size:.8rem;color:var(--warn);font-weight:700}.status.fresh{color:#83e7c5}.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.roadtemp{font-size:1.9rem;font-weight:800;margin:8px 0 12px}.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.88rem;margin:14px 0}.kv span{display:block;color:var(--mute);font-size:.76rem}.footnote{font-size:.83rem;color:var(--mute);margin-top:24px}.forecast-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:15px 0 20px}.forecast-controls select{padding:10px 14px;color:var(--ink);border:1px solid var(--line);background:var(--surface);border-radius:10px}.hours{width:100%;border-collapse:collapse;min-width:600px;font-size:.91rem}.hours th,.hours td{text-align:left;padding:11px;border-bottom:1px solid var(--line)}.hours th{color:var(--mute);font-size:.8rem}.scroll{overflow-x:auto}.footer{border-top:1px solid var(--line);color:var(--mute);font-size:.85rem;padding:30px 22px 40px}.footer a{white-space:nowrap}
+@media(max-width:850px){.grid,.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.wrap{padding-left:15px;padding-right:15px}.hero{padding-top:32px}.grid,.cards{grid-template-columns:1fr}.span2{grid-column:auto}.pilot{font-size:.66rem}.metric .number{font-size:2rem}.tabs button{padding:11px 13px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap head"><div class="brand"><span>PÄRNUMAA</span>Ohukeskus</div><div class="pilot">Avalik prooviversioon</div></div></header>
+<main class="wrap">
+<section class="hero"><div class="kicker">Kohalik ilm ja teeolud</div><h1>Oluline info Pärnumaa kohta.</h1><p class="lead">Ilmaülevaade, ilmaprognoos ja 11 Pärnumaa teeilmajaama näidud. Ainult vaatamiseks, ilma sisselogimiseta.</p><div class="meta"><span id="feed" class="pill">Kontrollin andmeid…</span><span id="updated">Viimane andmeedastus: —</span><button type="button" id="reload" class="action">Värskenda ↻</button></div></section>
+<div class="notice" id="notice" role="status">Laadin avalikku andmestikku…</div>
+<nav class="tabs" aria-label="Jaotised"><button type="button" data-tab="overview" aria-selected="true">Ilmaülevaade</button><button type="button" data-tab="forecast" aria-selected="false">Ilmaprognoos</button><button type="button" data-tab="roads" aria-selected="false">Teeolud</button></nav>
+<section class="panel" id="overview"><h2>Praegune ilm Pärnus</h2><p class="sub">Allika mõõtmise aeg on iga näidu juures eraldi kirjas.</p><div class="grid"><article class="card metric"><div class="label">Õhutemperatuur · Pärnu</div><div class="number" id="temp">—</div><div class="small" id="temp-time">Värske mõõtmine puudub</div></article><article class="card metric"><div class="label">Tuul / puhang</div><div class="number" id="wind">—</div><div class="small" id="wind-time">Värske mõõtmine puudub</div></article><article class="card metric"><div class="label">Meretase · EH2000</div><div class="number" id="sea">—</div><div class="small" id="sea-time">Värske mõõtmine puudub</div></article><article class="card span2"><h3>Pärnumaa teeilmajaamad</h3><div id="road-summary" class="roadtemp">Andmed puuduvad</div><div class="small" id="road-time">Viimane kontroll kinnitamata</div></article><article class="card"><h3>Meretaseme kohalik tähelepanutase</h3><div id="sea-level-status">Kontrollimata</div><p class="small">+100 cm kollane, +150 cm oranž, +180 cm punane. Need on kohalikud tähelepanupiirid, mitte ametlikud hoiatusastmed.</p></article></div></section>
+<section class="panel" id="forecast" hidden><h2>Ilmaprognoos</h2><p class="sub">Lihtne lähitundide prognoos. Allika värskus peab olema kinnitatud.</p><div class="forecast-controls"><label for="place">Asukoht</label><select id="place"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></div><div class="card"><h3 id="forecast-title">Prognoos</h3><div class="small" id="forecast-sub">Ootan kontrollitud andmeid</div><div class="scroll"><table class="hours"><thead><tr><th>Aeg</th><th>Temperatuur</th><th>Tuul</th><th>Puhang</th><th>Sadu</th></tr></thead><tbody id="hours"></tbody></table></div></div><p class="footnote">Prognoos ei ole ametlik hoiatus. Üksikmudeli andmeid ei esitata sõltumatute kinnitustena.</p></section>
+<section class="panel" id="roads" hidden><h2>Pärnumaa teeilmajaamad</h2><p class="sub">Transpordiameti DATEX II andmed. Jaamamõõtmine ei kirjelda kogu tee või marsruudi sõiduohutust.</p><p id="station-count" class="pill">Värskeid jaamu: —</p><div class="cards" id="stations"></div><p class="footnote">Kui näit on üle 50 minuti vana, on puudu või avalik andmeedastus katkeb, seda ei näidata värskena. Puuduv näit ei tähenda ohutuid teeolusid.</p></section>
+</main>
+<footer class="footer wrap">Pärnumaa Ohukeskus · informatiivne prooviversioon. Andmeallikad: Transpordiamet DATEX II, Keskkonnaagentuur, TalTech, Open-Meteo ja FMI. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>. Teeinfo: <a href="https://tarktee.ee" target="_blank" rel="noopener noreferrer">Tark Tee</a>.</footer>
+<script>
+'use strict';
+const ids=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme','Papiniidu','Reiu','Ristiküla','Ünnaste','Võiste'];
+const $=id=>document.getElementById(id),put=(id,s)=>{$(id).textContent=s};
+const ts=v=>{const t=typeof v==='number'?v*1000:Date.parse(v);return Number.isFinite(t)?t:null};
+const fresh=(v,mins)=>{const t=ts(v);return t!==null&&Date.now()-t>=-300000&&Date.now()-t<=mins*60000};
+const date=v=>{const t=ts(v);return t===null?'—':new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(t))};
+const num=(n,d=1)=>typeof n==='number'&&Number.isFinite(n)?n.toLocaleString('et-EE',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const el=(p,tag,c,s)=>{let a=document.createElement(tag);if(c)a.className=c;if(s!==undefined)a.textContent=s;p.append(a);return a};
+const roadState={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
+let state=null;
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));for(const n of ['overview','forecast','roads'])$(n).hidden=n!==b.dataset.tab}));
+function show(){
+ const ok=state&&state.schema===1&&fresh(state.published_at_utc,30)&&state.weather&&state.roads;
+ put('feed',ok?'Andmed edastatud':'Andmed puuduvad / aegunud');put('updated','Viimane andmeedastus: '+(ok?date(state.published_at_utc):'—'));$('notice').classList.toggle('good',!!ok);
+ put('notice',ok?'Avalik andmeedastus on värske. Kontrolli ka üksikute mõõtmiste aega.':'Avalik andmeedastus puudub või on aegunud. Puuduv mõõtmine ei tähenda ohutuid olusid.');
+ const w=ok?state.weather:{};const live=w.live&&fresh(w.live.observed_at_utc,30)?w.live:null;
+ const sea=w.sea&&w.sea.vertical_datum==='EH2000'&&fresh(w.sea.observed_at_utc,40)?w.sea:null;
+ put('temp',live?num(live.temperature_c)+' °C':'—');put('wind',live?num(live.wind_ms)+' / '+num(live.gust_ms)+' m/s':'—');
+ put('temp-time',live?'Mõõdetud '+date(live.observed_at_utc):'Värske mõõtmine puudub');put('wind-time',live?'Mõõdetud '+date(live.observed_at_utc):'Värske mõõtmine puudub');
+ put('sea',sea?(sea.level_cm>=0?'+':'')+num(sea.level_cm,0)+' cm':'—');put('sea-time',sea?'Mõõdetud '+date(sea.observed_at_utc):'Värske EH2000 mõõtmine puudub');
+ const lv=sea&&typeof sea.level_cm==='number'?sea.level_cm:null;put('sea-level-status',lv===null?'Kontrollimata':lv>=180?'Punane kohalik tähelepanutase':lv>=150?'Oranž kohalik tähelepanutase':lv>=100?'Kollane kohalik tähelepanutase':'Tähelepanupiirid ületamata');
+ const r=ok?state.roads:null,valid=!!(r&&r.available===true&&fresh(r.checked_at_utc,40)&&Array.isArray(r.stations));
+ const sts=valid?r.stations:[];const good=sts.filter(s=>s&&s.status==='varske'&&fresh(s.measured_at_utc,50)&&s.values&&Object.keys(s.values).length).length;
+ put('road-summary',valid?good+' / 11 jaama värske mõõtmisega':'Värsked andmed puuduvad');put('road-time',valid?'Allikat kontrollitud '+date(r.checked_at_utc):'Allikakontroll kinnitamata');put('station-count','Värskeid mõõtmisi: '+good+'/11');
+ const cards=$('stations');cards.replaceChildren();for(const name of ids){let s=sts.find(x=>x.name===name),isgood=!!(s&&s.status==='varske'&&fresh(s.measured_at_utc,50)&&s.values&&Object.keys(s.values).length);
+ let v=isgood?s.values:{},c=el(cards,'article','card');let h=el(c,'div','row');el(h,'h3','',name);el(h,'span','status'+(isgood?' fresh':''),isgood?'Värske':'Puudub');
+ el(c,'div','roadtemp',isgood&&typeof v.road_temp_c==='number'?num(v.road_temp_c)+' °C':'—');el(c,'div','small','Teekatte temperatuur');
+ let d=el(c,'div','kv');[['Teekatte seisund',isgood?(roadState[v.road_status]||'—'):'—'],['Õhutemperatuur',isgood&&typeof v.air_temp_c==='number'?num(v.air_temp_c)+' °C':'—'],['Tuul',isgood&&typeof v.wind_ms==='number'?num(v.wind_ms)+' m/s':'—'],['Nähtavus',isgood&&typeof v.visibility_m==='number'?num(v.visibility_m,0)+' m':'—']].forEach(([a,b])=>{let z=el(d,'div');el(z,'span','',a);el(z,'strong','',b)});
+ el(c,'div','small',isgood?'Mõõdetud '+date(s.measured_at_utc):'Värske mõõtmine puudub');
+ if(s&&Number.isFinite(s.lat)&&Number.isFinite(s.lon)&&s.lat>57&&s.lat<60&&s.lon>22&&s.lon<27){let a=el(c,'a','small','Ava kaardil ↗');a.href='https://www.openstreetmap.org/?mlat='+s.lat+'&mlon='+s.lon+'#map=13/'+s.lat+'/'+s.lon;a.target='_blank';a.rel='noopener noreferrer'}
+ }
+ forecast(ok?w:{});
+}
+function forecast(w){
+ const p=w.places&&w.places[$('place').value],ms=p&&Array.isArray(p.models)?p.models:[],now=Date.now()/1000;
+ const accepted=ms.find(m=>m&&Array.isArray(m.hours)&&fresh(m.source_received_at_utc,m.id==='fmi_meps'?35:240)&&m.hours.filter(h=>typeof h.t==='number'&&h.t>now&&h.t<now+24*3600).length>=6);
+ put('forecast-title',accepted?'Järgmised 12 tundi':'Värsket prognoosi pole');
+ put('forecast-sub',accepted?'Allika viimane vastuvõtt '+date(accepted.source_received_at_utc):'Ootan kinnitatud prognoosiandmeid');
+ const tbody=$('hours');tbody.replaceChildren();
+ if(!accepted){let tr=el(tbody,'tr');let td=el(tr,'td','','Prognoosiandmeid praegu pole');td.colSpan=5;return}
+ for(const h of accepted.hours.filter(x=>x&&x.t>now&&x.t<now+12*3600).slice(0,12)){
+ const tr=el(tbody,'tr');for(const a of [date(h.t),num(h.temp)+' °C',num(h.wind)+' m/s',num(h.gust)+' m/s',num(h.precip)+' mm'])el(tr,'td','',a)
+ }
+}
+$('place').addEventListener('change',show);
+let busy=false;async function reload(){if(busy)return;busy=true;$('reload').disabled=true;
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);
+ try{let r=await fetch('./data/state.json?ts='+Date.now(),{signal:controller.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw new Error('HTTP');state=await r.json()}catch(e){state=null}finally{clearTimeout(timeout);busy=false;$('reload').disabled=false;show()}}
+$('reload').addEventListener('click',reload);reload();setInterval(()=>{if(!document.hidden)reload()},120000);setInterval(show,60000);
+</script>
+</body></html>
