@@ -121,7 +121,7 @@ td strong{color:#e8f3f4}
 .station-head h3{margin:0;font-size:15px}
 .station-badge{border:1px solid #356a68;border-radius:12px;padding:3px 9px;background:#153c3e;color:#abefe1;font-size:10px;white-space:nowrap}
 .station-badge.missing{border-color:#697c85;color:#c0cfd5;background:#21303d}
-.station-badge.risk{border-color:#aa6869;color:#ffc1b9;background:#472b34}
+.station-badge.risk{border-color:#d48975;color:#ffd1c5;background:#522f30;font-weight:750;white-space:normal;text-align:right;max-width:65%;overflow-wrap:anywhere}
 .station-temp{font-size:29px;line-height:1.2;font-weight:750;letter-spacing:-.04em;margin:12px 0 3px}
 .station-sub{color:var(--muted);font-size:11px}
 .station-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px 14px;border-top:1px solid var(--border);margin-top:15px;padding-top:15px}
@@ -756,12 +756,16 @@ function renderRoads(){
  let names=stationNames.filter(n=>n.toLocaleLowerCase('et-EE').includes(query));
  if(!names.length){el(root,'div','empty','Sellise nimega teeilmajaama ei ole.');return}
  names.forEach(name=>{
-  const s=all.find(x=>x&&x.name===name),valid=stationFresh(s),v=valid?s.values:{},danger=valid&&['ice','slipperyRoad'].includes(v.road_status);
+  const s=all.find(x=>x&&x.name===name),valid=stationFresh(s),v=valid?s.values:{};
+  const road=valid?roadStateInfo(v.road_status):null;
+  const danger=valid&&road.hazardous;
   const card=el(root,'article','station-card'),head=el(card,'div','station-head');
-  el(head,'h3','',name);el(head,'span','station-badge'+(!valid?' missing':danger?' risk':''),valid?(roadLabels[v.road_status]||'Mõõtmine olemas'):'Puudub');
+  el(head,'h3','',name);
+  const badge=el(head,'span','station-badge'+(!valid?' missing':danger?' risk':''),!valid?'Värske näit puudub':danger?'⚠ '+road.text:road.text);
+  badge.setAttribute('aria-label',danger?'Ettevaatust: '+road.text:!valid?'Värske mõõtmine puudub':'Teekatte seisund: '+road.text);
   el(card,'div','station-temp',valid?temp(v.road_temp_c):'—');el(card,'div','station-sub','Teekatte temperatuur');
   const grid=el(card,'div','station-values');
-  [['Teekate',valid?(roadLabels[v.road_status]||'—'):'—'],['Õhutemperatuur',valid?temp(v.air_temp_c):'—'],['Tuul',valid?wind(v.wind_ms):'—'],['Nähtavus',valid&&numeric(v.visibility_m)?(v.visibility_m>=1000?fmt(v.visibility_m/1000)+' km':fmt(v.visibility_m,0)+' m'):'—']].forEach(pair=>{const c=el(grid,'div');el(c,'span','',pair[0]);el(c,'strong','',pair[1])});
+  [['Teekate',valid?road.text:'—'],['Õhutemperatuur',valid?temp(v.air_temp_c):'—'],['Tuul',valid?wind(v.wind_ms):'—'],['Nähtavus',valid&&numeric(v.visibility_m)?(v.visibility_m>=1000?fmt(v.visibility_m/1000)+' km':fmt(v.visibility_m,0)+' m'):'—']].forEach(pair=>{const c=el(grid,'div');el(c,'span','',pair[0]);el(c,'strong','',pair[1])});
   const foot=el(card,'div','station-footer'),time=el(foot,'time','',valid?'Mõõdetud '+local(s.measured_at_utc):'Värske mõõtmine puudub');
   if(valid&&timestamp(s.measured_at_utc)!==null)time.dateTime=new Date(timestamp(s.measured_at_utc)).toISOString();
   if(s&&numeric(s.lat)&&numeric(s.lon)&&s.lat>57&&s.lat<60&&s.lon>22&&s.lon<27){
@@ -777,9 +781,23 @@ function renderSources(){
  put('sources-roads-time',r?'DATEX II viimane kontroll '+local(r.checked_at_utc):'Värsked teeilma mõõtmised puuduvad');
 }
 
+function roadStateTokens(value){
+ if(typeof value!=='string')return [];
+ return [...new Set(value.split(',').map(x=>x.trim()).filter(Boolean))];
+}
+function roadStateInfo(value){
+ const tokens=roadStateTokens(value);
+ const known=tokens.filter(token=>Object.prototype.hasOwnProperty.call(roadLabels,token));
+ const unknown=tokens.length-known.length;
+ const hazardous=tokens.some(token=>token==='ice'||token==='slipperyRoad');
+ return {
+  text:tokens.length?known.map(token=>roadLabels[token]).concat(unknown?['Määratlemata']:[]).join(', '):'Seisund teadmata',
+  hazardous,
+  hasState:known.length>0
+ };
+}
 function detailRoadStatus(v){
- if(typeof v!=='string')return '—';
- return v.split(',').map(t=>roadLabels[t.trim()]||'Määratlemata').join(', ');
+ return roadStateInfo(v).text;
 }
 function renderFamilyExtras(){
  const w=weather(),r=roads();
