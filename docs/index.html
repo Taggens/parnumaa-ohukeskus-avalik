@@ -640,7 +640,7 @@ function hourlyRain(){
  const r=weather().hourly_rain;
  if(!r||r.station!=='Pärnu'||r.unit!=='mm'||r.timestamp_verified!==true||r.period_hours!==1||
     !numeric(r.value_mm)||r.value_mm<0||r.value_mm>250||
-    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,35))return null;
+    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,r.retained_previous===true?90:35))return null;
  const start=timestamp(r.period_start_utc),end=timestamp(r.observed_at_utc);
  if(start===null||end===null||end-start!==3600000)return null;
  return r;
@@ -800,8 +800,8 @@ function renderLive(){
  // A validated one-hour source reading may be shown; harbor/road rainfall is
  // never repurposed as the official Pärnu full-hour accumulation.
  put('hourly-rain-value',rain?fmt(rain.value_mm,1)+' mm':'—');
- put('hourly-rain-freshness',rain?'Mõõdetud '+local(rain.observed_at_utc)+' (Eesti aeg)':'Kinnitatud täistunni mõõtmine puudub');
- put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).':'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
+ put('hourly-rain-freshness',rain?(rain.retained_previous===true?'⚠ Varasem kinnitatud mõõtmine ':'Mõõdetud ')+local(rain.observed_at_utc)+' (Eesti aeg)':'Kinnitatud täistunni mõõtmine puudub');
+ put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).'+(rain.retained_previous===true?' Uue täistunni mõõtmine on ootel; see ei ole hetkesadu.':''):'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
  const banner=$('live-banner');
  banner.classList.toggle('stale',!freshAir);
  banner.textContent=isAirStale?'⚠ Sadamajaama viimane teadaolev mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg) on aegunud. Näidud on ajaloolised, mitte hetkeilm ega hoiatusalus.':a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
@@ -814,6 +814,7 @@ function renderLive(){
  }
  if(!freshSea||!numeric(freshSea.level_cm))missing.push('värske meretase');
  if(!rain)missing.push('tunnisadu');
+ else if(rain.retained_previous===true)missing.push('uue täistunni sademenäitu');
  const events=[];
  if(freshAir&&hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
  if(level!==null&&level>=100)events.push('Meretase üle kohaliku +'+(level>=180?'180':level>=150?'150':'100')+' cm piiri ('+fmt(level,0)+' cm)');
