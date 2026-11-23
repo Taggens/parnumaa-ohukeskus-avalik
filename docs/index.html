@@ -193,6 +193,14 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-trust-line{display:flex;flex-wrap:wrap;gap:9px 18px;margin:0 0 15px;font-size:.78rem;color:var(--okf-muted)}
 .okf-trust-line span:first-child{color:var(--okf-turq)}
 .okf-display-tip{margin:-5px 0 12px;color:var(--okf-muted);font-size:.76rem;line-height:1.55}
+.okf-accuracy{margin:0 0 16px}
+.okf-accuracy-block{margin-top:12px}
+.okf-accuracy-scroll{overflow-x:auto}
+.okf-accuracy-table{border-collapse:collapse;width:100%;min-width:440px;font-size:.78rem}
+.okf-accuracy-table th,.okf-accuracy-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #285062}
+.okf-accuracy-table th{color:var(--okf-muted);font-weight:600}
+.okf-accuracy h4{margin:12px 0 3px;font-size:.9rem}
+.okf-accuracy .okf-accuracy-status{margin:0 0 8px}
 .okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:16px}
 .okf-bottom-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr)}
 .okf-card{background:linear-gradient(145deg,#11283b,#0b1d2d 95%);border:1px solid #215164;border-radius:16px;padding:20px 22px;min-width:0;box-shadow:0 7px 18px #00000012}
@@ -566,6 +574,12 @@ details.info p{font-size:11px;color:var(--muted)}
   </div>
   <div class="okf-bottom-grid"><article class="okf-card"><h3>⚠ Olulisemad tähelepanud <small>(prognoosi põhjal)</small></h3><div id="okf-alerts" class="okf-alert-grid"></div><p class="okf-subtle">Kohalikud sõelamärgid, mitte Keskkonnaagentuuri ametlikud hoiatused. Sellest vaatest telefoniteavitusi ei saadeta.</p></article>
   <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Kuvatud aeg näitab andmete vastuvõttu, mitte tingimata mudeli arvutusjooksu. Automaatne valik eelistab kõige värskemat vastuvõturühma ja alles siis mudelite eelistusjärjekorda. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
+  <article class="okf-card okf-accuracy" aria-labelledby="okf-accuracy-title">
+    <h3 id="okf-accuracy-title">📊 Prognoosi täpsus · Pärnu</h3>
+    <p id="okf-accuracy-status" class="okf-subtle okf-accuracy-status" role="status">Täpsusajaloo andmed ootel.</p>
+    <div id="okf-accuracy-body"></div>
+    <p class="okf-subtle">Võrdlus kasutab Pärnu sadama kontrollitud temperatuuri- ja tuulemõõtmisi. MAE on keskmine absoluutviga: väiksem on parem. Võrreldakse meie salvestushetkel ligikaudu 24 tunni kaugusele ulatunud prognoose, mitte kinnitatud mudelijooksu vanust. See ei ole kogu Pärnumaa täpsushinnang.</p>
+  </article>
   <p class="okf-disclaimer">Andmed pärinevad olemasolevatest ilmaandmete allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
 </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
@@ -1063,6 +1077,35 @@ function okfSelectedModelInfo(place){
  const note=!model?(raw?'Selle mudeli viimane andmepakett võeti vastu '+local(raw.source_received_at_utc)+' ('+sourceAgeLabel(raw.source_received_at_utc)+'). Uuendatud prognoosi pole kinnitatud; proovi Automaatset valikut.':'Valitud mudeli värskeid prognoosiandmeid ei ole.'):model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
  put('okf-model-note',note+(choice==='auto'?' Automaatvalik eelistab viimase 30 minuti kõige värskemat andmepaketi rühma.':''));
 }
+function renderForecastAccuracy(place){
+ const body=$('okf-accuracy-body');body.replaceChildren();
+ const status=$('okf-accuracy-status');
+ if(place!=='parnu'){status.textContent='Praegu kogume täpsuse võrdlusandmeid ainult Pärnu jaoks.';return}
+ const a=active()?state.accuracy:null;
+ if(!a||a.schema!==1||a.place!=='parnu'){status.textContent='Täpsusajaloo kogumist pole avalikus andmevoos veel kinnitatud.';return}
+ if(!a.first_captured_at_utc){status.textContent='Andmete kogumine on seadistatud, kuid esimesi prognoosikirjeid veel ei ole.';return}
+ const duration=numeric(a.history_days)?Math.max(0,a.history_days):0;
+ const stale=!fresh(a.last_captured_at_utc,720);
+ status.textContent='Kogutud ligikaudu '+fmt(duration,1)+' päeva võrdlusajalugu.'+(stale?' Viimane kogumiskord on üle 12 tunni vana.':' Esimesed usaldusväärsed tulemused vajavad piisavalt ajalugu.');
+ for(const days of [7,30]){
+  const p=Array.isArray(a.periods)?a.periods.find(x=>x&&x.days===days):null;
+  const section=el(body,'div','okf-accuracy-block');
+  el(section,'h4','', 'Viimased '+days+' päeva · ligikaudu 24 h ette');
+  if(!p||p.ready!==true||!Array.isArray(p.models)||!p.models.length){
+   el(section,'p','okf-subtle', 'Võrdlusajalugu ja kinnitatud mõõtmisi kogutakse. Tulemusi ei hinnata enne piisava valimi täitumist.');
+   continue;
+  }
+  const scroll=el(section,'div','okf-accuracy-scroll'),table=el(scroll,'table','okf-accuracy-table');
+  const head=el(table,'thead'),hdr=el(head,'tr');
+  for(const col of ['Mudel','Võrdlusi','Temp. viga','Tuule viga'])el(hdr,'th','',col);
+  const tb=el(table,'tbody');
+  for(const m of p.models){
+   if(!m||!modelNames[m.id]||!numeric(m.n)||m.n<12||!numeric(m.temp_mae_c)||!numeric(m.wind_mae_ms))continue;
+   const tr=el(tb,'tr');
+   for(const val of [modelNames[m.id],String(m.n),fmt(m.temp_mae_c,2)+' °C',fmt(m.wind_mae_ms,2)+' m/s'])el(tr,'td','',val);
+  }
+ }
+}
 function renderForecast(){
  const place=$('okf-place').value,selected=$('okf-model').value,area={parnu:'Pärnu',haademeeste:'Häädemeeste',tostamaa:'Tõstamaa',sindi:'Sindi'}[place]||'Valitud asukoht';
  const {model,hours}=upcoming(place,selected,48),first=hours[0]||null,actual=place==='parnu'?air():null;
@@ -1095,6 +1138,7 @@ function renderForecast(){
  }
  if(!count)el(alerts,'p','okf-subtle',model?'Kinnitatud sisendväljade põhjal tähelepanulävesid ei ületatud. See ei tõenda ohutust.':'Värske prognoosi puudumise tõttu ei ole tähelepanumärke.');
  okfSelectedModelInfo(place);
+ renderForecastAccuracy(place);
 }
 
 function renderRoads(){
