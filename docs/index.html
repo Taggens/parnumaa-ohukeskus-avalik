@@ -584,7 +584,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <div id="okf-accuracy-body"></div>
     <p class="okf-subtle">Võrdlus kasutab Pärnu sadama kontrollitud temperatuuri- ja tuulemõõtmisi. MAE on keskmine absoluutviga: väiksem on parem. Võrreldakse meie salvestushetkel ligikaudu 24 tunni kaugusele ulatunud prognoose, mitte kinnitatud mudelijooksu vanust. See ei ole kogu Pärnumaa täpsushinnang.</p>
   </article>
-  <p class="okf-disclaimer">Andmed pärinevad olemasolevatest ilmaandmete allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. Avalikus andmevoos puuduvad mõne mõõteparameetri ja täieliku 48 tunni prognoosi andmed.</p>
+  <p class="okf-disclaimer">Andmed pärinevad olemasolevatest ilmaandmete allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. 24 ja 48 tunni kokkuvõtte katvust kontrollitakse valitud mudeli tunniandmetest.</p>
 </section>
    <section id="roads" class="screen" aria-labelledby="roads-heading">
     <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
@@ -814,7 +814,7 @@ function renderLive(){
  const trendGap=comparisonTime!==null&&measuredTime!==null?(measuredTime-comparisonTime)/60000:null;
  const confirmedTrend=hasSea&&!isSeaStale&&s.trend_verified===true&&numeric(s.change_last_hour_cm)&&
     Math.abs(s.change_last_hour_cm)<=1100&&trendGap!==null&&trendGap>=50&&trendGap<=70;
- put('marine-trend',isSeaStale?'Tunnimuutus: vananenud mõõtmise põhjal ei kuvata':confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / ~1 h':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
+ put('marine-trend',isSeaStale?'Tunnimuutus: vananenud mõõtmise põhjal ei kuvata':confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / '+Math.round(trendGap)+' min':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
  put('marine-meta',hasSea?(isSeaStale?'Viimane kontrollitud mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'. See on varasem näit, mitte hetketase, ja seda ei kasutata ohu tähelepanupiiride kontrolliks.':'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.'+(confirmedTrend?' Tunnimuutus võrreldud sama jaama mõõtmisega '+local(s.comparison_time_utc)+'.':' Tunnimuutust ei ole kinnitatud.')):'Meretaseme värske mõõtmine puudub või on aegunud.');
  const level=hasSea&&!isSeaStale?s.level_cm:null;
  const marineCard=$('sea-risk-card');
@@ -1106,6 +1106,12 @@ function okfSelectedModelInfo(place){
  row=el(area,'div','okf-model-row');
  el(row,'span','','Mudeli lähtejooks');
  el(row,'strong','',runTimeLabel(model));
+ const futureTimes=new Set((model?.hours||[]).filter(h=>h&&numeric(h.t)&&h.t>Date.now()/1000).map(h=>h.t));
+ if(futureTimes.size){
+  row=el(area,'div','okf-model-row');
+  el(row,'span','','Avalikud prognoositunnid');
+  el(row,'strong','',futureTimes.size+' tundi · viimane '+local(new Date(Math.max(...futureTimes)*1000).toISOString()));
+ }
  const raw=!model&&choice!=='auto'?weather().places?.[place]?.models?.find(m=>m&&m.id===choice):null;
  const note=!model?(raw?'Selle mudeli viimane andmepakett võeti vastu '+local(raw.source_received_at_utc)+' ('+sourceAgeLabel(raw.source_received_at_utc)+'). Uuendatud prognoosi pole kinnitatud; proovi Automaatset valikut.':'Valitud mudeli värskeid prognoosiandmeid ei ole.'):model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
  put('okf-model-note',note+(choice==='auto'?' Automaatvalik eelistab viimase 30 minuti kõige värskemat andmepaketi rühma.':''));
@@ -1320,7 +1326,7 @@ function renderMarine(){
    el(card,'p','marine-meta','Mõõdetud: '+marineDate(ps.observed_at_utc)+' · EH2000. Kontrollitud mõõtmisaeg.');
    const prev=timestamp(ps.comparison_time_utc),cur=timestamp(ps.observed_at_utc);
    if(ps.trend_verified===true&&numeric(ps.change_last_hour_cm)&&prev!==null&&cur!==null&&(cur-prev)>=50*60000&&(cur-prev)<=70*60000){
-    el(card,'p','marine-meta','Muudatus ~1 tunni jooksul: '+(ps.change_last_hour_cm>=0?'+':'')+fmt(ps.change_last_hour_cm,0)+' cm.');
+    el(card,'p','marine-meta','Muutus '+Math.round((cur-prev)/60000)+' minuti jooksul: '+(ps.change_last_hour_cm>=0?'+':'')+fmt(ps.change_last_hour_cm,0)+' cm.');
    }
    el(card,'p','marine-meta','Meie Pärnu mõõtefail avaldatud: '+marineDate(state?.published_at_utc));
   }else{
