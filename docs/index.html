@@ -599,7 +599,12 @@ details.info p{font-size:11px;color:var(--muted)}
    </section>
    <section id="radar" class="screen" aria-labelledby="radar-heading">
     <div class="section-header"><div><h2 id="radar-heading">Pärnumaa sajuradar</h2><p>Keskkonnaagentuuri KAIA radarikomposiit</p></div></div>
-    <article class="panel"><strong id="radar-time">Radarikaadri laadimine…</strong><div id="radar-move" role="status" aria-live="polite" style="display:flex;flex-wrap:wrap;gap:12px;margin:14px 0;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface2)"><div style="flex:1;min-width:145px"><small style="display:block;color:var(--muted)">🧭 Sajuala liikumissuund</small><strong id="radar-direction" style="font-size:20px">Kontrollimisel…</strong></div><div style="flex:1;min-width:145px"><small style="display:block;color:var(--muted)">💨 Hinnanguline kiirus</small><strong id="radar-speed" style="font-size:20px">—</strong></div><small id="radar-motion-note" style="width:100%;color:var(--muted)">Liikumist hinnatakse järjestikuste radarikaadrite põhjal.</small></div>
+    <article class="panel"><strong id="radar-time">Radarikaadri laadimine…</strong><div class="panel" style="margin:12px 0;padding:12px 14px;background:var(--surface2)">
+     <label for="radar-history" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:650">🕒 Radarikaadrite ajalugu <span id="radar-history-time">Kaadrite laadimine…</span></label>
+     <input id="radar-history" type="range" min="0" max="0" value="0" step="1" disabled aria-label="Vali varasem radarikaader" style="display:block;width:100%;margin:12px 0 4px;accent-color:var(--teal)">
+     <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted)"><span id="radar-history-start">Vanem kaader</span><span id="radar-history-end">Viimane kaader</span></div>
+     <p id="radar-history-note" class="fineprint" style="margin:7px 0 0">Ajalugu näitab ainult päriselt avaldatud radarikaadreid.</p>
+    </div>
     <div id="radar-map" aria-label="Pärnumaa sajuradari kaart" style="height:clamp(285px,48vh,480px);border-radius:12px;background:#dae4eb;isolation:isolate"></div>
     <div class="radar-scale"><strong>Saju intensiivsus (mm/h)</strong><div><span style="--rate:#8eddf3">0,05</span><span style="--rate:#55bbf0">0,1</span><span style="--rate:#3493da">0,3</span><span style="--rate:#1e6cc7">0,5</span><span style="--rate:#26a68b">1</span><span style="--rate:#4bbc56">2</span><span style="--rate:#e3d43d">4</span><span style="--rate:#fd9c30">8</span><span style="--rate:#ec413d">16</span><span style="--rate:#b839ab">50+</span></div></div></article>
     <h3>Radarikaja saabumishinnang</h3><div id="radar-cards" class="rivers-grid"></div>
