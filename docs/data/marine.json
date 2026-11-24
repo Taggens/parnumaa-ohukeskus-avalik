@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-24T18:10:17Z",
+  "generated_at_utc": "2026-11-24T18:14:17Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-24T18:10:18Z",
+    "feed_timestamp_utc": "2026-11-24T18:14:18Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -13,22 +13,22 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 44.0,
         "water_temperature_c": 3.4,
-        "air_temperature_c": 2.3,
-        "wind_ms": 3.8,
+        "air_temperature_c": 2.2,
+        "wind_ms": 3.9,
         "gust_ms": 6.5,
-        "wind_direction_deg": 329.0
+        "wind_direction_deg": 331.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 54.0,
+        "sea_level_eh2000_cm": 53.0,
         "water_temperature_c": 6.8,
         "air_temperature_c": 2.4,
-        "wind_ms": 3.9,
-        "gust_ms": 6.0,
-        "wind_direction_deg": 25.0
+        "wind_ms": 3.8,
+        "gust_ms": 5.9,
+        "wind_direction_deg": 24.0
       },
       {
         "code": "26128",
@@ -37,10 +37,10 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 48.0,
         "water_temperature_c": 3.1,
-        "air_temperature_c": 2.1,
-        "wind_ms": 3.4,
-        "gust_ms": 5.1,
-        "wind_direction_deg": 25.0
+        "air_temperature_c": 2.0,
+        "wind_ms": 3.8,
+        "gust_ms": 6.3,
+        "wind_direction_deg": 19.0
       },
       {
         "code": "26226",
@@ -51,8 +51,8 @@
         "water_temperature_c": null,
         "air_temperature_c": 2.4,
         "wind_ms": 2.3,
-        "gust_ms": 4.6,
-        "wind_direction_deg": 6.0
+        "gust_ms": 4.9,
+        "wind_direction_deg": 18.0
       }
     ],
     "source_url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
