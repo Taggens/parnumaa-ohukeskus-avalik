@@ -83,9 +83,9 @@ def summarize(name,url):
         r["candidate_date_strings"]=list(dict.fromkeys(re.findall(
             r"\b(?:20\d{2}-\d{2}-\d{2}[T ][0-2]\d:[0-5]\d(?::[0-5]\d)?|[0-3]?\d\.[01]?\d\.20\d{2}\s+[0-2]?\d:[0-5]\d)\b",s)))[:12]
         # Public-page text only, never trust this as a verified station observation.
-        clean=re.sub(r"(?is)<(script|style)[^>]*>.*?</\\1>"," ",s)
+        clean=re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>"," ",s)
         clean=html.unescape(re.sub(r"(?is)<[^>]*>"," ",clean))
-        clean=re.sub(r"\\s+"," ",clean).strip()
+        clean=re.sub(r"\s+"," ",clean).strip()
         r["page_text_head"]=clean[:1600]
         r["page_text_length"]=len(clean)
         r["date_context"]=[]
