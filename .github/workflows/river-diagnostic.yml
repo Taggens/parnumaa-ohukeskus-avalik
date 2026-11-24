@@ -1,0 +1,37 @@
+name: Diagnose missing operational river readings
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/river-diagnostic.yml'
+      - 'scripts/diagnose_river_feed.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/diagnose_river_feed.py
+      - name: Save read-only diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/river_operational_diagnostic_20261124.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Salvesta jõgede operatiivallika diagnostika"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
