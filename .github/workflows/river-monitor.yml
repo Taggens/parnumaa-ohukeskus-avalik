@@ -1,0 +1,44 @@
+name: Parnu river monitor
+on:
+  schedule:
+    - cron: '21 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: parnu-river-monitor
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run river monitor validation tests
+        run: python scripts/update_rivers.py --selftest
+      - name: Refresh latest XML and historical water levels
+        run: python scripts/update_rivers.py --output docs/data/rivers.json
+      - name: Commit safe public data only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- docs/data/rivers.json
+          if git diff --cached --quiet; then
+            echo "No change in river data"
+            exit 0
+          fi
+          git commit -m "Uuenda Pärnumaa jõeseire avalikke andmeid"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          echo "Push failed after retries" >&2
+          exit 1
