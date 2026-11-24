@@ -1,6 +1,6 @@
 {
   "schema": "marine-source-access-probe-v1",
-  "checked_at_utc": "2026-11-24T18:24:53.959632+00:00",
+  "checked_at_utc": "2026-11-24T18:26:02.993161+00:00",
   "mode": "read_only",
   "results": {
     "taltech_kihnu": {
@@ -21,8 +21,19 @@
       "page_title": "Kihnu sadam",
       "has_station_or_model_name": true,
       "candidate_date_strings": [
-        "24.11.2026 20:15"
+        "24.11.2026 20:20"
       ],
+      "page_text_head": "Kihnu sadam \n \n \nvar sec_ticker = ':';\n\nfunction flip(rid) {\n\tcurrent=(document.getElementById(rid).style.display == 'none') ? 'block' : 'none';\n\tdocument.getElementById(rid).style.display = current;\n}\n\t\nfunction detailed(title,image) {\n\tpos_x=(screen.width-600)/2;\n\tpos_y=(screen.height-800)/2;\n\n  new_window=window.open(\"\",\"pilt\",\"toolbar=no,width=800,height=600,screenX=\"+pos_x+\",screenY=\"+pos_y+\",left=\"+pos_x+\",top=\"+pos_y+\",scrollbars=no,resizable=no\");\n  new_window.document.writeln(\"   \"+title+\"        \");\n \tnew_window.focus();\n}\n\nfunction detailed2(title,image) {\n\tpos_x=(screen.width-600)/2;\n\tpos_y=(screen.height-800)/2;\n\n  new_window=window.open(\"\",\"pilt\",\"toolbar=no,width=600,height=600,screenX=\"+pos_x+\",screenY=\"+pos_y+\",left=\"+pos_x+\",top=\"+pos_y+\",scrollbars=no,resizable=no\");\n  new_window.document.writeln(\"   \"+title+\"         \");\n \tnew_window.focus();\n}\n\nfunction popup(mypage,w,h) {\n\tvar winl = (screen.width - w) / 2;\n\tvar wint = (screen.height - h) / 2;\n\tvar random = Math.floor(50000 * Math.random());\n\tvar win = window.open(mypage, random, 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars=yes,resizable');\n\twin.focus();\n}\n\nfunction get_time() {\n\tvar d = new Date();\n\tvar yrs = 1900 + d.getYear();\n\tvar mon = d.getMonth() + 1;\n\tvar day = d.getDate();\n\tvar hrs = d.getHours();\n\tvar min = d.getMinutes();\n\n\tif (day  \n \n \n \n   \n\t        \n     \n      Kihnu sadam       \n        58° 13.68′ N  24° 07.11′ E\n       \n     \n     \n         In English    Kontakt   \n         1   101021 \n     \n     \n          Andmetabel-->\n     \n     \n        document.write(get_time())",
+      "page_text_length": 3066,
+      "date_context": [
+        "24° 07.11′ E\n       \n     \n     \n         In English    Kontakt   \n         1   101021 \n     \n     \n          Andmetabel-->\n     \n     \n        document.write(get_time());  \n      24.11.2026 20:20       Viimane mõõtmine \n     \n     \n         \n     \n\t-->\n\t \n         \n     -->\n   \n \n TalTech Meresüsteemide Instituut +372 53 365 884  jaamad@taltech.ee  \n \n\t \n\t\t Tuule suund  \n\t\t   \n\t\t  \n\n\t\t Tuule kiirus  \n\n\t\t \n\t\t\t 8.5 m/s,  \n\t\t\t puhanguti 10.9 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 11° \n\t\t \n\n\t\t Meretase (EH2000)"
+      ],
+      "keyword_context": {
+        "Meretase": "nguti 10.9 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 11° \n\t\t \n\n\t\t Meretase (EH2000)  \n\n\t\t \n\t\t\t +52 cm \n\t\t \n\n\t\t Laine kõrgus  \n\n\t\t \n\t\t\t 0.3 m, \n\t\t\t maks.  0.3 m \n\t\t \n\n\t\t Laine periood  \n\n\t\t \n\t\t\t 2.5 s \n\t\t \n\n\t\t Õhutemperatuur  \n\n\t\t \n\t\t\t 2.7 °C \n\t\t \n\n\t\t Veetemperatuu",
+        "tuul": "mide Instituut +372 53 365 884  jaamad@taltech.ee  \n \n\t \n\t\t Tuule suund  \n\t\t   \n\t\t  \n\n\t\t Tuule kiirus  \n\n\t\t \n\t\t\t 8.5 m/s,  \n\t\t\t puhanguti 10.9 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 11° \n\t\t \n\n\t\t Meretase (EH2000)  \n\n\t\t \n\t\t\t +52 cm \n\t\t \n\n\t\t Laine kõrgus  \n\n\t",
+        "õhutemperatuur": "ks.  0.3 m \n\t\t \n\n\t\t Laine periood  \n\n\t\t \n\t\t\t 2.5 s \n\t\t \n\n\t\t Õhutemperatuur  \n\n\t\t \n\t\t\t 2.7 °C \n\t\t \n\n\t\t Veetemperatuur  \n\n\t\t \n\t\t\t 3.6 °C \n\t\t \n\n\t\t Õhurõhk  \n\n\t\t \n\t\t\t 1016.9 mbar \n\t\t \n\n\t\t Õhuniiskus  \n\n\t\t \n\t\t\t 87.4 % \n\t\t \n\n\t\t Sademete hulk  \n\n\t\t \n\t\t\t 0 mm \n\t\t \n\n\t\t Sad"
+      },
+      "https_to_http_downgrade": true,
       "timestamp_verified": false
     },
     "taltech_munalaid": {
@@ -43,8 +54,19 @@
       "page_title": "Munalaiu sadam",
       "has_station_or_model_name": true,
       "candidate_date_strings": [
-        "24.11.2026 20:20"
+        "24.11.2026 20:25"
       ],
+      "page_text_head": "Munalaiu sadam \n \n \nvar sec_ticker = ':';\n\nfunction flip(rid) {\n\tcurrent=(document.getElementById(rid).style.display == 'none') ? 'block' : 'none';\n\tdocument.getElementById(rid).style.display = current;\n}\n\t\nfunction detailed(title,image) {\n\tpos_x=(screen.width-600)/2;\n\tpos_y=(screen.height-800)/2;\n\n  new_window=window.open(\"\",\"pilt\",\"toolbar=no,width=800,height=600,screenX=\"+pos_x+\",screenY=\"+pos_y+\",left=\"+pos_x+\",top=\"+pos_y+\",scrollbars=no,resizable=no\");\n  new_window.document.writeln(\"   \"+title+\"        \");\n \tnew_window.focus();\n}\n\nfunction detailed2(title,image) {\n\tpos_x=(screen.width-600)/2;\n\tpos_y=(screen.height-800)/2;\n\n  new_window=window.open(\"\",\"pilt\",\"toolbar=no,width=600,height=600,screenX=\"+pos_x+\",screenY=\"+pos_y+\",left=\"+pos_x+\",top=\"+pos_y+\",scrollbars=no,resizable=no\");\n  new_window.document.writeln(\"   \"+title+\"         \");\n \tnew_window.focus();\n}\n\nfunction popup(mypage,w,h) {\n\tvar winl = (screen.width - w) / 2;\n\tvar wint = (screen.height - h) / 2;\n\tvar random = Math.floor(50000 * Math.random());\n\tvar win = window.open(mypage, random, 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars=yes,resizable');\n\twin.focus();\n}\n\nfunction get_time() {\n\tvar d = new Date();\n\tvar yrs = 1900 + d.getYear();\n\tvar mon = d.getMonth() + 1;\n\tvar day = d.getDate();\n\tvar hrs = d.getHours();\n\tvar min = d.getMinutes();\n\n\tif (day  \n \n \n \n   \n\t        \n     \n      Munalaiu sadam       \n        58° 13.68′ N  24° 07.11′ E\n       \n     \n     \n         In English    Kontakt   \n         1   4124453 \n     \n     \n          Andmetabel-->\n     \n     \n        document.write(get_",
+      "page_text_length": 3084,
+      "date_context": [
+        "4° 07.11′ E\n       \n     \n     \n         In English    Kontakt   \n         1   4124453 \n     \n     \n          Andmetabel-->\n     \n     \n        document.write(get_time());  \n      24.11.2026 20:25       Viimane mõõtmine \n     \n     \n         \n     \n     \n         \n     -->\n   \n \n TalTech Meresüsteemide Instituut +372 53 365 884  jaamad@taltech.ee  \n \n\t \n\t\t Tuule suund  \n\t\t   \n\t\t  \n\n\t\t Tuule kiirus  \n\n\t\t \n\t\t\t 5.2 m/s,  \n\t\t\t puhanguti 7.7 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 357° \n\t\t \n\n\t\t Meretase (EH2000)  "
+      ],
+      "keyword_context": {
+        "Meretase": "nguti 7.7 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 357° \n\t\t \n\n\t\t Meretase (EH2000)  \n\n\t\t \n\t\t\t +49 cm \n\t\t \n\n\t\t Laine kõrgus  \n\n\t\t \n\t\t\t 0.0 m, \n\t\t\t maks.  0.0 m \n\t\t \n\n\t\t Laine periood  \n\n\t\t \n\t\t\t 1.0 s \n\t\t \n\n\t\t Õhutemperatuur  \n\n\t\t \n\t\t\t 2.5 °C \n\t\t \n\n\t\t Veetemperatuu",
+        "tuul": "mide Instituut +372 53 365 884  jaamad@taltech.ee  \n \n\t \n\t\t Tuule suund  \n\t\t   \n\t\t  \n\n\t\t Tuule kiirus  \n\n\t\t \n\t\t\t 5.2 m/s,  \n\t\t\t puhanguti 7.7 m/s \n\t\t \n\n\t\t Tuule suund  \n\n\t\t \n\t\t\t 357° \n\t\t \n\n\t\t Meretase (EH2000)  \n\n\t\t \n\t\t\t +49 cm \n\t\t \n\n\t\t Laine kõrgus  \n\n\t",
+        "õhutemperatuur": "ks.  0.0 m \n\t\t \n\n\t\t Laine periood  \n\n\t\t \n\t\t\t 1.0 s \n\t\t \n\n\t\t Õhutemperatuur  \n\n\t\t \n\t\t\t 2.5 °C \n\t\t \n\n\t\t Veetemperatuur  \n\n\t\t \n\t\t\t 4.0 °C \n\t\t \n\n\t\t Õhurõhk  \n\n\t\t \n\t\t\t 1016.7 mbar \n\t\t \n\n\t\t Õhuniiskus  \n\n\t\t \n\t\t\t 84.9 % \n\t\t \n\n\t\t Sademete hulk  \n\n\t\t \n\t\t\t 0 mm \n\t\t \n\n\t\t Sad"
+      },
+      "https_to_http_downgrade": true,
       "timestamp_verified": false
     },
     "kaia_nemo_catalog": {
@@ -58,6 +80,13 @@
       "page_title": "KAIA &#x2502; NEMO",
       "has_station_or_model_name": false,
       "candidate_date_strings": [],
+      "page_text_head": "KAIA │ NEMO \n         \n    \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n\n    \n \n    :root {\n    }\n \n    \n      \n\n      \n     \n     \n    \n \n \n  \r\n\t    \r\n\r\n\t \r\n \n      \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n\n     \n         \n             \n                \n \n     \n         \n              \n         \n         \n              \n         \n     \n     \n         \n             \n         \n     \n     \n         \n            menu\n         \n     \n \n \n     \n        \n \n         \n             \n                KAIA teenus\n             \n         \n         \n             \n                API\n             \n         \n \n         \n                 \n                         EN \n                 \n             \n                 \n                    help_outline\n                 \n                 \n                    Spikker\n                 \n             \n         \n     \n \n\n             \n             \n                 \n                    \n \n\n\n \n\n \n     \n     \n     \n \n\n     \n\n \n    CorrelationID = 3aa01263f79a8b854e26909f75f6d113\n \n                 \n                \n \n \n                 \n                    \n                    \n                    \n                    \n \n                 \n             \n         \n         \n             \n                 \r\n\t  NEMO  \r\n \n             \n             \n                 \n                    \n \n     \n         \n\n \n     \n         \n             \n       ",
+      "page_text_length": 7622,
+      "date_context": [],
+      "keyword_context": {
+        "tuul": "           \n                 \n                    Radiaalne tuule kiirus (PPI)\n                     \n                     \n                 \n             \n         \n     \n    \n \n \n     \n         \n             \n                 \n                     \n    "
+      },
+      "https_to_http_downgrade": false,
       "timestamp_verified": false
     },
     "kaia_swan_catalog": {
@@ -71,6 +100,13 @@
       "page_title": "KAIA &#x2502; SWAN",
       "has_station_or_model_name": false,
       "candidate_date_strings": [],
+      "page_text_head": "KAIA │ SWAN \n         \n    \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n\n    \n \n    :root {\n    }\n \n    \n      \n\n      \n     \n     \n    \n \n \n  \r\n\t    \r\n\r\n\t \r\n \n      \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n\n     \n         \n             \n                \n \n     \n         \n              \n         \n         \n              \n         \n     \n     \n         \n             \n         \n     \n     \n         \n            menu\n         \n     \n \n \n     \n        \n \n         \n             \n                KAIA teenus\n             \n         \n         \n             \n                API\n             \n         \n \n         \n                 \n                         EN \n                 \n             \n                 \n                    help_outline\n                 \n                 \n                    Spikker\n                 \n             \n         \n     \n \n\n             \n             \n                 \n                    \n \n\n\n \n\n \n     \n     \n     \n \n\n     \n\n \n    CorrelationID = 6adb7a6354d170cf5b19cbd8bde15544\n \n                 \n                \n \n \n                 \n                    \n                    \n                    \n                    \n \n                 \n             \n         \n         \n             \n                 \r\n\t  SWAN  \r\n \n             \n             \n                 \n                    \n \n     \n         \n\n \n     \n         \n             \n       ",
+      "page_text_length": 7603,
+      "date_context": [],
+      "keyword_context": {
+        "tuul": "           \n                 \n                    Radiaalne tuule kiirus (PPI)\n                     \n                     \n                 \n             \n         \n     \n    \n \n \n     \n         \n             \n                 \n                     \n    "
+      },
+      "https_to_http_downgrade": false,
       "timestamp_verified": false
     },
     "kaia_api_unfiltered_metadata_probe": {
