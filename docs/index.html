@@ -386,6 +386,7 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-guide-note{margin:12px 0 0;color:#b8cbd8;font-size:11px;line-height:1.6}
 @media(max-width:760px){.okf-guide-grid{grid-template-columns:minmax(0,1fr)}.okf-guide>summary{padding:12px 13px}.okf-guide-content{padding:0 12px 13px}}
 
+ .rivers-subtitle{margin:22px 0 8px}.rivers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.river-card{min-width:0}.river-cardtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.river-status{font-size:.76rem;color:#b5eee2;border:1px solid #48796f;border-radius:7px;padding:3px 7px}.river-old{color:#f5ca91;border-color:#8d7155}.river-big{font-size:1.7rem;font-weight:750;font-variant-numeric:tabular-nums;margin:9px 0}.rivers-chart{display:block;width:100%;height:auto}@media(max-width:850px){.rivers-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -396,6 +397,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <button type="button" class="nav-link active" data-section="live" aria-current="page"><span class="nav-icon">◉</span> Live-ilm</button>
    <button type="button" class="nav-link" data-section="forecast"><span class="nav-icon">≋</span> Ilmaprognoos</button>
    <button type="button" class="nav-link" data-section="roads"><span class="nav-icon">🚗</span> Teeolud</button>
+   <button type="button" class="nav-link" data-section="rivers"><span class="nav-icon">🌊</span> Jõeseire</button>
    <button type="button" class="nav-link" data-section="sources"><span class="nav-icon">◷</span> Allikad</button>
   </nav>
   <div class="side-bottom"><div class="small-label">AVALIK VADE</div><div class="side-status"><span id="side-dot" class="dot neutral"></span><span id="side-state">Andmete kontroll ootel</span></div><p>Pärisandmed, tegelikud mõõtmisajad ja kuue mudeli prognoosid. Avalikus vaates ei ole administraatori seadeid ega privaatsed kontrolltööriistu.</p></div>
@@ -593,6 +595,16 @@ details.info p{font-size:11px;color:var(--muted)}
      <p class="fineprint">Puuduv või vananenud mõõtmine ei tähenda ohutut teeolukorda. Liiklussündmusi avalikus vaates ei kuvata.</p>
     </article>
    </section>
+   <section id="rivers" class="screen" aria-labelledby="rivers-heading">
+    <div class="section-header"><div><h2 id="rivers-heading">🌊 Pärnumaa jõeseire</h2><p>Viimati avaldatud ametliku XML-voo jõenäidud ja ajaloolised tunnikeskmised.</p></div><span class="kicker">KESKKONNAAGENTUUR</span></div>
+    <article class="panel"><div class="panel-title"><div><h3>Andmete tähendus ja värskus</h3><p id="rivers-status">Jõeseireandmete laadimine…</p></div></div>
+    <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></article>
+    <h3 class="rivers-subtitle">Viimased avaldatud jõenäidud</h3><p id="rivers-feed" class="fineprint">Andmevoo aeg kontrollimisel…</p>
+    <div id="rivers-observed" class="rivers-grid" aria-label="Operatiivsed jõenäidud"></div>
+    <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes.</p>
+    <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
+    <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
+   </section>
    <section id="sources" class="screen" aria-labelledby="sources-heading">
     <div class="section-header"><div><h2 id="sources-heading">Andmeallikad</h2><p>Pärnu mõõtmiste, ilmaprognooside ja teeilmaandmete päritolu.</p></div></div>
     <article class="panel"><div class="panel-title"><div><h3>Allikate viimane teadaolev seis</h3><p>Mõõtmiste ja ilmaprognooside vastuvõtmise aeg, mitte oletuslik turvaseis</p></div><span class="kicker">ALLIKATE TERVIS</span></div><div id="source-catalog" class="source-catalog"><div class="empty">Ootan allikaid…</div></div></article>
@@ -618,7 +630,7 @@ const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme',
 const modelNames={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
 const modelOrder=Object.keys(modelNames);
 const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
-const titles={live:'Live-ilm',forecast:'Ilmaprognoos',roads:'Teeolud',sources:'Andmeallikad'};
+const titles={live:'Live-ilm',forecast:'Ilmaprognoos',roads:'Teeolud',rivers:'Jõeseire',sources:'Andmeallikad'};
 const $=id=>document.getElementById(id);
 const put=(id,str)=>{$(id).textContent=str};
 const el=(parent,tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=value;parent.append(node);return node};
@@ -1246,6 +1258,52 @@ function renderFamilySources(w){
  }
 }
 
+let riverState=null;
+const riverInfo=[['41137','Aesoo','Navesti'],['41183','Audru','Audru jõgi'],['41174','Kaansoo','Saarjõgi'],['41197','Laadi','Reiu'],['41198','Nurme','Sauga'],['41127','Oore','Pärnu jõgi'],['41140','Riisa','Halliste'],['41126','Tahkuse','Pärnu jõgi']];
+function riverAge(t){const x=Date.parse(t||'');return Number.isFinite(x)?(Date.now()-x)/3600000:Infinity}
+function riverDate(t){return riverAge(t)!==Infinity?new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(t))+' (Eesti aeg)':'teadmata'}
+function riverChart(host,pts){
+ if(pts.length<2){el(host,'p','fineprint','Graafikuks pole piisavalt kirjeid.');return}
+ const a=pts[0],b=pts[pts.length-1],min=Math.min(...pts.map(x=>x.cm)),max=Math.max(...pts.map(x=>x.cm)),pad=Math.max(1,(max-min)*.15);
+ if(b.ms<=a.ms)return;
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 700 175');svg.setAttribute('role','img');svg.setAttribute('aria-label','Ajalooline veetasemegraafik sentimeetrites');svg.classList.add('rivers-chart');host.append(svg);
+ const coord=p=>[40+(p.ms-a.ms)/(b.ms-a.ms)*640,145-(p.cm-min+pad)/(max-min+2*pad)*130];
+ let segments=[],part=[];
+ const flush=()=>{if(part.length>1)segments.push(part);part=[]};
+ pts.forEach((p,i)=>{if(i&&p.ms-pts[i-1].ms>5400000)flush();part.push(coord(p))});flush();
+ for(const seg of segments){const line=document.createElementNS(ns,'polyline');line.setAttribute('points',seg.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' '));line.setAttribute('fill','none');line.setAttribute('stroke','#65d0c4');line.setAttribute('stroke-width','2.7');line.setAttribute('stroke-linecap','round');line.setAttribute('stroke-linejoin','round');svg.append(line)}
+ for(const [text,x,y] of [[max.toFixed(0)+' cm',40,12],[min.toFixed(0)+' cm',40,163]]){const t=document.createElementNS(ns,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('fill','#b3c7d3');t.setAttribute('font-size',11);t.textContent=text;svg.append(t)}
+}
+function renderRivers(){
+ const live=$('rivers-observed'),history=$('rivers-history');live.replaceChildren();history.replaceChildren();
+ const x=riverState;if(!x||x.schema!=='river-monitor-v1'){put('rivers-status','Jõeseire andmefail puudub või on vigane. Jõgedel võib siiski oht esineda.');put('rivers-feed','Allika andmeid ei saa kinnitada.');return}
+ const feed=x.observations||{},hours=riverAge(feed.feed_timestamp_utc),fileHours=riverAge(x.generated_at_utc);
+ const feedGood=hours>=0&&hours<=2&&fileHours>=0&&fileHours<=3&&feed.source_status==='ok';
+ put('rivers-status','Viimane seirefail '+riverDate(x.generated_at_utc)+(fileHours>3?' · andmefail vananenud':' · andmefail vastu võetud'));
+ put('rivers-feed','Operatiivse XML-voo aeg: '+riverDate(feed.feed_timestamp_utc)+'. '+(feedGood?'Allika näidud avaldatud, jaamapõhised mõõtmisajad kinnitamata.':'Voog puudub või on vananenud; näite ei esitata värskena.'));
+ for(const [code,name,water] of riverInfo){
+  const op=Array.isArray(feed.stations)?feed.stations.find(v=>v&&String(v.code)===code):null;
+  const opOk=feedGood&&op&&numeric(op.cm);
+  let card=el(live,'article','panel river-card'),top=el(card,'div','river-cardtop');
+  el(top,'strong','',name);el(top,'span',opOk?'river-status':'river-status river-old',opOk?'Allika näit':'Puudub / vana');
+  el(card,'p','river-big',opOk?fmt(op.cm,0)+' cm':'—');el(card,'p','fineprint',water+' · '+(opOk?'Mõõtmise individuaalne aeg kinnitamata.':'Ära käsitle puuduvat näitu ohutu veetasemena.'));
+  const st=x.history&&Array.isArray(x.history.stations)?x.history.stations.find(v=>v&&String(v.code)===code):null;
+  const arr=Array.isArray(st?.hours)?st.hours:[],pts=arr.filter(p=>p&&numeric(p.cm)&&Number.isFinite(Date.parse(p.t))).map(p=>({t:p.t,cm:p.cm,ms:Date.parse(p.t)})).sort((a,b)=>a.ms-b.ms);
+  let h=el(history,'article','panel river-card'),heading=el(h,'div','river-cardtop');el(heading,'strong','',name);
+  const age=pts.length?(Date.now()-pts[pts.length-1].ms)/3600000:Infinity;
+  el(heading,'span',age>=0&&age<=48?'river-status':'river-status river-old',age>=0&&age<=48?'Ajalooline':'Vananenud');
+  if(!pts.length){el(h,'p','fineprint','Ajalugu puudub');continue}
+  const last=pts[pts.length-1],before=pts.find(p=>p.ms===last.ms-86400000);
+  el(h,'p','river-big',fmt(last.cm,1)+' cm');el(h,'p','fineprint','Tunnikeskmine: '+riverDate(last.t)+' · jaama graafiku null.');
+  if(before)el(h,'p','fineprint','Muutus 24 mõõtetunniga: '+(last.cm>=before.cm?'+':'')+fmt(last.cm-before.cm,1)+' cm');
+  riverChart(h,pts.slice(-72));
+ }
+}
+async function loadRivers(){
+ const c=new AbortController(),timeout=setTimeout(()=>c.abort(),12000);
+ try{const r=await fetch('./data/rivers.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('load');const j=await r.json();riverState=j?.schema==='river-monitor-v1'?j:null}
+ catch(e){riverState=null}finally{clearTimeout(timeout);renderRivers()}
+}
 function show(){
  const ok=active(),a=air(),s=sea(),r=roads();
  $('side-dot').className='dot'+(ok?'':' warning');put('side-state',ok?'Andmeedastus ajakohane':'Andmed aegunud või puuduvad');
@@ -1293,8 +1351,8 @@ const originalHash=location.hash.slice(1);
 selectSection(sections.includes(originalHash)?originalHash:'live',!sections.includes(originalHash));
 function updateOnline(){ $('offline-banner').hidden=navigator.onLine!==false }
 window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);updateOnline();
-tickClock();load();
-setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);
+tickClock();load();loadRivers();
+setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);
 </script>
 </body>
 </html>
