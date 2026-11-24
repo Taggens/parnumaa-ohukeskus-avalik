@@ -601,7 +601,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></article>
     <h3 class="rivers-subtitle">Viimased avaldatud jõenäidud</h3><p id="rivers-feed" class="fineprint">Andmevoo aeg kontrollimisel…</p>
     <div id="rivers-observed" class="rivers-grid" aria-label="Operatiivsed jõenäidud"></div>
-    <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes.</p>
+    <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes. Näidatud on eraldi viimase tunnikeskmise aeg ja meie viimase ajalooandmete päringu aeg.</p>
     <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
     <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
    </section>
@@ -1279,14 +1279,17 @@ function renderRivers(){
  const x=riverState;if(!x||x.schema!=='river-monitor-v1'){put('rivers-status','Jõeseire andmefail puudub või on vigane. Jõgedel võib siiski oht esineda.');put('rivers-feed','Allika andmeid ei saa kinnitada.');return}
  const feed=x.observations||{},hours=riverAge(feed.feed_timestamp_utc),fileHours=riverAge(x.generated_at_utc);
  const feedGood=hours>=0&&hours<=2&&fileHours>=0&&fileHours<=3&&feed.source_status==='ok';
- put('rivers-status','Viimane seirefail '+riverDate(x.generated_at_utc)+(fileHours>3?' · andmefail vananenud':' · andmefail vastu võetud'));
- put('rivers-feed','Operatiivse XML-voo aeg: '+riverDate(feed.feed_timestamp_utc)+'. '+(feedGood?'Allika näidud avaldatud, jaamapõhised mõõtmisajad kinnitamata.':'Voog puudub või on vananenud; näite ei esitata värskena.'));
+ put('rivers-status','Veebilehe jõeseireandmed viimati uuendatud: '+riverDate(x.generated_at_utc)+(fileHours>3||fileHours<0?' · andmefail aegunud või kontrollimata':' · andmefail ajakohane'));
+ put('rivers-feed','Keskkonnaagentuuri XML-andmevoo aeg: '+riverDate(feed.feed_timestamp_utc)+'. '+(feedGood?'Üksikjaamade mõõtmise täpsed kellaajad on kinnitamata.':'Voog puudub või on vananenud; näite ei esitata värskena.'));
  for(const [code,name,water] of riverInfo){
   const op=Array.isArray(feed.stations)?feed.stations.find(v=>v&&String(v.code)===code):null;
   const opOk=feedGood&&op&&numeric(op.cm);
   let card=el(live,'article','panel river-card'),top=el(card,'div','river-cardtop');
   el(top,'strong','',name);el(top,'span',opOk?'river-status':'river-status river-old',opOk?'Allika näit':'Puudub / vana');
-  el(card,'p','river-big',opOk?fmt(op.cm,0)+' cm':'—');el(card,'p','fineprint',water+' · '+(opOk?'Mõõtmise individuaalne aeg kinnitamata.':'Ära käsitle puuduvat näitu ohutu veetasemena.'));
+  el(card,'p','river-big',opOk?fmt(op.cm,0)+' cm':'—');
+  el(card,'p','fineprint',water+' · Mõõtmise kellaaeg: kinnitamata.');
+  el(card,'p','fineprint','XML-andmevoo aeg: '+riverDate(feed.feed_timestamp_utc));
+  if(!opOk)el(card,'p','fineprint','Puuduv või aegunud näit ei tähenda ohutut veetaset.');
   const st=x.history&&Array.isArray(x.history.stations)?x.history.stations.find(v=>v&&String(v.code)===code):null;
   const arr=Array.isArray(st?.hours)?st.hours:[],pts=arr.filter(p=>p&&numeric(p.cm)&&Number.isFinite(Date.parse(p.t))).map(p=>({t:p.t,cm:p.cm,ms:Date.parse(p.t)})).sort((a,b)=>a.ms-b.ms);
   let h=el(history,'article','panel river-card'),heading=el(h,'div','river-cardtop');el(heading,'strong','',name);
@@ -1294,7 +1297,9 @@ function renderRivers(){
   el(heading,'span',age>=0&&age<=48?'river-status':'river-status river-old',age>=0&&age<=48?'Ajalooline':'Vananenud');
   if(!pts.length){el(h,'p','fineprint','Ajalugu puudub');continue}
   const last=pts[pts.length-1],before=pts.find(p=>p.ms===last.ms-86400000);
-  el(h,'p','river-big',fmt(last.cm,1)+' cm');el(h,'p','fineprint','Tunnikeskmine: '+riverDate(last.t)+' · jaama graafiku null.');
+  el(h,'p','river-big',fmt(last.cm,1)+' cm');
+  el(h,'p','fineprint','Viimase tunnikeskmise aeg: '+riverDate(last.t)+' · jaama graafiku null.');
+  el(h,'p','fineprint','Ajalooandmed viimati hangitud: '+riverDate(x.history?.generated_at_utc));
   if(before)el(h,'p','fineprint','Muutus 24 mõõtetunniga: '+(last.cm>=before.cm?'+':'')+fmt(last.cm-before.cm,1)+' cm');
   riverChart(h,pts.slice(-72));
  }
