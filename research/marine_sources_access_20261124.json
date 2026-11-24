@@ -1,0 +1,89 @@
+{
+  "schema": "marine-source-access-probe-v1",
+  "checked_at_utc": "2026-11-24T18:24:53.959632+00:00",
+  "mode": "read_only",
+  "results": {
+    "taltech_kihnu": {
+      "status": "http_ok",
+      "http_code": 200,
+      "final_url": "http://on-line.msi.ttu.ee/kihnu/",
+      "redirect_chain": [
+        {
+          "code": 301,
+          "from": "/kihnu/",
+          "to": "/kihnu/",
+          "cross_origin": true
+        }
+      ],
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "requested_url": "https://on-line.msi.ttu.ee/kihnu/",
+      "page_title": "Kihnu sadam",
+      "has_station_or_model_name": true,
+      "candidate_date_strings": [
+        "24.11.2026 20:15"
+      ],
+      "timestamp_verified": false
+    },
+    "taltech_munalaid": {
+      "status": "http_ok",
+      "http_code": 200,
+      "final_url": "http://on-line.msi.ttu.ee/munalaid/",
+      "redirect_chain": [
+        {
+          "code": 301,
+          "from": "/munalaid/",
+          "to": "/munalaid/",
+          "cross_origin": true
+        }
+      ],
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "requested_url": "https://on-line.msi.ttu.ee/munalaid/",
+      "page_title": "Munalaiu sadam",
+      "has_station_or_model_name": true,
+      "candidate_date_strings": [
+        "24.11.2026 20:20"
+      ],
+      "timestamp_verified": false
+    },
+    "kaia_nemo_catalog": {
+      "status": "http_ok",
+      "http_code": 200,
+      "final_url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=40a63be9-52d3-4833-b9f6-1d6617a8fff5",
+      "redirect_chain": [],
+      "content_type": "text/html; charset=utf-8",
+      "truncated": false,
+      "requested_url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=40a63be9-52d3-4833-b9f6-1d6617a8fff5",
+      "page_title": "KAIA &#x2502; NEMO",
+      "has_station_or_model_name": false,
+      "candidate_date_strings": [],
+      "timestamp_verified": false
+    },
+    "kaia_swan_catalog": {
+      "status": "http_ok",
+      "http_code": 200,
+      "final_url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=319c5400-af7c-43cc-ba6e-94428d1dbc2a",
+      "redirect_chain": [],
+      "content_type": "text/html; charset=utf-8",
+      "truncated": false,
+      "requested_url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=319c5400-af7c-43cc-ba6e-94428d1dbc2a",
+      "page_title": "KAIA &#x2502; SWAN",
+      "has_station_or_model_name": false,
+      "candidate_date_strings": [],
+      "timestamp_verified": false
+    },
+    "kaia_api_unfiltered_metadata_probe": {
+      "status": "http_error",
+      "http_code": 400,
+      "redirect_chain": [],
+      "error_prefix": "{\"error\":\"ConditionParsingException: Error while parsing filter: FormatException: ConditionUnion must have exactly one non-null member, has 0 non-null members\"}",
+      "requested_url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query",
+      "model_filter_verified": false
+    }
+  },
+  "netcdf_content_verified": false,
+  "swan_ready": false,
+  "nemo_ready": false,
+  "taltech_station_measurement_verified": false
+}
