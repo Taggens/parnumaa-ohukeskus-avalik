@@ -564,12 +564,39 @@ def main():
             print('Liikumisarvutus:',exc,file=sys.stderr)
             result={'motion_verified':False,'reason':'Liikumisarvutuse andmed on puudulikud.'}
         observations=result.get('echo_observations') or []
-        data={'frame':latest['time'],'image':public_overlay(latest),'bounds':AREA_LON_LAT,
+        # Keep a rolling, bounded sequence of real radar observations for
+        # the public time slider. Preserve previous published frames between
+        # scheduled updates; never extrapolate or invent historical images.
+        output_path=Path(sys.argv[1])
+        history=[]
+        try:
+            previous=json.loads(output_path.read_text(encoding='utf-8'))
+            if isinstance(previous.get('history'),list):
+                history.extend(previous['history'])
+            elif isinstance(previous.get('frame'),int) and isinstance(previous.get('image'),str):
+                history.append({'frame':previous['frame'],'image':previous['image']})
+        except (OSError,ValueError,TypeError,AttributeError):
+            pass
+        # Include recent official source frames; older history remains bounded.
+        for info in frames[-5:]:
+            stamp=int(info['time'])
+            if not any(row.get('frame')==stamp for row in history if isinstance(row,dict)):
+                history.append({'frame':stamp,'image':public_overlay(info)})
+        history=[row for row in history
+                 if isinstance(row,dict) and isinstance(row.get('frame'),int)
+                 and isinstance(row.get('image'),str)
+                 and 0<=now-row['frame']<=3*3600
+                 and len(row['image'])<1500000]
+        history=sorted({row['frame']:row for row in history}.values(),key=lambda row:row['frame'])[-18:]
+        # If the latest source frame is available it must be the displayed live frame.
+        current=next(row for row in history if row['frame']==latest['time'])
+        data={'frame':latest['time'],'image':current['image'],'bounds':AREA_LON_LAT,
+              'history':history,
               'motion':result.get('motion_verified',False),'reason':result.get('reason'),
               'direction':result.get('moving_toward'),'speed':result.get('speed_kmh_approx'),
               'targets':result.get('targets',[]),
               'observations':observations[-1]['targets'] if observations and observations[-1]['frame_utc']==latest['time'] else []}
-        Path(sys.argv[1]).write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+        output_path.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
 
 if __name__=='__main__':
     main()
