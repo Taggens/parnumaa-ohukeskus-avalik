@@ -8,6 +8,7 @@ Do not interpret HTML page timestamps as verified observations.
 import datetime as dt
 import json
 import re
+import html
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -81,6 +82,23 @@ def summarize(name,url):
         r["has_station_or_model_name"]=name.split("_")[-1].lower() in s.lower()
         r["candidate_date_strings"]=list(dict.fromkeys(re.findall(
             r"\b(?:20\d{2}-\d{2}-\d{2}[T ][0-2]\d:[0-5]\d(?::[0-5]\d)?|[0-3]?\d\.[01]?\d\.20\d{2}\s+[0-2]?\d:[0-5]\d)\b",s)))[:12]
+        # Public-page text only, never trust this as a verified station observation.
+        clean=re.sub(r"(?is)<(script|style)[^>]*>.*?</\\1>"," ",s)
+        clean=html.unescape(re.sub(r"(?is)<[^>]*>"," ",clean))
+        clean=re.sub(r"\\s+"," ",clean).strip()
+        r["page_text_head"]=clean[:1600]
+        r["page_text_length"]=len(clean)
+        r["date_context"]=[]
+        for t in r["candidate_date_strings"][:4]:
+            pos=clean.find(t)
+            if pos>=0:
+                r["date_context"].append(clean[max(0,pos-180):min(len(clean),pos+330)])
+        r["keyword_context"]={}
+        for keyword in ["Meretase","Veetase","lainekõrgus","laineperiood","tuul","õhutemperatuur"]:
+            m=re.search(keyword,clean,re.I)
+            if m:
+                r["keyword_context"][keyword]=clean[max(0,m.start()-60):min(len(clean),m.end()+190)]
+        r["https_to_http_downgrade"]=url.startswith("https:") and r.get("final_url","").startswith("http:")
         r["timestamp_verified"]=False
     return r
 
