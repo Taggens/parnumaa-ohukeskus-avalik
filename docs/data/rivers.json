@@ -1,23 +1,23 @@
 {
  "schema": "river-monitor-v1",
- "generated_at_utc": "2026-11-24T17:49:44Z",
+ "generated_at_utc": "2026-11-24T18:49:31Z",
  "observations": {
   "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
   "source_status": "ok",
-  "feed_timestamp_utc": "2026-11-24T17:49:45Z",
+  "feed_timestamp_utc": "2026-11-24T18:49:33Z",
   "station_measurement_time_verified": false,
   "datum_note": "Sisevete waterlevel: cm Amsterdami nulli suhtes, üksikjaama mõõtmishetk kinnitamata",
   "stations": [
    {
     "code": "41137",
     "name": "Aesoo",
-    "cm": 109.0,
+    "cm": 110.0,
     "station_time_verified": false
    },
    {
     "code": "41183",
     "name": "Audru",
-    "cm": null,
+    "cm": 176.0,
     "station_time_verified": false
    },
    {
@@ -29,31 +29,31 @@
    {
     "code": "41197",
     "name": "Laadi",
-    "cm": 149.0,
+    "cm": 148.0,
     "station_time_verified": false
    },
    {
     "code": "41198",
     "name": "Nurme",
-    "cm": 198.0,
+    "cm": 197.0,
     "station_time_verified": false
    },
    {
     "code": "41127",
     "name": "Oore",
-    "cm": 151.0,
+    "cm": 152.0,
     "station_time_verified": false
    },
    {
     "code": "41140",
     "name": "Riisa",
-    "cm": 152.0,
+    "cm": 153.0,
     "station_time_verified": false
    },
    {
     "code": "41126",
     "name": "Tahkuse",
-    "cm": null,
+    "cm": 87.0,
     "station_time_verified": false
    }
   ]
