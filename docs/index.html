@@ -369,8 +369,8 @@ details.info p{font-size:11px;color:var(--muted)}
 .okf-guide{margin:0 0 17px;border:1px solid #365768;border-radius:12px;background:#112638;overflow:hidden}
 .okf-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none;padding:13px 16px;color:#d5f6f0;font-weight:720;font-size:14px}
 .okf-guide>summary::-webkit-details-marker{display:none}
-.okf-guide>summary::after{content:"+";display:inline-block;font-size:20px;line-height:1;color:#9bd9d4}
-.okf-guide[open]>summary::after{content:"−"}
+.okf-guide>summary::after{content:"";width:.55em;height:.55em;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.okf-guide[open]>summary::after{transform:rotate(225deg)}
 .okf-guide-content{padding:0 16px 16px}
 .okf-guide-intro{margin:0 0 12px;color:#acc6d4;font-size:12px;line-height:1.6}
 .okf-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -388,7 +388,7 @@ details.info p{font-size:11px;color:var(--muted)}
 
  .rivers-subtitle{margin:22px 0 8px}.rivers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.river-card{min-width:0}.river-cardtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.river-status{font-size:.76rem;color:#b5eee2;border:1px solid #48796f;border-radius:7px;padding:3px 7px}.river-old{color:#f5ca91;border-color:#8d7155}.river-big{font-size:1.7rem;font-weight:750;font-variant-numeric:tabular-nums;margin:9px 0}.rivers-chart{display:block;width:100%;height:auto}@media(max-width:850px){.rivers-grid{grid-template-columns:1fr}}
 .marine-subtitle{margin:22px 0 10px}.marine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.marine-card{min-width:0}.marine-card-head{display:flex;gap:12px;justify-content:space-between;align-items:start;flex-wrap:wrap}.marine-tag{font-size:.76rem;padding:3px 8px;border-radius:7px;border:1px solid #507f75;color:#baecdf}.marine-tag.missing{color:#ffd2a0;border-color:#8a735d}.marine-number{font-size:1.9rem;font-weight:750;font-variant-numeric:tabular-nums;margin:8px 0 4px}.marine-number.missing{color:var(--muted)}.marine-card.marine-watch{border-color:#beac62;background:#342d21}.marine-card.marine-high{border-color:#d78a56;background:#372921}.marine-card.marine-severe{border-color:#e06c72;background:#452629}.marine-meta{color:#b7c8d4;font-size:.8rem;line-height:1.6;margin:7px 0}.marine-metrics{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px}.marine-metrics>span{border:1px solid #39576c;padding:6px 9px;border-radius:8px;font-variant-numeric:tabular-nums;font-size:.85rem}@media(max-width:800px){.marine-grid{grid-template-columns:1fr}}
-</style>
+#data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}</style>
 </head>
 <body>
 <div id="app" class="app-shell">
@@ -403,7 +403,6 @@ details.info p{font-size:11px;color:var(--muted)}
    <button type="button" class="nav-link" data-section="marine"><span class="nav-icon">⚓</span> Mereseire</button>
    <button type="button" class="nav-link" data-section="sources"><span class="nav-icon">◷</span> Allikad</button>
   </nav>
-  <div class="side-bottom"><div class="small-label">AVALIK VADE</div><div class="side-status"><span id="side-dot" class="dot neutral"></span><span id="side-state">Andmete kontroll ootel</span></div><p>Pärisandmed, tegelikud mõõtmisajad ja kuue mudeli prognoosid. Avalikus vaates ei ole administraatori seadeid ega privaatsed kontrolltööriistu.</p></div>
  </aside>
  <div id="drawer-scrim" aria-hidden="true"></div>
  <div class="main-wrap">
@@ -512,7 +511,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <label>Mudel<select id="okf-model" aria-label="Ilmaprognoosi mudel"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
   </div></div>
   <div class="okf-trust-line"><span id="okf-state">Andmete kontroll ootel</span><span id="okf-source">Mudelivalik ootel</span><span id="okf-updated">Aeg ootel</span></div>
-  <p class="okf-display-tip">ℹ️ Prognoositabelit on kõige mugavam vaadata tahvelarvutis või arvutis. Telefonis saad tabelit külgsuunas kerida.</p>
+
 
   <details class="okf-guide" id="forecast-guide">
    <summary>📖 Kuidas ilmaandmeid ja prognoose lugeda? · KKK ja legend</summary>
@@ -602,16 +601,17 @@ details.info p{font-size:11px;color:var(--muted)}
     <div class="section-header"><div><h2 id="radar-heading">Pärnumaa sajuradar</h2><p>Keskkonnaagentuuri KAIA radarikomposiit</p></div></div>
     <article class="panel"><strong id="radar-time">Radarikaadri laadimine…</strong><p id="radar-move"></p>
     <div id="radar-map" aria-label="Pärnumaa sajuradari kaart" style="height:clamp(285px,48vh,480px);border-radius:12px;background:#dae4eb;isolation:isolate"></div>
-    <p class="fineprint">Saju intensiivsus (mm/h) · <span style="color:#55bbf0">●</span> 0,1 · <span style="color:#1e6cc7">●</span> 0,5 · <span style="color:#26a68b">●</span> 1 · <span style="color:#e3d43d">●</span> 4 · <span style="color:#fd9c30">●</span> 8 · <span style="color:#ec413d">●</span> 16</p></article>
+    <div class="radar-scale"><strong>Saju intensiivsus (mm/h)</strong><div><span style="--rate:#8eddf3">0,05</span><span style="--rate:#55bbf0">0,1</span><span style="--rate:#3493da">0,3</span><span style="--rate:#1e6cc7">0,5</span><span style="--rate:#26a68b">1</span><span style="--rate:#4bbc56">2</span><span style="--rate:#e3d43d">4</span><span style="--rate:#fd9c30">8</span><span style="--rate:#ec413d">16</span><span style="--rate:#b839ab">50+</span></div></div></article>
     <h3>Radarikaja saabumishinnang</h3><div id="radar-cards" class="rivers-grid"></div>
     <p class="fineprint">Hinnang ulatub kuni 90 minuti kaugusele. Radar mõõdab sadu kõrgemal atmosfääris. Maapinnale jõudmise aeg võib erineda.</p>
    </section>
    <section id="rivers" class="screen" aria-labelledby="rivers-heading">
     <div class="section-header"><div><h2 id="rivers-heading">🌊 Pärnumaa jõeseire</h2><p>Viimati avaldatud ametliku XML-voo jõenäidud ja ajaloolised tunnikeskmised.</p></div><span class="kicker">KESKKONNAAGENTUUR</span></div>
-    <article class="panel"><div class="panel-title"><div><h3>Andmete tähendus ja värskus</h3><p id="rivers-status">Jõeseireandmete laadimine…</p></div></div>
-    <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></article>
+    <p class="fineprint" id="rivers-status">Jõeseireandmete laadimine…</p>
     <h3 class="rivers-subtitle">Viimased avaldatud jõenäidud</h3><p id="rivers-feed" class="fineprint">Andmevoo aeg kontrollimisel…</p>
     <div id="rivers-observed" class="rivers-grid" aria-label="Operatiivsed jõenäidud"></div>
+    <details class="panel reading-details water-guide"><summary>Kuidas näitu lugeda?</summary>
+    <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></details>
     <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes. Näidatud on eraldi viimase tunnikeskmise aeg ja meie viimase ajalooandmete päringu aeg.</p>
     <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
     <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
@@ -619,13 +619,14 @@ details.info p{font-size:11px;color:var(--muted)}
 
    <section id="marine" class="screen" aria-labelledby="marine-heading">
     <div class="section-header"><div><h2 id="marine-heading">⚓ Pärnumaa mereseire</h2><p>Pärnu, Häädemeeste ja Virtsu meretasemed ning Kihnu rannikujaama ilm.</p></div><span class="kicker">KESKKONNAAGENTUUR · TALTECH</span></div>
-    <article class="panel"><div class="panel-title"><div><h3>Andmete värskus ja päritolu</h3><p id="marine-status">Mereseire andmefaili kontroll…</p></div></div>
+    <p class="fineprint" id="marine-status">Mereseire andmefaili kontroll…</p>
+    <h3 class="marine-subtitle">Meretasemed · Pärnumaa rannik</h3>
+    <div id="marine-levels" class="marine-grid" aria-label="Rannikujaamade meretasemed"></div>
+    <details class="panel reading-details water-guide"><summary>Kuidas näitu lugeda?</summary>
      <p id="marine-feed-time" class="fineprint">Ametliku rannikujaamade XML-voo aeg kontrollimisel…</p>
      <p class="fineprint"><strong>Pärnu</strong> põhijaama kinnitatud meretaseme mõõtmisaeg tuleb olemasolevast seirest. <strong>Häädemeeste ja Virtsu</strong> andmed tulevad Keskkonnaagentuuri XML-ist, kus <strong>andmevoo aeg ei kinnita üksikjaama mõõtmishetke</strong>. Pärnu XML-näit on ainult varuvariant, mitte automaatse hoiatuse alus. Kihnu puhul kasutame ilmajaama tuulenäite, mitte kinnitamata sadama meretaset. Kõik mereveetasemed on märgitud EH2000 sentimeetrites.</p>
      <p class="fineprint">Kohalikud meretaseme tähelepanupiirid (+100 / +150 / +180 cm) kehtivad meie süsteemis <strong>ainult Pärnu värske ja kontrollitud mõõtmise kohta</strong>. Need ei ole ametlikud hoiatusastmed. Mereseire jaotis ei saada telefoniteavitusi.</p>
-    </article>
-    <h3 class="marine-subtitle">Meretasemed · Pärnumaa rannik</h3>
-    <div id="marine-levels" class="marine-grid" aria-label="Rannikujaamade meretasemed"></div>
+    </details>
     <h3 class="marine-subtitle">Sadamad ja rannikujaamad · ilm</h3>
     <div id="marine-weather" class="marine-grid" aria-label="Rannikujaamade ilmavaatlused"></div>
     <article class="panel" style="margin-top:18px"><div class="panel-title"><div><h3>Mereprognoosid ja lisasadamad</h3><p>Katsetamine pooleli</p></div></div>
@@ -1067,9 +1068,9 @@ function okfHourTable(hours,place){
  const build=(label,renderer)=>{const row=el(body,'tr');el(row,'th','',label);for(const h of list){const td=el(row,'td');renderer(h,td)}};
  build('Ilm',(h,td)=>{const w=okfWeatherAtTime(h,place);const holder=el(td,'span','okf-weather-symbol');okfSvgIcon(holder,w);el(td,'small','okf-small',w.kind==='unknown'?'Andmed puuduvad':w.label)});
  build('Temperatuur',(h,td)=>{td.textContent=numeric(h.temp)?fmt(h.temp,0)+' °C':'—'});
+ build('Sadu (1 h)',(h,td)=>{td.textContent=numeric(h.precip)?fmt(h.precip)+' mm':'—'});
  build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
  build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
- build('Sadu (1 h)',(h,td)=>{td.textContent=numeric(h.precip)?fmt(h.precip)+' mm':'—'});
  const availableVisibility=list.some(h=>numeric(h?.visibility_m)&&h.visibility_m>=0&&h.visibility_m<=100000);
  if(availableVisibility)build('Nähtavus (mudel)',(h,td)=>{
   const v=h?.visibility_m;
@@ -1422,10 +1423,9 @@ async function loadRivers(){
 }
 function show(){
  const ok=active(),a=air(),s=sea(),r=roads();
- $('side-dot').className='dot'+(ok?'':' warning');put('side-state',ok?'Andmeedastus ajakohane':'Andmed aegunud või puuduvad');
- put('published',state&&timestamp(state.published_at_utc)!==null?'Andmed avaldatud '+local(state.published_at_utc):'Avaldamise aeg puudub');
+ put('published',state&&timestamp(state.published_at_utc)!==null?'Andmefail uuendatud '+local(state.published_at_utc):'Avaldamise aeg puudub');
  put('footer-updated',state&&timestamp(state.published_at_utc)!==null?'Viimane andmeedastus '+local(state.published_at_utc):'Andmeedastus kontrollimata');
- $('data-message').classList.toggle('ok',ok);
+ $('data-message').hidden=ok;
  const first=$('data-message').querySelector('strong'),detail=$('data-message').querySelector('p');
  first.textContent=ok?'Avalik andmeedastus on ajakohane':'Avalik andmeedastus puudub või on aegunud';
  detail.textContent=ok?'Ilmamõõtmiste, mudelite ja teeilmajaamade värskus on eraldi kontrollitud.':'Ära tõlgenda puuduvaid või aegunud näite ohutute oludena. Vaata ametlikke allikaid.';
@@ -1463,6 +1463,12 @@ async function load(){
  }catch(e){state=null}finally{clearTimeout(timeout);loading=false;$('refresh').disabled=false;show()}
 }
 $('refresh').addEventListener('click',load);
+const hourCard=document.querySelector('.okf-hour-card');
+const hourAnchor=document.createComment('Tunniprognoosi asukoht');
+hourCard.before(hourAnchor);
+const phoneForecast=window.matchMedia('(max-width:760px)');
+function positionHourly(){if(phoneForecast.matches){document.querySelector('.okf-trust-line').after(hourCard)}else{hourAnchor.after(hourCard)}}
+positionHourly();phoneForecast.addEventListener('change',positionHourly);
 const originalHash=location.hash.slice(1);
 selectSection(sections.includes(originalHash)?originalHash:'live',!sections.includes(originalHash));
 function updateOnline(){ $('offline-banner').hidden=navigator.onLine!==false }
