@@ -1,5 +1,10 @@
 name: Parnu river monitor
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/river-monitor.yml'
+      - 'scripts/update_rivers.py'
   schedule:
     - cron: '21 * * * *'
   workflow_dispatch:
