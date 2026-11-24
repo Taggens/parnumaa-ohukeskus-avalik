@@ -1,0 +1,37 @@
+name: Pärnumaa sajuradar
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/update_public_radar.py', '.github/workflows/radar.yml']
+  schedule:
+    - cron: '3-59/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: public-kaia-radar
+  cancel-in-progress: false
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy h5py Pillow pyproj
+      - run: python scripts/update_public_radar.py docs/data/radar.json
+      - name: Publish radar frame
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data/radar.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Uuenda KAIA radarikaadrit ja saabumishinnanguid'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          exit 1
