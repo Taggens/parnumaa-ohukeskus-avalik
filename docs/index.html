@@ -397,6 +397,7 @@ details.info p{font-size:11px;color:var(--muted)}
   <nav class="nav" id="nav" aria-label="Jaotised">
    <button type="button" class="nav-link active" data-section="live" aria-current="page"><span class="nav-icon">◉</span> Live-ilm</button>
    <button type="button" class="nav-link" data-section="forecast"><span class="nav-icon">≋</span> Ilmaprognoos</button>
+   <button type="button" class="nav-link" data-section="radar"><span class="nav-icon">☂</span> Sajuradar</button>
    <button type="button" class="nav-link" data-section="roads"><span class="nav-icon">🚗</span> Teeolud</button>
    <button type="button" class="nav-link" data-section="rivers"><span class="nav-icon">🌊</span> Jõeseire</button>
    <button type="button" class="nav-link" data-section="marine"><span class="nav-icon">⚓</span> Mereseire</button>
@@ -597,6 +598,14 @@ details.info p{font-size:11px;color:var(--muted)}
      <p class="fineprint">Puuduv või vananenud mõõtmine ei tähenda ohutut teeolukorda. Liiklussündmusi avalikus vaates ei kuvata.</p>
     </article>
    </section>
+   <section id="radar" class="screen" aria-labelledby="radar-heading">
+    <div class="section-header"><div><h2 id="radar-heading">Pärnumaa sajuradar</h2><p>Keskkonnaagentuuri KAIA radarikomposiit</p></div></div>
+    <article class="panel"><strong id="radar-time">Radarikaadri laadimine…</strong><p id="radar-move"></p>
+    <div id="radar-map" aria-label="Pärnumaa sajuradari kaart" style="height:clamp(285px,48vh,480px);border-radius:12px;background:#dae4eb;isolation:isolate"></div>
+    <p class="fineprint">Saju intensiivsus (mm/h) · <span style="color:#55bbf0">●</span> 0,1 · <span style="color:#1e6cc7">●</span> 0,5 · <span style="color:#26a68b">●</span> 1 · <span style="color:#e3d43d">●</span> 4 · <span style="color:#fd9c30">●</span> 8 · <span style="color:#ec413d">●</span> 16</p></article>
+    <h3>Radarikaja saabumishinnang</h3><div id="radar-cards" class="rivers-grid"></div>
+    <p class="fineprint">Hinnang ulatub kuni 90 minuti kaugusele. Radar mõõdab sadu kõrgemal atmosfääris. Maapinnale jõudmise aeg võib erineda.</p>
+   </section>
    <section id="rivers" class="screen" aria-labelledby="rivers-heading">
     <div class="section-header"><div><h2 id="rivers-heading">🌊 Pärnumaa jõeseire</h2><p>Viimati avaldatud ametliku XML-voo jõenäidud ja ajaloolised tunnikeskmised.</p></div><span class="kicker">KESKKONNAAGENTUUR</span></div>
     <article class="panel"><div class="panel-title"><div><h3>Andmete tähendus ja värskus</h3><p id="rivers-status">Jõeseireandmete laadimine…</p></div></div>
@@ -650,7 +659,7 @@ const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme',
 const modelNames={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
 const modelOrder=Object.keys(modelNames);
 const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
-const titles={live:'Live-ilm',forecast:'Ilmaprognoos',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad'};
+const titles={live:'Live-ilm',forecast:'Ilmaprognoos',radar:'Sajuradar',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad'};
 const $=id=>document.getElementById(id);
 const put=(id,str)=>{$(id).textContent=str};
 const el=(parent,tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=value;parent.append(node);return node};
@@ -1461,5 +1470,6 @@ window.addEventListener('online',updateOnline);window.addEventListener('offline'
 tickClock();load();loadRivers();loadMarine();
 setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);setInterval(()=>{if(!document.hidden)loadMarine()},300000);
 </script>
+<script src="./radar.js"></script>
 </body>
 </html>
