@@ -32,7 +32,10 @@
   const now=Date.now()/1000,f=data?.frame,age=Math.floor((now-f)/60);
   const fresh=Number.isFinite(f)&&now-f>=-120&&now-f<=900;
   document.getElementById('radar-time').textContent=f?'KAIA radarikaader '+clock(f)+' · '+Math.max(0,age)+' min tagasi'+(fresh?'':' · aegunud või kinnitamata'):'Värske radarikaader puudub.';
-  document.getElementById('radar-move').textContent=fresh&&data.motion?'Sajuala liikumine '+data.direction+' · umbes '+data.speed+' km/h':'';
+  const motionValid=fresh&&data?.motion===true&&typeof data.direction==='string'&&data.direction.trim().length>0&&Number.isFinite(Number(data.speed))&&Number(data.speed)>0;
+  document.getElementById('radar-direction').textContent=motionValid?data.direction:'Kinnitamata';
+  document.getElementById('radar-speed').textContent=motionValid?'umbes '+data.speed+' km/h':'—';
+  document.getElementById('radar-motion-note').textContent=!fresh?'Värske, kuni 15 minuti vanune radarikaader puudub.':motionValid?'Hinnang radarikaja nihkest järjestikustel kaadritel, mitte maapinnal mõõdetud tuul.':data?.reason||'Sajuala liikumist ei saa praegu usaldusväärselt hinnata.';
   panel.replaceChildren();
   for(const name of Object.keys(points)){
    const t=data?.targets?.find(x=>x.name===name);
