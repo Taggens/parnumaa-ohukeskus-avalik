@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/marine-monitor.yml'
       - 'scripts/update_marine.py'
+      - 'scripts/test_marine_public.py'
+      - 'docs/index.html'
   schedule:
     - cron: '18,38,58 * * * *'
   workflow_dispatch:
@@ -26,6 +28,8 @@ jobs:
           python-version: '3.12'
       - name: Validate marine XML data safety checks
         run: python scripts/update_marine.py --selftest
+      - name: Check marine public menu and inline JavaScript
+        run: python scripts/test_marine_public.py
       - name: Read official coastal XML without false measurement timestamps
         run: python scripts/update_marine.py --output docs/data/marine.json
       - name: Commit public monitoring data
