@@ -620,7 +620,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <h3 class="marine-subtitle">Sadamad ja rannikujaamad · ilm</h3>
     <div id="marine-weather" class="marine-grid" aria-label="Rannikujaamade ilmavaatlused"></div>
     <article class="panel" style="margin-top:18px"><div class="panel-title"><div><h3>Mereprognoosid ja lisasadamad</h3><p>Katsetamine pooleli</p></div></div>
-     <p class="fineprint"><strong>NEMO meretasemeprognoosi</strong> ja <strong>SWAN laineprognoosi</strong> ei kuvata enne, kui NetCDF muutujad, Pärnu lahe mudelivõrk, ajatemplid ja kõrgussüsteem on kontrollitud. <strong>Munalaiu</strong> sadama mõõteandmete automaatset liidest pole veel kinnitatud. Kihnu ilmajaam ei võrdu kinnitatud Munalaiu sadamajaamaga.</p>
+     <p class="fineprint"><strong>NEMO meretasemeprognoosi</strong> ja <strong>SWAN laineprognoosi</strong> ei kuvata enne, kui NetCDF muutujad, Pärnu lahe mudelivõrk, ajatemplid ja kõrgussüsteem on kontrollitud. <strong>Munalaiu</strong> sadama mõõteandmete automaatset liidest pole veel kinnitatud. Kihnu ilmajaam ei võrdu kinnitatud Munalaiu sadamajaamaga.</p><p><a href="https://on-line.msi.ttu.ee/munalaid/" target="_blank" rel="noopener noreferrer">TalTech · Munalaiu sadam ↗</a> · <a href="https://on-line.msi.ttu.ee/kihnu/" target="_blank" rel="noopener noreferrer">TalTech · Kihnu sadam ↗</a> (nende lehtede näite me veel automaatselt ei avalda).</p>
      <p><a href="https://www.ilmateenistus.ee/meri/vaatlusandmed/kogu-rannik/andmed-tabelis/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri rannikuvaatlused ↗</a> · <a href="https://keskkonnaportaal.ee/et/avaandmed/ilma-mudelprognoosid" target="_blank" rel="noopener noreferrer">NEMO ja SWAN andmeallikad ↗</a></p>
     </article>
     <p class="fineprint">Allikad: <a href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri XML-dokumentatsioon</a>, <a href="https://on-line.msi.ttu.ee/meretase/graph.php?jaam=parnu" target="_blank" rel="noopener noreferrer">Pärnu meretaseme allikas</a> ja olemasolev TalTechi sadamajaama mõõtevoog. Puuduv või aegunud näit ei tähenda ohutut olukorda. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
@@ -1342,6 +1342,7 @@ function renderMarine(){
   el(metrics,'span','','Tuul '+(numeric(windValue)?fmt(windValue,1)+' m/s':'—'));
   el(metrics,'span','','Puhang '+(numeric(gustValue)?fmt(gustValue,1)+' m/s':'—'));
   el(metrics,'span','','Õhk '+(numeric(tempValue)?fmt(tempValue,1)+' °C':'—'));
+  if(numeric(v.wind_direction_deg))el(metrics,'span','','Tuule suund '+fmt(v.wind_direction_deg,0)+'°');
   if(!isP&&xml&&numeric(xml.water_temperature_c))el(metrics,'span','','Vesi '+fmt(xml.water_temperature_c,1)+' °C');
   el(card,'p','marine-meta',trusted?'Mõõdetud: '+marineDate(a.observed_at_utc):'Jaamapõhine mõõtmisaeg: kinnitamata. XML-voo aeg: '+marineDate(obs.feed_timestamp_utc));
   if(isP&&!trusted&&xml)el(card,'p','marine-meta','Pärnu varuandmed pärinevad XML-ist, mitte TalTechi kinnitatud mõõtmisajaga sadamajaamast.');
