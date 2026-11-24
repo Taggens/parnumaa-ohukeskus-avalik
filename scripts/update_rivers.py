@@ -21,7 +21,7 @@ XML_URL = "https://ilmateenistus.ee/ilma_andmed/xml/observations.php"
 HIST_URL = "https://keskkonnaandmed.envir.ee/f_hydroseire"
 STATIONS = {
     "41137": ("Aesoo", "Navesti"),
-    "41183": ("Audru", "Audru jõgi"),
+    "41183": ("Audru", "Audru jõgi"),  # Historical API station code
     "41174": ("Kaansoo", "Saarjõgi"),
     "41197": ("Laadi", "Reiu"),
     "41198": ("Nurme", "Sauga"),
@@ -29,6 +29,7 @@ STATIONS = {
     "41140": ("Riisa", "Halliste"),
     "41126": ("Tahkuse", "Pärnu jõgi"),
 }
+XML_TO_HISTORY_CODE = {"41196": "41183"}  # KAUR XML uses a different Audru code than history API
 HEADERS = {"User-Agent": "ParnuIlmakeskus-Hydrology/1.0", "Accept": "application/json, application/xml;q=0.9"}
 def now_utc():
     return datetime.now(UTC)
@@ -68,7 +69,8 @@ def parse_xml(raw, now):
     fresh = -300 <= age <= 7200
     found, duplicates = {}, set()
     for entry in root.findall("station"):
-        code = (entry.findtext("wmocode") or "").strip()
+        xml_code = (entry.findtext("wmocode") or "").strip()
+        code = XML_TO_HISTORY_CODE.get(xml_code, xml_code)
         if code not in STATIONS:
             continue
         if code in found:
@@ -178,6 +180,20 @@ def selftest():
     assert a["source_status"]=="ok"
     assert next(x["cm"] for x in a["stations"] if x["code"]=="41140")==152
     assert next(x["cm"] for x in a["stations"] if x["code"]=="41137") is None
+    # The operational XML has Audru 41196, while f_hydroseire history has 41183.
+    # All public observation rows continue to use the existing history code.
+    variant = sample.replace(b"</observations>",
+        b'<station><wmocode>41196</wmocode><name>Audru</name><waterlevel>176</waterlevel></station>'
+        b'<station><wmocode>41126</wmocode><name>Tahkuse</name><waterlevel>87</waterlevel></station>'
+        b'<station><wmocode>41174</wmocode><name>Kaansoo</name><waterlevel></waterlevel></station>'
+        b'</observations>')
+    mapped = parse_xml(variant,now)
+    assert next(x["cm"] for x in mapped["stations"] if x["code"]=="41183")==176
+    assert next(x["cm"] for x in mapped["stations"] if x["code"]=="41126")==87
+    assert next(x["cm"] for x in mapped["stations"] if x["code"]=="41174") is None
+    # Refuse inconsistent names and duplicates rather than inventing current values.
+    bad = variant.replace(b"<name>Audru</name>",b"<name>Vale</name>")
+    assert next(x["cm"] for x in parse_xml(bad,now)["stations"] if x["code"]=="41183") is None
     assert parse_xml(sample,now+timedelta(hours=3))["source_status"]=="stale"
     dupe=sample.replace(b"</observations>",b'<station><wmocode>41140</wmocode><name>Riisa</name><waterlevel>999</waterlevel></station></observations>')
     assert next(x["cm"] for x in parse_xml(dupe,now)["stations"] if x["code"]=="41140") is None
@@ -185,7 +201,7 @@ def selftest():
            "timeline_ts_utc":stamp(now-timedelta(hours=i)),"vaartus":150+i} for i in range(72)]
     assert len(parse_history("41140",json.dumps(rows).encode(),now)["hours"])==72
     assert collect(now,xml_fetch=lambda:sample,history_fetch=lambda a,b:{"stations":[]})["schema"]=="river-monitor-v1"
-    print("OK: ajakontroll, jaamakoodid, duplikaadid, nullväärtused, 72h ajalugu, ühine väljastus")
+    print("OK: ajakontroll, XML Audru 41196 vastendus ajaloo 41183-le, Tahkuse, Kaansoo tühi näit, jaama nime kontroll, 72h ajalugu")
 def main():
     p=argparse.ArgumentParser();p.add_argument("--output",default="docs/data/rivers.json")
     p.add_argument("--selftest",action="store_true");args=p.parse_args()
