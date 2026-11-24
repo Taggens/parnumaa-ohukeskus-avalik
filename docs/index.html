@@ -387,6 +387,7 @@ details.info p{font-size:11px;color:var(--muted)}
 @media(max-width:760px){.okf-guide-grid{grid-template-columns:minmax(0,1fr)}.okf-guide>summary{padding:12px 13px}.okf-guide-content{padding:0 12px 13px}}
 
  .rivers-subtitle{margin:22px 0 8px}.rivers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.river-card{min-width:0}.river-cardtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.river-status{font-size:.76rem;color:#b5eee2;border:1px solid #48796f;border-radius:7px;padding:3px 7px}.river-old{color:#f5ca91;border-color:#8d7155}.river-big{font-size:1.7rem;font-weight:750;font-variant-numeric:tabular-nums;margin:9px 0}.rivers-chart{display:block;width:100%;height:auto}@media(max-width:850px){.rivers-grid{grid-template-columns:1fr}}
+.marine-subtitle{margin:22px 0 10px}.marine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.marine-card{min-width:0}.marine-card-head{display:flex;gap:12px;justify-content:space-between;align-items:start;flex-wrap:wrap}.marine-tag{font-size:.76rem;padding:3px 8px;border-radius:7px;border:1px solid #507f75;color:#baecdf}.marine-tag.missing{color:#ffd2a0;border-color:#8a735d}.marine-number{font-size:1.9rem;font-weight:750;font-variant-numeric:tabular-nums;margin:8px 0 4px}.marine-number.missing{color:var(--muted)}.marine-card.marine-watch{border-color:#beac62;background:#342d21}.marine-card.marine-high{border-color:#d78a56;background:#372921}.marine-card.marine-severe{border-color:#e06c72;background:#452629}.marine-meta{color:#b7c8d4;font-size:.8rem;line-height:1.6;margin:7px 0}.marine-metrics{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px}.marine-metrics>span{border:1px solid #39576c;padding:6px 9px;border-radius:8px;font-variant-numeric:tabular-nums;font-size:.85rem}@media(max-width:800px){.marine-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -398,6 +399,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <button type="button" class="nav-link" data-section="forecast"><span class="nav-icon">≋</span> Ilmaprognoos</button>
    <button type="button" class="nav-link" data-section="roads"><span class="nav-icon">🚗</span> Teeolud</button>
    <button type="button" class="nav-link" data-section="rivers"><span class="nav-icon">🌊</span> Jõeseire</button>
+   <button type="button" class="nav-link" data-section="marine"><span class="nav-icon">⚓</span> Mereseire</button>
    <button type="button" class="nav-link" data-section="sources"><span class="nav-icon">◷</span> Allikad</button>
   </nav>
   <div class="side-bottom"><div class="small-label">AVALIK VADE</div><div class="side-status"><span id="side-dot" class="dot neutral"></span><span id="side-state">Andmete kontroll ootel</span></div><p>Pärisandmed, tegelikud mõõtmisajad ja kuue mudeli prognoosid. Avalikus vaates ei ole administraatori seadeid ega privaatsed kontrolltööriistu.</p></div>
@@ -605,6 +607,24 @@ details.info p{font-size:11px;color:var(--muted)}
     <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
     <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
    </section>
+
+   <section id="marine" class="screen" aria-labelledby="marine-heading">
+    <div class="section-header"><div><h2 id="marine-heading">⚓ Pärnumaa mereseire</h2><p>Pärnu, Häädemeeste ja Virtsu meretasemed ning Kihnu rannikujaama ilm.</p></div><span class="kicker">KESKKONNAAGENTUUR · TALTECH</span></div>
+    <article class="panel"><div class="panel-title"><div><h3>Andmete värskus ja päritolu</h3><p id="marine-status">Mereseire andmefaili kontroll…</p></div></div>
+     <p id="marine-feed-time" class="fineprint">Ametliku rannikujaamade XML-voo aeg kontrollimisel…</p>
+     <p class="fineprint"><strong>Pärnu</strong> põhijaama kinnitatud meretaseme mõõtmisaeg tuleb olemasolevast seirest. <strong>Häädemeeste ja Virtsu</strong> andmed tulevad Keskkonnaagentuuri XML-ist, kus <strong>andmevoo aeg ei kinnita üksikjaama mõõtmishetke</strong>. Pärnu XML-näit on ainult varuvariant, mitte automaatse hoiatuse alus. Kihnu puhul kasutame ilmajaama tuulenäite, mitte kinnitamata sadama meretaset. Kõik mereveetasemed on märgitud EH2000 sentimeetrites.</p>
+     <p class="fineprint">Kohalikud meretaseme tähelepanupiirid (+100 / +150 / +180 cm) kehtivad meie süsteemis <strong>ainult Pärnu värske ja kontrollitud mõõtmise kohta</strong>. Need ei ole ametlikud hoiatusastmed. Mereseire jaotis ei saada telefoniteavitusi.</p>
+    </article>
+    <h3 class="marine-subtitle">Meretasemed · Pärnumaa rannik</h3>
+    <div id="marine-levels" class="marine-grid" aria-label="Rannikujaamade meretasemed"></div>
+    <h3 class="marine-subtitle">Sadamad ja rannikujaamad · ilm</h3>
+    <div id="marine-weather" class="marine-grid" aria-label="Rannikujaamade ilmavaatlused"></div>
+    <article class="panel" style="margin-top:18px"><div class="panel-title"><div><h3>Mereprognoosid ja lisasadamad</h3><p>Katsetamine pooleli</p></div></div>
+     <p class="fineprint"><strong>NEMO meretasemeprognoosi</strong> ja <strong>SWAN laineprognoosi</strong> ei kuvata enne, kui NetCDF muutujad, Pärnu lahe mudelivõrk, ajatemplid ja kõrgussüsteem on kontrollitud. <strong>Munalaiu</strong> sadama mõõteandmete automaatset liidest pole veel kinnitatud. Kihnu ilmajaam ei võrdu kinnitatud Munalaiu sadamajaamaga.</p>
+     <p><a href="https://www.ilmateenistus.ee/meri/vaatlusandmed/kogu-rannik/andmed-tabelis/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri rannikuvaatlused ↗</a> · <a href="https://keskkonnaportaal.ee/et/avaandmed/ilma-mudelprognoosid" target="_blank" rel="noopener noreferrer">NEMO ja SWAN andmeallikad ↗</a></p>
+    </article>
+    <p class="fineprint">Allikad: <a href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri XML-dokumentatsioon</a>, <a href="https://on-line.msi.ttu.ee/meretase/graph.php?jaam=parnu" target="_blank" rel="noopener noreferrer">Pärnu meretaseme allikas</a> ja olemasolev TalTechi sadamajaama mõõtevoog. Puuduv või aegunud näit ei tähenda ohutut olukorda. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
+   </section>
    <section id="sources" class="screen" aria-labelledby="sources-heading">
     <div class="section-header"><div><h2 id="sources-heading">Andmeallikad</h2><p>Pärnu mõõtmiste, ilmaprognooside ja teeilmaandmete päritolu.</p></div></div>
     <article class="panel"><div class="panel-title"><div><h3>Allikate viimane teadaolev seis</h3><p>Mõõtmiste ja ilmaprognooside vastuvõtmise aeg, mitte oletuslik turvaseis</p></div><span class="kicker">ALLIKATE TERVIS</span></div><div id="source-catalog" class="source-catalog"><div class="empty">Ootan allikaid…</div></div></article>
@@ -630,7 +650,7 @@ const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme',
 const modelNames={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
 const modelOrder=Object.keys(modelNames);
 const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
-const titles={live:'Live-ilm',forecast:'Ilmaprognoos',roads:'Teeolud',rivers:'Jõeseire',sources:'Andmeallikad'};
+const titles={live:'Live-ilm',forecast:'Ilmaprognoos',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad'};
 const $=id=>document.getElementById(id);
 const put=(id,str)=>{$(id).textContent=str};
 const el=(parent,tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=value;parent.append(node);return node};
@@ -1258,6 +1278,81 @@ function renderFamilySources(w){
  }
 }
 
+
+let marineState=null;
+const coastStations=[['41803','Pärnu','Pärnu rannikujaam'],['86031','Häädemeeste','Häädemeeste rannikujaam'],['26128','Virtsu','Virtsu rannikujaam']];
+function marineEligible(){
+ const m=marineState,obs=m?.official_observations;
+ return !!(m?.schema==='marine-monitor-v1' && obs?.source_status==='ok' &&
+    fresh(m.generated_at_utc,90) && fresh(obs.feed_timestamp_utc,110) && Array.isArray(obs.stations));
+}
+function marineData(code){
+ return marineState?.official_observations?.stations?.find(x=>x&&String(x.code)===code)||null;
+}
+function marineDate(t){return timestamp(t)===null?'teadmata':local(t)+' (Eesti aeg)'}
+function marineValue(v,decimals=1){return numeric(v)?fmt(v,decimals):'—'}
+function renderMarine(){
+ const levels=$('marine-levels'),weatherCards=$('marine-weather');
+ levels.replaceChildren();weatherCards.replaceChildren();
+ const good=marineEligible(),obs=marineState?.official_observations||{};
+ const dataAge=sourceAgeLabel(marineState?.generated_at_utc),feedAge=sourceAgeLabel(obs.feed_timestamp_utc);
+ put('marine-status',marineState?.schema==='marine-monitor-v1'?
+  'Meie rannikujaamade andmefail: '+marineDate(marineState.generated_at_utc)+' · '+dataAge+(good?' · ajakohane':' · aegunud või puudulik'):
+  'Keskkonnaagentuuri rannikujaamade andmefail puudub või on kontrollimata.');
+ put('marine-feed-time','Keskkonnaagentuuri XML-voo aeg: '+marineDate(obs.feed_timestamp_utc)+' · '+feedAge+'. Üksikjaama mõõtmisaeg XML-is kinnitamata.');
+ const ps=sea(),pFresh=!!(ps&&numeric(ps.level_cm)&&ps.vertical_datum==='EH2000');
+ const reportedMarine=good?marineData('41803'):null;
+ for(const [code,name,sub] of coastStations){
+  const isP=code==='41803',xml=good?marineData(code):null;
+  const sourceVerified=isP&&pFresh;
+  const fallback=isP&&!sourceVerified&&xml&&numeric(xml.sea_level_eh2000_cm);
+  const cm=sourceVerified?ps.level_cm:((isP&&fallback)||(!isP&&xml&&numeric(xml.sea_level_eh2000_cm)))?xml.sea_level_eh2000_cm:null;
+  const has=cm!==null&&numeric(cm);
+  const label=sourceVerified?'Kinnitatud mõõtmine':has?'XML viimati avaldatud':'Puudub / aegunud';
+  const card=el(levels,'article','panel marine-card'),head=el(card,'div','marine-card-head');
+  const left=el(head,'div');el(left,'strong','',name);el(left,'p','fineprint',sub);
+  el(head,'span',has?'marine-tag':'marine-tag missing',label);
+  if(sourceVerified&&cm>=180)card.classList.add('marine-severe');
+  else if(sourceVerified&&cm>=150)card.classList.add('marine-high');
+  else if(sourceVerified&&cm>=100)card.classList.add('marine-watch');
+  el(card,'p',has?'marine-number':'marine-number missing',has?(cm>=0?'+':'')+fmt(cm,0)+' cm':'—');
+  if(sourceVerified){
+   el(card,'p','marine-meta','Mõõdetud: '+marineDate(ps.observed_at_utc)+' · EH2000. Kontrollitud mõõtmisaeg.');
+   const prev=timestamp(ps.comparison_time_utc),cur=timestamp(ps.observed_at_utc);
+   if(ps.trend_verified===true&&numeric(ps.change_last_hour_cm)&&prev!==null&&cur!==null&&(cur-prev)>=50*60000&&(cur-prev)<=70*60000){
+    el(card,'p','marine-meta','Muudatus ~1 tunni jooksul: '+(ps.change_last_hour_cm>=0?'+':'')+fmt(ps.change_last_hour_cm,0)+' cm.');
+   }
+   el(card,'p','marine-meta','Meie Pärnu mõõtefail avaldatud: '+marineDate(state?.published_at_utc));
+  }else{
+   el(card,'p','marine-meta','Jaama mõõtmise täpne aeg: kinnitamata. '+(has?'See on viimati avaldatud XML-näit, mitte kontrollitud hetketase.':'Värske või sobiv väärtus puudub.'));
+   el(card,'p','marine-meta','XML-voo aeg: '+marineDate(obs.feed_timestamp_utc));
+  }
+  if(isP&&sourceVerified&&cm>=100)el(card,'p','marine-meta','Kohalik Pärnu tähelepanupiir ületatud · mitte ametlik hoiatus.');
+ }
+ for(const [code,name,sub] of [...coastStations,['26226','Kihnu','Kihnu ilmajaam (mitte sadama meretase)']]){
+  const xml=good?marineData(code):null;
+  const isP=code==='41803',a=isP?air():null;
+  const trusted=!!(isP&&a),v=trusted?a:xml||{},avail=!!(trusted||xml);
+  const windValue=trusted?v.wind_ms:v.wind_ms,gustValue=trusted?v.gust_ms:v.gust_ms,tempValue=trusted?v.temperature_c:v.air_temperature_c;
+  const valid=avail&&(numeric(windValue)||numeric(gustValue)||numeric(tempValue));
+  const card=el(weatherCards,'article','panel marine-card'),top=el(card,'div','marine-card-head');
+  const left=el(top,'div');el(left,'strong','',name);el(left,'p','fineprint',sub);
+  el(top,'span',valid?'marine-tag':'marine-tag missing',trusted?'Mõõtmisaeg kinnitatud':valid?'XML viimati avaldatud':'Puudub / aegunud');
+  const metrics=el(card,'div','marine-metrics');
+  el(metrics,'span','','Tuul '+(numeric(windValue)?fmt(windValue,1)+' m/s':'—'));
+  el(metrics,'span','','Puhang '+(numeric(gustValue)?fmt(gustValue,1)+' m/s':'—'));
+  el(metrics,'span','','Õhk '+(numeric(tempValue)?fmt(tempValue,1)+' °C':'—'));
+  if(!isP&&xml&&numeric(xml.water_temperature_c))el(metrics,'span','','Vesi '+fmt(xml.water_temperature_c,1)+' °C');
+  el(card,'p','marine-meta',trusted?'Mõõdetud: '+marineDate(a.observed_at_utc):'Jaamapõhine mõõtmisaeg: kinnitamata. XML-voo aeg: '+marineDate(obs.feed_timestamp_utc));
+  if(isP&&!trusted&&xml)el(card,'p','marine-meta','Pärnu varuandmed pärinevad XML-ist, mitte TalTechi kinnitatud mõõtmisajaga sadamajaamast.');
+ }
+}
+async function loadMarine(){
+ const c=new AbortController(),to=setTimeout(()=>c.abort(),12000);
+ try{const r=await fetch('./data/marine.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('marine HTTP');const v=await r.json();marineState=v?.schema==='marine-monitor-v1'?v:null}
+ catch(e){marineState=null}finally{clearTimeout(to);renderMarine()}
+}
+
 let riverState=null;
 const riverInfo=[['41137','Aesoo','Navesti'],['41183','Audru','Audru jõgi'],['41174','Kaansoo','Saarjõgi'],['41197','Laadi','Reiu'],['41198','Nurme','Sauga'],['41127','Oore','Pärnu jõgi'],['41140','Riisa','Halliste'],['41126','Tahkuse','Pärnu jõgi']];
 function riverAge(t){const x=Date.parse(t||'');return Number.isFinite(x)?(Date.now()-x)/3600000:Infinity}
@@ -1318,7 +1413,7 @@ function show(){
  const first=$('data-message').querySelector('strong'),detail=$('data-message').querySelector('p');
  first.textContent=ok?'Avalik andmeedastus on ajakohane':'Avalik andmeedastus puudub või on aegunud';
  detail.textContent=ok?'Ilmamõõtmiste, mudelite ja teeilmajaamade värskus on eraldi kontrollitud.':'Ära tõlgenda puuduvaid või aegunud näite ohutute oludena. Vaata ametlikke allikaid.';
- renderLive();renderForecast();renderRoads();renderSources();renderFamilyExtras();
+ renderLive();renderForecast();renderRoads();renderSources();renderFamilyExtras();renderMarine();
 }
 const sections=Object.keys(titles);
 function selectSection(id,changeHash=true){
@@ -1356,8 +1451,8 @@ const originalHash=location.hash.slice(1);
 selectSection(sections.includes(originalHash)?originalHash:'live',!sections.includes(originalHash));
 function updateOnline(){ $('offline-banner').hidden=navigator.onLine!==false }
 window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);updateOnline();
-tickClock();load();loadRivers();
-setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);
+tickClock();load();loadRivers();loadMarine();
+setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);setInterval(()=>{if(!document.hidden)loadMarine()},300000);
 </script>
 </body>
 </html>
