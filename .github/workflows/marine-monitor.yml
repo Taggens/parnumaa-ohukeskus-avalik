@@ -1,0 +1,49 @@
+name: Parnu coastal marine monitor
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/marine-monitor.yml'
+      - 'scripts/update_marine.py'
+  schedule:
+    - cron: '18,38,58 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: parnu-marine-monitor
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate marine XML data safety checks
+        run: python scripts/update_marine.py --selftest
+      - name: Read official coastal XML without false measurement timestamps
+        run: python scripts/update_marine.py --output docs/data/marine.json
+      - name: Commit public monitoring data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- docs/data/marine.json
+          if git diff --cached --quiet; then
+            echo "No change in marine data"
+            exit 0
+          fi
+          git commit -m "Uuenda Pärnumaa rannikujaamade avalikke andmeid"
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 3
+          done
+          echo "Marine data push failed after retries" >&2
+          exit 1
