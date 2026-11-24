@@ -27,7 +27,7 @@ def main():
     p.feed(html)
     duplicates=[key for key,n in Counter(p.ids).items() if n!=1]
     assert not duplicates, "duplicate IDs: "+str(duplicates)
-    expected={"live","forecast","roads","rivers","marine","sources"}
+    expected={"live","forecast","roads","rivers","marine","sources","radar"}
     assert set(p.buttons)==expected and set(p.screens)==expected
     assert len(p.buttons)==len(expected) and len(p.screens)==len(expected)
     for id in ["marine-heading","marine-status","marine-feed-time","marine-levels","marine-weather"]:
@@ -42,12 +42,13 @@ def main():
                  "on-line.msi.ttu.ee/kihnu"]:
         assert text in html, "marine safety/UI logic missing: "+text
     scripts=re.findall(r"<script(?:\s[^>]*)?>([\s\S]*?)</script>",html)
+    scripts=[body for body in scripts if body.strip()]
     assert len(scripts)==1, "Expected one inline script"
     with TemporaryDirectory() as tmp:
         js=Path(tmp)/"site.js"
         js.write_text(scripts[0],encoding="utf-8")
         result=run(["node","--check",str(js)],text=True,capture_output=True)
         assert result.returncode==0, result.stdout+result.stderr
-    print("OK: 14 marine UI assertions + JS syntax + unique DOM IDs + six menus")
+    print("OK: 14 marine UI assertions + JS syntax + unique DOM IDs + seven menus")
 if __name__=="__main__":
     main()
