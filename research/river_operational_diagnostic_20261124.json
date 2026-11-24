@@ -1,0 +1,68 @@
+{
+  "checked_at_utc": "2026-11-24T18:48:33.875503+00:00",
+  "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
+  "mode": "read_only",
+  "stations": {
+    "Kaansoo": {
+      "expected_wmocode": "41174",
+      "matching_xml_records": 1,
+      "records": [
+        {
+          "name": "Kaansoo",
+          "wmocode": "41174",
+          "fields": {
+            "waterlevel": "",
+            "waterlevel_eh2000": "",
+            "watertemperature": "",
+            "airtemperature": "",
+            "precipitations": ""
+          },
+          "xml_child_count": 19
+        }
+      ],
+      "matches_exporter_exact_name_and_code": true
+    },
+    "Audru": {
+      "expected_wmocode": "41183",
+      "matching_xml_records": 1,
+      "records": [
+        {
+          "name": "Audru",
+          "wmocode": "41196",
+          "fields": {
+            "waterlevel": "176",
+            "waterlevel_eh2000": "",
+            "watertemperature": "3.8",
+            "airtemperature": "2.2",
+            "precipitations": ""
+          },
+          "xml_child_count": 19
+        }
+      ],
+      "matches_exporter_exact_name_and_code": false
+    },
+    "Tahkuse": {
+      "expected_wmocode": "41126",
+      "matching_xml_records": 1,
+      "records": [
+        {
+          "name": "Tahkuse",
+          "wmocode": "41126",
+          "fields": {
+            "waterlevel": "87",
+            "waterlevel_eh2000": "",
+            "watertemperature": "3.5",
+            "airtemperature": "1.8",
+            "precipitations": ""
+          },
+          "xml_child_count": 19
+        }
+      ],
+      "matches_exporter_exact_name_and_code": true
+    }
+  },
+  "xml_root": "observations",
+  "feed_timestamp_unix": "1795546116",
+  "feed_timestamp_utc": "2026-11-24T18:48:36+00:00",
+  "total_xml_stations": 154
+}
