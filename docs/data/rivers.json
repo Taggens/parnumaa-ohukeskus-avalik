@@ -1,10 +1,10 @@
 {
  "schema": "river-monitor-v1",
- "generated_at_utc": "2026-11-25T14:16:15Z",
+ "generated_at_utc": "2026-11-25T15:16:13Z",
  "observations": {
   "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
   "source_status": "ok",
-  "feed_timestamp_utc": "2026-11-25T14:16:16Z",
+  "feed_timestamp_utc": "2026-11-25T15:16:14Z",
   "station_measurement_time_verified": false,
   "datum_note": "Sisevete waterlevel: cm Amsterdami nulli suhtes, üksikjaama mõõtmishetk kinnitamata",
   "stations": [
@@ -29,13 +29,13 @@
    {
     "code": "41197",
     "name": "Laadi",
-    "cm": 139.0,
+    "cm": 138.0,
     "station_time_verified": false
    },
    {
     "code": "41198",
     "name": "Nurme",
-    "cm": 175.0,
+    "cm": null,
     "station_time_verified": false
    },
    {
@@ -47,7 +47,7 @@
    {
     "code": "41140",
     "name": "Riisa",
-    "cm": 153.0,
+    "cm": 154.0,
     "station_time_verified": false
    },
    {
