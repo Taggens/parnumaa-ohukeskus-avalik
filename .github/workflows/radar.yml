@@ -2,7 +2,7 @@ name: Pärnumaa sajuradar
 on:
   push:
     branches: [main]
-    paths: ['scripts/update_public_radar.py', '.github/workflows/radar.yml']
+    paths: ['scripts/update_public_radar.py', '.github/workflows/radar.yml', 'docs/data/state.json']
   schedule:
     - cron: '3-59/10 * * * *'
   workflow_dispatch:
@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
