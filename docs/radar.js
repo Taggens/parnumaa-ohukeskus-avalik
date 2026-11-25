@@ -82,7 +82,11 @@
   activateMap();render();
   if(loading||Date.now()-lastFetch<30000)return;
   loading=true;lastFetch=Date.now();
-  try{const r=await fetch('./data/radar.json',{cache:'no-store'});if(r.ok){const j=await r.json();if(Number.isFinite(j.frame))data=j;}}catch{}finally{loading=false;render();}
+  try{const r=await fetch('./data/radar.json',{cache:'no-store'});if(r.ok){const j=await r.json();if(Number.isFinite(j.frame)){
+    const followLatest=selectedFrame===null||selectedFrame===data?.frame;
+    data=j;
+    if(followLatest)selectedFrame=j.frame;
+   }}}catch{}finally{loading=false;render();}
  }
  document.getElementById('radar-history').addEventListener('input',event=>{
   const frames=history(),index=Number(event.target.value);
