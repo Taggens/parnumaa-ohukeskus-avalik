@@ -1369,10 +1369,13 @@ function renderMarine(){
   if(isP&&!trusted&&xml)el(card,'p','marine-meta','Pärnu varuandmed pärinevad XML-ist, mitte TalTechi kinnitatud mõõtmisajaga sadamajaamast.');
  }
 }
+let loadMarinePending=false;
 async function loadMarine(){
+ if(loadMarinePending)return;
+ loadMarinePending=true;
  const c=new AbortController(),to=setTimeout(()=>c.abort(),12000);
  try{const r=await fetch('./data/marine.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('marine HTTP');const v=await r.json();marineState=v?.schema==='marine-monitor-v1'?v:null}
- catch(e){marineState=null}finally{clearTimeout(to);renderMarine()}
+ catch(e){/* Keep the last response with its original timestamps. */}finally{loadMarinePending=false;clearTimeout(to);renderMarine()}
 }
 
 let riverState=null;
@@ -1421,10 +1424,13 @@ function renderRivers(){
   riverChart(h,pts.slice(-72));
  }
 }
+let loadRiversPending=false;
 async function loadRivers(){
+ if(loadRiversPending)return;
+ loadRiversPending=true;
  const c=new AbortController(),timeout=setTimeout(()=>c.abort(),12000);
  try{const r=await fetch('./data/rivers.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('load');const j=await r.json();riverState=j?.schema==='river-monitor-v1'?j:null}
- catch(e){riverState=null}finally{clearTimeout(timeout);renderRivers()}
+ catch(e){/* Keep the last response with its original timestamps. */}finally{loadRiversPending=false;clearTimeout(timeout);renderRivers()}
 }
 function show(){
  const ok=active(),a=air(),s=sea(),r=roads();
@@ -1465,9 +1471,11 @@ async function load(){
   const response=await fetch('./data/state.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:ctrl.signal});
   if(!response.ok)throw Error('public data HTTP');
   const raw=await response.json();state=raw&&raw.schema===1?raw:null;
- }catch(e){state=null}finally{clearTimeout(timeout);loading=false;$('refresh').disabled=false;show()}
+ }catch(e){/* Existing age checks expire the last successful response. */}finally{clearTimeout(timeout);loading=false;$('refresh').disabled=false;show()}
 }
-$('refresh').addEventListener('click',load);
+function refreshPublicData(){load();loadRivers();loadMarine()}
+$('refresh').addEventListener('click',refreshPublicData);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshPublicData()});
 const hourCard=document.querySelector('.okf-hour-card');
 const hourAnchor=document.createComment('Tunniprognoosi asukoht');
 hourCard.before(hourAnchor);
