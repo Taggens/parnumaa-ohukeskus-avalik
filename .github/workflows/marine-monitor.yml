@@ -7,6 +7,7 @@ on:
       - 'scripts/update_marine.py'
       - 'scripts/test_marine_public.py'
       - 'docs/index.html'
+      - 'docs/data/state.json'
   schedule:
     - cron: '18,38,58 * * * *'
   workflow_dispatch:
@@ -23,6 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
