@@ -89,6 +89,19 @@ def parse_xml(raw, now):
         code=row["code"]
         if fresh and code in matched and code not in duplicates:
             row.update(matched[code])
+    local_sites = {"41803":"Pärnu", "41198":"Nurme", "41196":"Audru", "41197":"Laadi"}
+    local_fields = {key: spec for key, spec in FIELDS.items() if key != "waterlevel_eh2000"}
+    local_fields.update({"airpressure": ("pressure_hpa", 800, 1100),
+                         "relativehumidity": ("humidity_pct", 0, 100)})
+    sites = []
+    for code, name in local_sites.items():
+        nodes = [node for node in root.findall("station")
+                 if node.findtext("wmocode") == code and node.findtext("name") == name]
+        if fresh and len(nodes) == 1:
+            row = {target: value(nodes[0].findtext(field), low, high)
+                   for field, (target, low, high) in local_fields.items()}
+            sites.append(dict(row, code=code, name=name))
+    result["local_weather_stations"] = sites
     result["source_url"]=SOURCE
     result["note"]="XML avaldamisaeg ei kinnita üksikjaama mõõtmisaega. Meretase on EH2000 sentimeetrites."
     return result
