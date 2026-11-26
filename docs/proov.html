@@ -391,7 +391,7 @@ details.info p{font-size:11px;color:var(--muted)}
 #data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}</style>
 <style>
 #home{padding:clamp(12px,3vw,36px) 0}#home h2{font-size:clamp(24px,3vw,38px);margin:16px 0}.now-grid,#home-hours{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}.now-grid article,#home-hours article{padding:clamp(12px,2vw,24px);border:1px solid #335065;border-radius:12px;background:#112638}.now-grid h3{font-size:1rem;margin:0}.now-grid strong{display:block;font-size:clamp(26px,4vw,52px);margin:12px 0;color:#a1e8df}#home small{display:block;color:#bed0de}.home-links{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0}.home-links a{color:#9be3de}#home-hours{grid-template-columns:repeat(6,minmax(0,1fr))}#home-hours b,#home-hours strong{display:block;margin-bottom:6px}@media(max-width:800px){#home-hours{grid-template-columns:repeat(3,1fr)}.now-grid{grid-template-columns:1fr 1fr}.now-grid article:last-child{grid-column:1/-1}}
-</style></head>
+.ka-sites{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}.ka-sites article{padding:14px;border:1px solid #355065;border-radius:12px}.ka-sites h4{margin:0 0 8px}.ka-sites p{margin:4px 0}</style></head>
 <body>
 <div id="app" class="app-shell">
  <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
@@ -422,7 +422,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <aside class="panel" aria-labelledby="official-warning-title"><strong id="official-warning-title">Keskkonnaagentuuri ametlikud hoiatused</strong><div id="official-warning-list">Kontrollin hoiatusvoogu…</div><a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ametlik hoiatuskaart ↗</a></aside>
    <section id="home" class="screen active">
 <h2>Pärnu praegu</h2><div class="now-grid"><article><h3>Pärnu sadama õhutemperatuur</h3><strong id="home-temp">—</strong><small id="home-airtime"></small></article><article><h3>Keskmine tuul</h3><strong id="home-wind">—</strong><small id="home-gust"></small></article><article><h3>Pärnu meretase</h3><strong id="home-sea">—</strong><small id="home-seatime"></small><small id="home-trend"></small></article></div>
-<h2>Järgmised 6 tundi</h2><p id="home-model"></p><div id="home-hours"></div><nav class="home-links"><a href="#forecast">Prognoos →</a><a href="#radar">Sajuradar →</a><a href="#marine">Mereseire →</a><a href="#rivers">Jõeseire →</a><a href="#roads">Teeolud →</a></nav></section><section id="live" class="screen" aria-labelledby="live-heading">
+<h2>Järgmised 6 tundi</h2><p id="home-model"></p><div id="home-hours"></div><nav class="home-links"><a href="#live">Live-ilm ja jaamad →</a><a href="#forecast">Prognoos →</a><a href="#radar">Sajuradar →</a><a href="#marine">Mereseire →</a><a href="#rivers">Jõeseire →</a><a href="#roads">Teeolud →</a></nav></section><section id="live" class="screen" aria-labelledby="live-heading">
     <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Pärnu sadama ja tunnijaama eri allikate mõõtmised. Näidud ei kirjelda automaatselt kogu maakonda.</p></div><span class="chip">Kontrollitud mõõteajad</span></div>
     <div id="live-situation" class="situation-banner incomplete" role="status" aria-live="polite">
      <strong id="live-situation-title">Olukorra hindamiseks ootan mõõteandmeid</strong>
@@ -492,6 +492,7 @@ details.info p{font-size:11px;color:var(--muted)}
      </details>
      <details class="reading-details technical-details"><summary>Mõõtmiste tehnilised piirangud ja algallikas</summary><p>Live-lehe kohalik tuule tähelepanupiir 15 m/s põhineb ainult värskel keskmise tuule mõõtmisel, mitte puhangul. Avalikus vaates puuduvad administraatori teavitusseaded. TalTechi mõõtmise puudumine või vananemine ei tähenda vaikimisi ohutuid olusid. Jaamanäit ei ole prognoos.</p><p><a href="https://on-line.msi.ttu.ee/parnu/" target="_blank" rel="noopener noreferrer">Ava TalTechi algne leht ja graafikud ↗</a></p></details>
     </article>
+<article class="panel"><h3>Keskkonnaagentuuri jaamad · Pärnu ja ümbrus</h3><p id="ka-time">Kontrollin jaamade andmeid…</p><div id="ka-sites" class="ka-sites"></div></article>
     <div class="live-priority-grid">
      <article class="panel priority-reading" id="hourly-rain-card">
       <div class="priority-heading"><h3>Viimase kinnitatud tunni sadu · Pärnu</h3><span class="reading-source">Keskkonnaagentuur</span></div>
@@ -1339,7 +1340,22 @@ function renderOfficialWarnings(){
  if(!localCount)caption.append(' Voos '+(w.items.length?'puudub eraldi Pärnumaa või Liivi lahe kirje.':'hoiatuskirjeid ei olnud.'));
  if(other.children.length>1)box.append(other);
 }
-function renderMarine(){
+function renderLocalStations(){
+ const obs=marineState?.official_observations,box=$('ka-sites');box.replaceChildren();
+ const sites=obs?.local_weather_stations;
+ if(!marineEligible()||!Array.isArray(sites)||!sites.length){
+ put('ka-time','Jaamade värsked andmed puuduvad.');return;}
+ put('ka-time','XML-voo aeg '+local(obs.feed_timestamp_utc)+' (Eesti aeg). Üksikjaamade mõõtmisaeg on kinnitamata.');
+ const fields=[['air_temperature_c','Õhk','°C'],['wind_ms','Tuul','m/s'],['gust_ms','Puhang','m/s'],['wind_direction_deg','Tuule suund','°'],['humidity_pct','Niiskus','%'],['pressure_hpa','Õhurõhk','hPa'],['water_temperature_c','Vesi','°C']];
+ for(const site of sites){
+ const card=document.createElement('article'),heading=document.createElement('h4');
+ heading.textContent=site.name;card.append(heading);
+ for(const [key,label,unit] of fields){
+ if(!Number.isFinite(site[key]))continue;
+ const line=document.createElement('p');line.textContent=label+' '+site[key].toLocaleString('et-EE')+' '+unit;card.append(line);}
+ if(card.children.length===1)card.append('Näidud puuduvad');box.append(card);}
+}
+function renderMarine(){renderLocalStations();
  renderOfficialWarnings();
  const levels=$('marine-levels'),weatherCards=$('marine-weather');
  levels.replaceChildren();weatherCards.replaceChildren();
