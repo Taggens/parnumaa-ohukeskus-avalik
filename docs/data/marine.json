@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T15:01:12Z",
+  "generated_at_utc": "2026-11-26T15:04:28Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T15:01:13Z",
+    "feed_timestamp_utc": "2026-11-26T15:04:30Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,24 +11,24 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 28.0,
+        "sea_level_eh2000_cm": 29.0,
         "water_temperature_c": 2.9,
         "air_temperature_c": -1.2,
-        "wind_ms": 1.7,
-        "gust_ms": 3.0,
-        "wind_direction_deg": 310.0
+        "wind_ms": 1.8,
+        "gust_ms": 3.1,
+        "wind_direction_deg": 309.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 32.0,
+        "sea_level_eh2000_cm": 33.0,
         "water_temperature_c": 6.5,
         "air_temperature_c": -1.5,
-        "wind_ms": 2.4,
-        "gust_ms": 3.8,
-        "wind_direction_deg": 45.0
+        "wind_ms": 2.6,
+        "gust_ms": 3.7,
+        "wind_direction_deg": 40.0
       },
       {
         "code": "26128",
@@ -64,7 +64,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-26T15:01:14Z",
+    "checked": "2026-11-26T15:04:32Z",
     "items": [
       {
         "area": "Soome lahe idaosa",
