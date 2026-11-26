@@ -425,11 +425,9 @@ details.info p{font-size:11px;color:var(--muted)}
   </div></header>
   <main class="content">
    <div id="offline-banner" class="banner" hidden>Võrguühendus puudub. Viimaseid tulemusi ei esitata hetkeolukorrana.</div>
-   <div class="intro"><div class="pill">● Avalik perevaade · prooviversioon</div><span id="published">Kontrollin viimast avaldatud andmefaili…</span></div>
    <div id="data-message" class="banner" role="status"><strong>Kontrollin andmeid…</strong><p>Andmefaili laadimine ja värskuskontroll.</p></div>
 
-   <section id="live" class="screen active" aria-labelledby="live-heading">
-    <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>TalTechi sadamajaama ja Keskkonnaagentuuri Pärnu jaama mõõtmised.</p></div><span class="chip">Jaamade andmeajad</span></div>
+   <section id="live" class="screen active" aria-label="Pärnu ilmajaamade mõõtmised">
     <div class="station-comparison">
     <article class="panel live-panel">
      <div class="panel-title"><div><h3>TalTechi sadamajaama mõõtmised</h3><p id="live-time">Jaama mõõtmisaja kontroll on ootel…</p></div></div>
@@ -1574,7 +1572,6 @@ async function loadRivers(){
 }
 function show(){
  const ok=active(),a=air(),s=sea(),r=roads();
- put('published',state&&timestamp(state.published_at_utc)!==null?'Andmefail uuendatud '+local(state.published_at_utc):'Avaldamise aeg puudub');
  put('footer-updated',state&&timestamp(state.published_at_utc)!==null?'Viimane andmeedastus '+local(state.published_at_utc):'Andmeedastus kontrollimata');
  $('data-message').hidden=ok;
  const first=$('data-message').querySelector('strong'),detail=$('data-message').querySelector('p');
