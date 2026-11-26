@@ -83,7 +83,13 @@ def list_files(now=None, requester=None):
     for _ in range(3):
         req=urllib.request.Request(API_URL, data=json.dumps(body).encode('utf-8'),method='POST',
               headers={'User-Agent':'Parnumaa-Ohukeskus/0.5.3', 'Content-Type':'application/json','Accept':'application/json'})
-        response=json.loads(requester(req,MAX_META_BYTES))
+        try:
+            raw = requester(req, MAX_META_BYTES)
+        except TimeoutError:
+            print('KAIA faililoendi päring aegus. Proovin ühe korra uuesti.', flush=True)
+            time.sleep(2)
+            raw = requester(req, MAX_META_BYTES)
+        response = json.loads(raw)
         if not isinstance(response,dict) or not isinstance(response.get('documents'),list):
             raise ValueError('KAIA metaandmete vastus on vale kujuga')
         for document in response['documents']:
