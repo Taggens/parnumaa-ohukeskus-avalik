@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T14:46:12Z",
+  "generated_at_utc": "2026-11-26T15:00:12Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T14:46:17Z",
+    "feed_timestamp_utc": "2026-11-26T15:00:14Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,23 +11,23 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 27.0,
+        "sea_level_eh2000_cm": 28.0,
         "water_temperature_c": 2.9,
-        "air_temperature_c": -1.1,
-        "wind_ms": 1.6,
-        "gust_ms": 2.6,
-        "wind_direction_deg": 305.0
+        "air_temperature_c": -1.2,
+        "wind_ms": 1.7,
+        "gust_ms": 3.0,
+        "wind_direction_deg": 310.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 33.0,
+        "sea_level_eh2000_cm": 32.0,
         "water_temperature_c": 6.5,
-        "air_temperature_c": -1.6,
-        "wind_ms": 2.1,
-        "gust_ms": 2.8,
+        "air_temperature_c": -1.5,
+        "wind_ms": 2.4,
+        "gust_ms": 3.8,
         "wind_direction_deg": 45.0
       },
       {
@@ -36,11 +36,11 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 29.0,
-        "water_temperature_c": 3.4,
+        "water_temperature_c": 3.5,
         "air_temperature_c": -0.8,
-        "wind_ms": 2.3,
+        "wind_ms": 2.4,
         "gust_ms": 3.0,
-        "wind_direction_deg": 21.0
+        "wind_direction_deg": 20.0
       },
       {
         "code": "26226",
@@ -49,10 +49,10 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": -1.1,
+        "air_temperature_c": -1.2,
         "wind_ms": 1.1,
-        "gust_ms": 2.3,
-        "wind_direction_deg": 12.0
+        "gust_ms": 2.4,
+        "wind_direction_deg": 11.0
       }
     ],
     "source_url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
@@ -62,5 +62,14 @@
     "nemo": "unverified",
     "swan": "unverified"
   },
-  "automatic_alerts": false
+  "automatic_alerts": false,
+  "warnings": {
+    "checked": "2026-11-26T15:00:16Z",
+    "items": [
+      {
+        "area": "Soome lahe idaosa",
+        "message": "Põhja- ja loodetuul, puhanguti  kuni 15 m/s. Laine kõrgus 1-2 m. 2026-11-26 09:00 - 2026-11-27 01:00"
+      }
+    ]
+  }
 }
