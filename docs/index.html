@@ -698,7 +698,9 @@ function forecastModel(place,selected='auto'){
  // katab mitmetunnise mudelitsükli. Eraldi kontrollime tegeliku jooksu vanust.
  const valid=models.filter(m=>{
   if(!m||!modelOrder.includes(m.id)||!Array.isArray(m.hours))return false;
-  if(!fresh(m.source_received_at_utc,m.id==='fmi_meps'?210:240))return false;
+  if(!fresh(m.source_received_at_utc,m.id==='fmi_meps'?210:240)){
+   if(selected!==m.id || m.id==='fmi_meps' || !m.retained_previous || !fresh(m.source_received_at_utc,7200))return false;
+  }
   if(m.id==='fmi_meps'){
    const run=timestamp(m.run_utc),age=run===null?Infinity:Date.now()-run;
    if(age< -300000||age>9*3600000)return false;
@@ -719,6 +721,7 @@ function sourceAgeLabel(sourceTime){
  return minutes<60?minutes+' min tagasi':Math.floor(minutes/60)+' h '+(minutes%60)+' min tagasi';
 }
 function runTimeLabel(model){
+ if(model?.retained_previous)return 'Viimane salvestatud prognoos · saadud '+local(model.source_received_at_utc)+(model.last_poll_failed?' · viimane päring ebaõnnestus':' · aegunud');
  if(!model||!model.run_utc)return 'Lähtejooksu aeg teadmata';
  const run=timestamp(model.run_utc),received=timestamp(model.source_received_at_utc);
  return run!==null&&received!==null&&run<=received+300000&&run>=received-7*86400000?'Allika märgitud jooks '+local(model.run_utc):'Lähtejooksu aeg kinnitamata';
