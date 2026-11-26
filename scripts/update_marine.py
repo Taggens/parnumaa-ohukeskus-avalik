@@ -154,6 +154,30 @@ def selftest():
     assert build(n,reader=lambda: wrap(row("26128","Virtsu","46","4")).encode())["automatic_alerts"] is False
     assert all(s["station_measurement_time_verified"] is False for s in a["stations"])
     print("OK: 15 rannikujaama XML-kontrolli (aeg, jaama identiteet, duplikaat, ühik, null, väärnäit, Kihnu, veaolek, teavitused)")
+AIRPORT_SOURCE = "https://aviationweather.gov/api/data/metar?ids=EEPU&format=json&hours=3"
+
+def airport_observation(raw, now):
+    reports = json.loads(raw)
+    if not isinstance(reports, list):
+        raise ValueError("Vigane METAR-i vastus")
+    recent = [r for r in reports if isinstance(r, dict) and r.get("icaoId") == "EEPU"
+              and r.get("metarType") in ("METAR", "SPECI")
+              and type(r.get("obsTime")) is int and 0 <= now.timestamp()-r["obsTime"] <= 3600]
+    if not recent:
+        return None
+    r = max(recent, key=lambda item: item["obsTime"])
+    def field(key, low, high):
+        return value(str(r.get(key)), low, high)
+    def wind(key):
+        knots = field(key, 0, 200)
+        return None if knots is None else round(knots * 1852 / 3600, 2)
+    speed = wind("wspd")
+    return {"code":"EEPU", "observed_at_utc":stamp(datetime.fromtimestamp(r["obsTime"], UTC)),
+            "air_temperature_c":field("temp", -70, 60), "dewpoint_c":field("dewp", -80, 50),
+            "wind_ms":speed, "gust_ms":wind("wgst"),
+            "wind_direction_deg":field("wdir", 0, 360) if speed else None,
+            "pressure_hpa":field("altim", 850, 1100)}
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--output",default="docs/data/marine.json")
@@ -181,6 +205,15 @@ def main():
         d["warnings"] = {"checked":stamp(now_utc()),"items":items}
     except (HTTPException,OSError,ValueError,ET.ParseError):
         d["warnings"] = None
+    try:
+        d["airport"] = airport_observation(request(AIRPORT_SOURCE), now_utc())
+    except (HTTPException, OSError, ValueError):
+        # Keep the observation's original time during a transient source outage.
+        try:
+            previous = json.loads(Path(args.output).read_text(encoding="utf-8"))
+            d["airport"] = previous.get("airport") if isinstance(previous, dict) else None
+        except (OSError, ValueError):
+            d["airport"] = None
     save(args.output,d)
     print("Mereseire XML:",d["official_observations"]["source_status"],
           "jaamu",len(d["official_observations"]["stations"]),
