@@ -41,8 +41,8 @@ def value(raw, low, high):
     except (ValueError, TypeError):
         return None
     return round(v,2) if math.isfinite(v) and low <= v <= high else None
-def request():
-    req = Request(SOURCE, headers={"User-Agent":"ParnuIlmakeskus-Marine/1.0",
+def request(url=SOURCE):
+    req = Request(url, headers={"User-Agent":"ParnuIlmakeskus-Marine/1.0",
                                      "Accept":"application/xml,text/xml;q=0.9,*/*;q=0.5"})
     with urlopen(req,timeout=25) as resp:
         data = resp.read(2800000)
@@ -148,6 +148,26 @@ def main():
     args=p.parse_args()
     if args.selftest: selftest();return
     d=build(now_utc())
+    try:
+        from http.client import HTTPException
+        raw = request("https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php")
+        if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
+            raise ValueError("Ootamatu XML")
+        root = ET.fromstring(raw)
+        if root.tag != "warnings":
+            raise ValueError("Tundmatu hoiatusvoog")
+        items = []
+        for node in root:
+            area = (node.findtext("area_est") or "").strip()
+            message = (node.findtext("content_est") or "").strip()
+            if node.tag != "warning" or not area or not message:
+                raise ValueError("Puudulik hoiatus")
+            items.append({"area":area,"message":message})
+        if len(json.dumps(items,ensure_ascii=False).encode())>30000:
+            raise ValueError("Hoiatuste maht")
+        d["warnings"] = {"checked":stamp(now_utc()),"items":items}
+    except (HTTPException,OSError,ValueError,ET.ParseError):
+        d["warnings"] = None
     save(args.output,d)
     print("Mereseire XML:",d["official_observations"]["source_status"],
           "jaamu",len(d["official_observations"]["stations"]),
