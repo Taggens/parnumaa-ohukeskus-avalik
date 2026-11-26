@@ -417,6 +417,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <div id="offline-banner" class="banner" hidden>Võrguühendus puudub. Viimaseid tulemusi ei esitata hetkeolukorrana.</div>
    <div class="intro"><div class="pill">● Avalik perevaade · prooviversioon</div><span id="published">Kontrollin viimast avaldatud andmefaili…</span></div>
    <div id="data-message" class="banner" role="status"><strong>Kontrollin andmeid…</strong><p>Andmefaili laadimine ja värskuskontroll.</p></div>
+   <aside class="panel" aria-labelledby="official-warning-title"><strong id="official-warning-title">Keskkonnaagentuuri ametlikud hoiatused</strong><div id="official-warning-list">Kontrollin hoiatusvoogu…</div><a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/">Ametlik hoiatuskaart ↗</a></aside>
    <section id="live" class="screen active" aria-labelledby="live-heading">
     <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Pärnu sadama ja tunnijaama eri allikate mõõtmised. Näidud ei kirjelda automaatselt kogu maakonda.</p></div><span class="chip">Kontrollitud mõõteajad</span></div>
     <div id="live-situation" class="situation-banner incomplete" role="status" aria-live="polite">
@@ -1315,7 +1316,27 @@ function marineData(code){
 }
 function marineDate(t){return timestamp(t)===null?'teadmata':local(t)+' (Eesti aeg)'}
 function marineValue(v,decimals=1){return numeric(v)?fmt(v,decimals):'—'}
+function renderOfficialWarnings(){
+ const box=$('official-warning-list'),w=marineState?.warnings;
+ box.replaceChildren();
+ if(!w || !Array.isArray(w.items) || !fresh(w.checked,30)){
+  box.textContent='Värske hoiatusseis on kinnitamata. Vaata ametlikku hoiatuskaarti.';return;
+ }
+ const other=document.createElement('details'),summary=document.createElement('summary');
+ summary.textContent='Teiste piirkondade hoiatused';other.append(summary);
+ const caption=document.createElement('p');
+ caption.textContent='Voogu kontrollitud '+local(w.checked)+'.';box.append(caption);
+ let localCount=0;
+ for(const item of w.items){
+  const relevant=/pärnu|liivi laht|eesti tervikuna|kogu eesti/i.test(item.area);
+  const p=document.createElement('p');p.textContent=item.area+' · '+item.message;
+  (relevant?box:other).append(p);if(relevant)localCount++;
+ }
+ if(!localCount)caption.append(' Voos '+(w.items.length?'puudub eraldi Pärnumaa või Liivi lahe kirje.':'hoiatuskirjeid ei olnud.'));
+ if(other.children.length>1)box.append(other);
+}
 function renderMarine(){
+ renderOfficialWarnings();
  const levels=$('marine-levels'),weatherCards=$('marine-weather');
  levels.replaceChildren();weatherCards.replaceChildren();
  const good=marineEligible(),obs=marineState?.official_observations||{};
