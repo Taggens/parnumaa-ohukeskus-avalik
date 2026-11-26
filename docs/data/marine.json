@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T22:31:12Z",
+  "generated_at_utc": "2026-11-26T22:37:18Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T22:31:14Z",
+    "feed_timestamp_utc": "2026-11-26T22:37:20Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -14,9 +14,9 @@
         "sea_level_eh2000_cm": 24.0,
         "water_temperature_c": 2.6,
         "air_temperature_c": -2.7,
-        "wind_ms": 2.0,
-        "gust_ms": 3.4,
-        "wind_direction_deg": 310.0
+        "wind_ms": 2.1,
+        "gust_ms": 4.0,
+        "wind_direction_deg": 314.0
       },
       {
         "code": "86031",
@@ -26,21 +26,21 @@
         "sea_level_eh2000_cm": 35.0,
         "water_temperature_c": 6.5,
         "air_temperature_c": -2.7,
-        "wind_ms": 2.1,
-        "gust_ms": 2.9,
-        "wind_direction_deg": 26.0
+        "wind_ms": 2.3,
+        "gust_ms": 3.1,
+        "wind_direction_deg": 29.0
       },
       {
         "code": "26128",
         "name": "Virtsu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 31.0,
-        "water_temperature_c": 2.4,
-        "air_temperature_c": -0.3,
-        "wind_ms": 3.8,
-        "gust_ms": 5.1,
-        "wind_direction_deg": 17.0
+        "sea_level_eh2000_cm": 30.0,
+        "water_temperature_c": 2.2,
+        "air_temperature_c": -0.6,
+        "wind_ms": 3.1,
+        "gust_ms": 4.3,
+        "wind_direction_deg": 20.0
       },
       {
         "code": "26226",
@@ -49,9 +49,9 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": -1.6,
+        "air_temperature_c": -1.5,
         "wind_ms": 1.5,
-        "gust_ms": 3.1,
+        "gust_ms": 2.8,
         "wind_direction_deg": 14.0
       }
     ],
@@ -59,11 +59,11 @@
       {
         "water_temperature_c": 2.6,
         "air_temperature_c": -2.7,
-        "wind_ms": 2.0,
-        "gust_ms": 3.4,
-        "wind_direction_deg": 310.0,
+        "wind_ms": 2.1,
+        "gust_ms": 4.0,
+        "wind_direction_deg": 314.0,
         "pressure_hpa": 1027.7,
-        "humidity_pct": 86.9,
+        "humidity_pct": 86.3,
         "code": "41803",
         "name": "Pärnu"
       },
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-26T22:31:16Z",
+    "checked": "2026-11-26T22:37:22Z",
     "items": [
       {
         "area": "Soome lahe idaosa",
