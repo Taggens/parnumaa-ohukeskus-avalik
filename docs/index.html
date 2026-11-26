@@ -399,7 +399,9 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .station-comparison .bay-compass{margin-top:14px}
 @media(min-width:851px) and (max-width:1250px){#live .station-comparison .bay-layout{grid-template-columns:minmax(115px,40%) minmax(0,1fr);gap:8px}}
 #official-warnings.is-local{border-inline-start:4px solid #f0af55}
-</style><style>#ka-station{max-width:100%;padding:.4em .7em;border:1px solid #486979;border-radius:7px;background:#112c40;color:#eefaff}#ka-wind-bay-svg.airport g[clip-path]{display:none}</style></head>
+</style><style>#ka-station{max-width:100%;padding:.4em .7em;border:1px solid #486979;border-radius:7px;background:#112c40;color:#eefaff}#ka-wind-bay-svg .airport-scene,#ka-wind-bay-svg.airport .coastal-scene{display:none}#ka-wind-bay-svg.airport .airport-scene{display:inline}
+#live .bay-map .airport-speed{display:none}
+@media(max-width:760px){#live #ka-wind-bay-svg.airport .airport-speed{display:block;font-size:30px;font-weight:700;fill:white;stroke:#183039;stroke-width:6px;paint-order:stroke}}</style></head>
 <body>
 <div id="app" class="app-shell">
  <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
@@ -502,7 +504,7 @@ details.info p{font-size:11px;color:var(--muted)}
           <linearGradient id="ka-bay-land" x2="1" y2="1"><stop stop-color="#b0cb90"/><stop offset="1" stop-color="#698d72"/></linearGradient>
          </defs>
          <circle cx="260" cy="260" r="218" fill="#092338"/>
-         <g clip-path="url(#ka-bay-clip)">
+         <g class="coastal-scene" clip-path="url(#ka-bay-clip)">
           <rect x="65" y="65" width="390" height="390" fill="url(#ka-bay-sea)"/>
           <path d="M65 65 H282 C284 98 268 120 258 145 C249 172 252 194 236 221 C211 254 196 282 169 313 C138 350 111 371 65 395 Z" fill="url(#ka-bay-land)" stroke="#d3e7bf" stroke-width="3"/>
           <path d="M312 65 H455 V380 C415 357 382 339 354 312 C322 284 295 266 283 239 C273 211 279 182 286 163 C300 135 318 105 312 65 Z" fill="url(#ka-bay-land)" stroke="#d3e7bf" stroke-width="3"/>
@@ -514,6 +516,14 @@ details.info p{font-size:11px;color:var(--muted)}
           <text x="263" y="389" font-size="16" font-weight="800" text-anchor="middle" letter-spacing="2.5" fill="#eaf7ff" stroke="#155777" stroke-width="4" paint-order="stroke">PÄRNU LAHT</text>
           <path d="M260 75 V445 M75 260 H445" stroke="#ddf7ff" stroke-width="1.5" opacity=".15"/>
          </g>
+         <g class="airport-scene" clip-path="url(#ka-bay-clip)" aria-hidden="true">
+          <circle cx="260" cy="260" r="195" fill="#426052"/>
+          <g transform="rotate(30 260 260)">
+           <rect x="237" y="100" width="46" height="320" rx="3" fill="#33404a" stroke="#c4cebf" stroke-width="3"/>
+           <path d="M260 116V404" stroke="#d8dfd6" stroke-width="4" stroke-dasharray="13 11"/>
+          </g>
+          <text x="155" y="188" text-anchor="middle" fill="#f1f7ed" font-size="21" font-weight="700">EEPU</text>
+         </g>
          <circle cx="260" cy="260" r="195" fill="none" stroke="#88bcd4" stroke-width="4"/>
          <g id="ka-wind-bay-scale" aria-hidden="true"></g>
          <g id="ka-wind-bay-arrow" transform="translate(260 260) rotate(0)" style="display:none" aria-hidden="true">
@@ -522,6 +532,7 @@ details.info p{font-size:11px;color:var(--muted)}
           <path d="M0 -117 L-24 -69 L0 -80 L24 -69 Z" fill="#f72a31" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
           <circle r="7" fill="#f72a31" stroke="#fff" stroke-width="2"/>
          </g>
+        <text id="ka-compass-speed" class="airport-speed" x="260" y="392" text-anchor="middle" aria-hidden="true"></text>
         </svg>
        </div>
        <div>
@@ -838,7 +849,8 @@ function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airSt
  const arrow=part('wind-bay-arrow'),svg=part('wind-bay-svg'),status=part('bay-status');
  status.className='bay-status';
  write('bay-speed',hasWind?wind(a.wind_ms):'—');
- write('bay-gust',hasGust?wind(a.gust_ms):'—');
+ write('bay-gust',hasGust?wind(a.gust_ms):airport&&a?'Teates puudub':'—');
+ if(airport)put('ka-compass-speed',hasWind?wind(a.wind_ms):'—');
  write('bay-age',a?airStamp:'Värske mõõtmine puudub');
  if(airport)part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul lennujaamas puhub.';
  else if(prefix==='ka-')part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul puhub. Lahe kaart on lihtsustatud.';
