@@ -357,13 +357,13 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .weather-measurements-grid>.live-tile .live-label{margin-bottom:6px;font-size:11px}
 #live .weather-measurements-grid>.live-tile strong{font-size:21px}
 #live .weather-measurements-grid>.live-tile small{margin-top:5px;line-height:1.35}
-#live .weather-measurements-grid>#live-temperature-tile{grid-row:1/3;grid-column:1}
-#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:12px;padding-top:10px}
-#live .weather-measurements-grid>#live-temperature-tile .live-secondary strong{font-size:21px}
+#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile){grid-row:1/3;grid-column:1}
+#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile) .live-secondary{margin-top:12px;padding-top:10px}
+#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile) .live-secondary strong{font-size:21px}
 #live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}
 #live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}
-@media(max-width:1050px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}#live .primary-live-grid>.bay-compass{grid-column:1}#live .weather-measurements-grid{grid-column:1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:3;grid-row:1}}
-@media(max-width:620px){#live .weather-measurements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1/-1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:1;grid-row:2}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:9px;padding-top:8px}}
+@media(max-width:1050px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}#live .primary-live-grid>.bay-compass{grid-column:1}#live .weather-measurements-grid{grid-column:1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile){grid-column:1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:3;grid-row:1}}
+@media(max-width:620px){#live .weather-measurements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile){grid-column:1/-1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:1;grid-row:2}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}#live .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile) .live-secondary{margin-top:9px;padding-top:8px}}
 
 /* Prognoosi KKK ja legend. Vaikimisi suletud ja ka telefonis loetav. */
 .okf-guide{margin:0 0 17px;border:1px solid #365768;border-radius:12px;background:#112638;overflow:hidden}
@@ -393,13 +393,11 @@ details.info p{font-size:11px;color:var(--muted)}
 #home{padding:clamp(12px,3vw,36px) 0}#home h2{font-size:clamp(24px,3vw,38px);margin:16px 0}.now-grid,#home-hours{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}.now-grid article,#home-hours article{padding:clamp(12px,2vw,24px);border:1px solid #335065;border-radius:12px;background:#112638}.now-grid h3{font-size:1rem;margin:0}.now-grid strong{display:block;font-size:clamp(26px,4vw,52px);margin:12px 0;color:#a1e8df}#home small{display:block;color:#bed0de}.home-links{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0}.home-links a{color:#9be3de}#home-hours{grid-template-columns:repeat(6,minmax(0,1fr))}#home-hours b,#home-hours strong{display:block;margin-bottom:6px}@media(max-width:800px){#home-hours{grid-template-columns:repeat(3,1fr)}.now-grid{grid-template-columns:1fr 1fr}.now-grid article:last-child{grid-column:1/-1}}
 #live .station-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
 #live .station-comparison>.panel{margin:0;min-width:0}
-#live .station-comparison .weather-measurements-grid,#live .station-tiles{display:grid;grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:10px}
-#live .station-comparison .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1/3}
+#live .station-comparison .weather-measurements-grid{display:grid;grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:10px}
+#live .station-comparison .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile){grid-column:1;grid-row:1/3}
 #live .station-comparison .weather-pressure-tile,#live .station-comparison .weather-humidity-tile{grid-column:2;grid-row:auto}
-#live .station-tiles>.live-tile{min-height:0;padding:12px 13px}
-#live .station-tiles .live-label{margin-bottom:6px}
-#live .station-tiles strong{font-size:21px}
 @media(max-width:850px){#live .station-comparison{grid-template-columns:minmax(0,1fr)}}
+#live .station-wind{margin-top:12px}
 </style></head>
 <body>
 <div id="app" class="app-shell">
@@ -448,11 +446,19 @@ details.info p{font-size:11px;color:var(--muted)}
       <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
       <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
       </div>
+    <div class="bay-stats station-wind"><div><small>Keskmine tuul</small><strong id="live-station-wind">—</strong></div><div><small>Puhangud</small><strong id="live-station-gust">—</strong></div><div><small>Tuule suund</small><strong id="live-station-direction">—</strong></div></div>
     </article>
     <article class="panel live-panel">
-     <div class="panel-title"><h3>Keskkonnaagentuuri Pärnu jaam</h3></div>
-     <p class="live-banner" id="ka-time" role="status">Kontrollin jaama andmeid…</p>
-     <div id="ka-sites" class="station-tiles"></div>
+     <div class="panel-title"><div><h3>Keskkonnaagentuuri Pärnu jaama mõõtmised</h3><p id="ka-time">Jaama andmevoo kontroll on ootel…</p></div></div>
+     <div class="live-banner" id="ka-banner" role="status">Keskkonnaagentuuri mõõteandmete kontroll on ootel.</div>
+      <div class="weather-measurements-grid" aria-label="Pärnu jaama mõõtmised">
+      <div class="live-tile" id="ka-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="ka-temperature">—</strong><small id="ka-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="ka-temperature-note">Temperatuuriolek ootel</small>
+       <div class="live-secondary" id="ka-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="ka-windchill">—</strong><small id="ka-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="ka-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
+      </div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="ka-pressure">—</strong><small id="ka-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="ka-humidity">—</strong><small id="ka-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      </div>
+    <div class="bay-stats station-wind"><div><small>Keskmine tuul</small><strong id="ka-station-wind">—</strong></div><div><small>Puhangud</small><strong id="ka-station-gust">—</strong></div><div><small>Tuule suund</small><strong id="ka-station-direction">—</strong></div></div>
     </article>
     </div>
     <article class="panel live-panel">
@@ -844,6 +850,9 @@ function renderLive(){
  put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
  put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
  setTemperatureClass('live-windchill-tile',chill);
+ put('live-station-wind',hasWind?wind(a.wind_ms):'—');
+ put('live-station-gust',hasGust?wind(a.gust_ms):'—');
+ put('live-station-direction',hasDirection?fmt(a.wind_direction_deg,0)+'°':'—');
  renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
  put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):'Värske EH2000 mõõtmine puudub või on aegunud');
@@ -1355,20 +1364,29 @@ function renderOfficialWarnings(){
  if(other.children.length>1)box.append(other);
 }
 function renderLocalStations(){
- const obs=marineState?.official_observations,box=$('ka-sites');box.replaceChildren();
- const sites=Array.isArray(obs?.local_weather_stations) ? obs.local_weather_stations.filter(site=>site.code==='41803' && site.name==='Pärnu') : [];
- if(!marineEligible()||!Array.isArray(sites)||!sites.length){
- put('ka-time','Jaamade värsked andmed puuduvad.');return;}
- put('ka-time','XML-voo aeg '+local(obs.feed_timestamp_utc)+' (Eesti aeg). Jaama täpne mõõtmisaeg on kinnitamata.');
- const fields=[['air_temperature_c','Õhutemperatuur','°C'],['pressure_hpa','Õhurõhk','hPa'],['wind_ms','Keskmine tuul','m/s'],['humidity_pct','Õhuniiskus','%'],['gust_ms','Puhangud','m/s'],['wind_direction_deg','Tuule suund','°']];
- const site=sites[0];
- for(const [key,label,unit] of fields){
-  const tile=document.createElement('div');
-  tile.className='live-tile';
-  el(tile,'div','live-label',label);
-  const value=site[key];
-  el(tile,'strong','',Number.isFinite(value)?value.toLocaleString('et-EE')+(unit==='°'?'':' ')+unit:'—');
-  box.append(tile);
+ const obs=marineState?.official_observations;
+ const site=marineEligible() && Array.isArray(obs?.local_weather_stations)
+  ? obs.local_weather_stations.find(s=>s.code==='41803' && s.name==='Pärnu') : null;
+ const stamp=site?'Andmevoog '+local(obs.feed_timestamp_utc)+' (Eesti aeg)':'Värske andmevoog puudub';
+ put('ka-time',stamp);
+ put('ka-banner',site?'Üksikjaama mõõtmise täpne aeg on kinnitamata.':'Jaama värsked andmed puuduvad.');
+ $('ka-banner').classList.toggle('stale',!site);
+ const t=site?.air_temperature_c, chill=publicWindChill(t,site?.wind_ms);
+ put('ka-temperature',temp(t));
+ put('ka-temperature-note',numeric(t)&&t<0?'❄ Miinuskraadid':'');
+ put('ka-windchill',temp(chill));
+ setTemperatureClass('ka-temperature-tile',t);
+ setTemperatureClass('ka-windchill-tile',chill);
+ put('ka-windchill-note','Arvutus kasutab Pärnu jaama õhutemperatuuri ja keskmist tuult. Temperatuur peab olema kuni +10 °C ja tuul vähemalt 1,4 m/s.');
+ for(const [id,value] of [['temperature',t],['windchill',chill],['pressure',site?.pressure_hpa],['humidity',site?.humidity_pct]]){
+  put('ka-'+id+'-age',numeric(value)?stamp:id==='windchill'?'Arvutus puudub':'Näit puudub');
+ }
+ for(const [id,key,unit,precision] of [
+  ['pressure','pressure_hpa',' hPa',1],['humidity','humidity_pct',' %',1],
+  ['station-wind','wind_ms',' m/s',1],['station-gust','gust_ms',' m/s',1],
+  ['station-direction','wind_direction_deg','°',0]
+ ]){
+  put('ka-'+id,numeric(site?.[key])?fmt(site[key],precision)+unit:'—');
  }
 }
 function renderMarine(){renderLocalStations();
