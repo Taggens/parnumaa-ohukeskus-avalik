@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T19:16:11Z",
+  "generated_at_utc": "2026-11-26T19:25:26Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T19:16:12Z",
+    "feed_timestamp_utc": "2026-11-26T19:25:28Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,24 +11,24 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 23.0,
+        "sea_level_eh2000_cm": 25.0,
         "water_temperature_c": 2.8,
         "air_temperature_c": -2.4,
         "wind_ms": 2.3,
-        "gust_ms": 3.8,
-        "wind_direction_deg": 313.0
+        "gust_ms": 4.4,
+        "wind_direction_deg": 304.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 34.0,
+        "sea_level_eh2000_cm": 35.0,
         "water_temperature_c": 6.5,
-        "air_temperature_c": -2.2,
-        "wind_ms": 2.7,
-        "gust_ms": 3.8,
-        "wind_direction_deg": 27.0
+        "air_temperature_c": -2.1,
+        "wind_ms": 2.9,
+        "gust_ms": 4.2,
+        "wind_direction_deg": 30.0
       },
       {
         "code": "26128",
@@ -36,11 +36,11 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 29.0,
-        "water_temperature_c": 3.5,
-        "air_temperature_c": -0.4,
+        "water_temperature_c": 3.4,
+        "air_temperature_c": -0.7,
         "wind_ms": 2.5,
         "gust_ms": 3.4,
-        "wind_direction_deg": 14.0
+        "wind_direction_deg": 18.0
       },
       {
         "code": "26226",
@@ -52,7 +52,7 @@
         "air_temperature_c": -1.2,
         "wind_ms": 1.2,
         "gust_ms": 2.6,
-        "wind_direction_deg": 357.0
+        "wind_direction_deg": 356.0
       }
     ],
     "local_weather_stations": [
@@ -60,10 +60,10 @@
         "water_temperature_c": 2.8,
         "air_temperature_c": -2.4,
         "wind_ms": 2.3,
-        "gust_ms": 3.8,
-        "wind_direction_deg": 313.0,
-        "pressure_hpa": 1027.3,
-        "humidity_pct": 86.7,
+        "gust_ms": 4.4,
+        "wind_direction_deg": 304.0,
+        "pressure_hpa": 1027.4,
+        "humidity_pct": 86.4,
         "code": "41803",
         "name": "Pärnu"
       },
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-26T19:16:13Z",
+    "checked": "2026-11-26T19:25:29Z",
     "items": [
       {
         "area": "Soome lahe idaosa",
