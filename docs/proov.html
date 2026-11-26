@@ -492,7 +492,7 @@ details.info p{font-size:11px;color:var(--muted)}
      </details>
      <details class="reading-details technical-details"><summary>Mõõtmiste tehnilised piirangud ja algallikas</summary><p>Live-lehe kohalik tuule tähelepanupiir 15 m/s põhineb ainult värskel keskmise tuule mõõtmisel, mitte puhangul. Avalikus vaates puuduvad administraatori teavitusseaded. TalTechi mõõtmise puudumine või vananemine ei tähenda vaikimisi ohutuid olusid. Jaamanäit ei ole prognoos.</p><p><a href="https://on-line.msi.ttu.ee/parnu/" target="_blank" rel="noopener noreferrer">Ava TalTechi algne leht ja graafikud ↗</a></p></details>
     </article>
-<article class="panel"><h3>Keskkonnaagentuuri jaamad · Pärnu ja ümbrus</h3><p id="ka-time">Kontrollin jaamade andmeid…</p><div id="ka-sites" class="ka-sites"></div></article>
+<article class="panel"><h3>Keskkonnaagentuuri ilmavaatlused · Pärnu</h3><p id="ka-time">Kontrollin jaamade andmeid…</p><div id="ka-sites" class="ka-sites"></div></article>
     <div class="live-priority-grid">
      <article class="panel priority-reading" id="hourly-rain-card">
       <div class="priority-heading"><h3>Viimase kinnitatud tunni sadu · Pärnu</h3><span class="reading-source">Keskkonnaagentuur</span></div>
@@ -1342,11 +1342,11 @@ function renderOfficialWarnings(){
 }
 function renderLocalStations(){
  const obs=marineState?.official_observations,box=$('ka-sites');box.replaceChildren();
- const sites=obs?.local_weather_stations;
+ const sites=Array.isArray(obs?.local_weather_stations) ? obs.local_weather_stations.filter(site=>site.code==='41803' && site.name==='Pärnu') : [];
  if(!marineEligible()||!Array.isArray(sites)||!sites.length){
  put('ka-time','Jaamade värsked andmed puuduvad.');return;}
- put('ka-time','XML-voo aeg '+local(obs.feed_timestamp_utc)+' (Eesti aeg). Üksikjaamade mõõtmisaeg on kinnitamata.');
- const fields=[['air_temperature_c','Õhk','°C'],['wind_ms','Tuul','m/s'],['gust_ms','Puhang','m/s'],['wind_direction_deg','Tuule suund','°'],['humidity_pct','Niiskus','%'],['pressure_hpa','Õhurõhk','hPa'],['water_temperature_c','Vesi','°C']];
+ put('ka-time','XML-voo aeg '+local(obs.feed_timestamp_utc)+' (Eesti aeg). Jaama täpne mõõtmisaeg on kinnitamata.');
+ const fields=[['air_temperature_c','Õhk','°C'],['wind_ms','Tuul','m/s'],['gust_ms','Puhang','m/s'],['wind_direction_deg','Tuule suund','°'],['humidity_pct','Niiskus','%'],['pressure_hpa','Õhurõhk','hPa']];
  for(const site of sites){
  const card=document.createElement('article'),heading=document.createElement('h4');
  heading.textContent=site.name;card.append(heading);
