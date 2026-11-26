@@ -1,17 +1,17 @@
 {
  "schema": "river-monitor-v1",
- "generated_at_utc": "2026-11-26T22:16:11Z",
+ "generated_at_utc": "2026-11-26T23:16:11Z",
  "observations": {
   "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
   "source_status": "ok",
-  "feed_timestamp_utc": "2026-11-26T22:16:12Z",
+  "feed_timestamp_utc": "2026-11-26T23:16:12Z",
   "station_measurement_time_verified": false,
   "datum_note": "Sisevete waterlevel: cm Amsterdami nulli suhtes, üksikjaama mõõtmishetk kinnitamata",
   "stations": [
    {
     "code": "41137",
     "name": "Aesoo",
-    "cm": 101.0,
+    "cm": null,
     "station_time_verified": false
    },
    {
