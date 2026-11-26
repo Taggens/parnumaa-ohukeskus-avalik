@@ -475,9 +475,9 @@ details.info p{font-size:11px;color:var(--muted)}
         <div class="bay-bearing"><strong id="bay-bearing">—</strong><span id="bay-cardinal">Suund ootel</span></div>
         <strong id="bay-status" class="bay-status">Mõõtmine ootel</strong>
         <p id="bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
-        <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="bay-speed">—</strong></div><div><small>Puhangud</small><strong id="bay-gust">—</strong></div></div>
+        <div class="bay-stats"><div><small>Tuule kiirus</small><strong id="bay-speed">—</strong></div><div><small>Puhangud</small><strong id="bay-gust">—</strong></div></div>
         <p id="bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
-        <details class="bay-help"><summary>Suuna selgitus</summary><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
+        <details class="bay-help"><summary>Tuulenäidu selgitus</summary><p>TalTechi sadamajaama lehel on tuule keskmistamise periood täpsustamata.</p><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
        </div>
       </div>
      </section>
@@ -528,9 +528,9 @@ details.info p{font-size:11px;color:var(--muted)}
         <div class="bay-bearing"><strong id="ka-bay-bearing">—</strong><span id="ka-bay-cardinal">Suund ootel</span></div>
         <strong id="ka-bay-status" class="bay-status">Mõõtmine ootel</strong>
         <p id="ka-bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
-        <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="ka-bay-speed">—</strong></div><div><small>Puhangud</small><strong id="ka-bay-gust">—</strong></div></div>
+        <div class="bay-stats"><div><small id="ka-wind-label">Keskmine tuulekiirus</small><strong id="ka-bay-speed">—</strong></div><div><small>Puhangud</small><strong id="ka-bay-gust">—</strong></div></div>
         <p id="ka-bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
-        <details class="bay-help"><summary>Suuna selgitus</summary><p id="ka-bay-svg-help">Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
+        <details class="bay-help"><summary>Tuulenäidu selgitus</summary><p id="ka-wind-period"></p><p id="ka-bay-svg-help">Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
        </div>
       </div>
      </section>
@@ -1427,6 +1427,8 @@ function renderLocalStations(){
  const stamp=site?(airport?'Mõõdetud '+local(site.observed_at_utc):'Andmevoog '+local(obs.feed_timestamp_utc))+' (Eesti aeg)':'Värske vaatlus puudub';
  put('ka-pressure-label',airport?'Õhurõhk (QNH)':'Õhurõhk');
  put('ka-moisture-label',airport?'Kastepunkt':'Õhuniiskus');
+ put('ka-wind-label',airport?'Keskmine tuul (tavaliselt 10 min)':'Keskmine tuulekiirus');
+ put('ka-wind-period',airport?'METAR-is kasutatakse tavaliselt vaatlusele eelnenud 10 minuti keskmist.':'XML-voog uueneb iga 10 minuti järel. Tuule keskmistamise periood on kinnitamata.');
  put('ka-bay-compass-title',airport?'Tuul Pärnu lennujaamas · EEPU':'Tuul Pärnu lahel · Pärnu rannikujaam');
  $('ka-wind-bay-svg').classList.toggle('airport',airport);
  put('ka-time',stamp);
