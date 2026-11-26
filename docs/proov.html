@@ -397,7 +397,8 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .station-comparison .weather-measurements-grid>:is(#live-temperature-tile,#ka-temperature-tile){grid-column:1;grid-row:1/3}
 #live .station-comparison .weather-pressure-tile,#live .station-comparison .weather-humidity-tile{grid-column:2;grid-row:auto}
 @media(max-width:850px){#live .station-comparison{grid-template-columns:minmax(0,1fr)}}
-#live .station-wind{margin-top:12px}
+#live .station-comparison .bay-compass{margin-top:14px}
+@media(min-width:851px) and (max-width:1250px){#live .station-comparison .bay-layout{grid-template-columns:minmax(115px,40%) minmax(0,1fr);gap:8px}}
 </style></head>
 <body>
 <div id="app" class="app-shell">
@@ -446,22 +447,6 @@ details.info p{font-size:11px;color:var(--muted)}
       <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
       <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
       </div>
-    <div class="bay-stats station-wind"><div><small>Keskmine tuul</small><strong id="live-station-wind">—</strong></div><div><small>Puhangud</small><strong id="live-station-gust">—</strong></div><div><small>Tuule suund</small><strong id="live-station-direction">—</strong></div></div>
-    </article>
-    <article class="panel live-panel">
-     <div class="panel-title"><div><h3>Keskkonnaagentuuri Pärnu jaama mõõtmised</h3><p id="ka-time">Jaama andmevoo kontroll on ootel…</p></div></div>
-     <div class="live-banner" id="ka-banner" role="status">Keskkonnaagentuuri mõõteandmete kontroll on ootel.</div>
-      <div class="weather-measurements-grid" aria-label="Pärnu jaama mõõtmised">
-      <div class="live-tile" id="ka-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="ka-temperature">—</strong><small id="ka-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="ka-temperature-note">Temperatuuriolek ootel</small>
-       <div class="live-secondary" id="ka-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="ka-windchill">—</strong><small id="ka-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="ka-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
-      </div>
-      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="ka-pressure">—</strong><small id="ka-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="ka-humidity">—</strong><small id="ka-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      </div>
-    <div class="bay-stats station-wind"><div><small>Keskmine tuul</small><strong id="ka-station-wind">—</strong></div><div><small>Puhangud</small><strong id="ka-station-gust">—</strong></div><div><small>Tuule suund</small><strong id="ka-station-direction">—</strong></div></div>
-    </article>
-    </div>
-    <article class="panel live-panel">
      <section class="bay-compass" aria-labelledby="bay-compass-title">
       <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahel · TalTechi sadamajaam</h4></header>
       <div class="bay-layout">
@@ -504,6 +489,63 @@ details.info p{font-size:11px;color:var(--muted)}
        </div>
       </div>
      </section>
+    </article>
+    <article class="panel live-panel">
+     <div class="panel-title"><div><h3>Keskkonnaagentuuri Pärnu jaama mõõtmised</h3><p id="ka-time">Jaama andmevoo kontroll on ootel…</p></div></div>
+     <div class="live-banner" id="ka-banner" role="status">Keskkonnaagentuuri mõõteandmete kontroll on ootel.</div>
+      <div class="weather-measurements-grid" aria-label="Pärnu jaama mõõtmised">
+      <div class="live-tile" id="ka-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="ka-temperature">—</strong><small id="ka-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="ka-temperature-note">Temperatuuriolek ootel</small>
+       <div class="live-secondary" id="ka-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="ka-windchill">—</strong><small id="ka-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="ka-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
+      </div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="ka-pressure">—</strong><small id="ka-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="ka-humidity">—</strong><small id="ka-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      </div>
+     <section class="bay-compass" aria-labelledby="ka-bay-compass-title">
+      <header><h4 id="ka-bay-compass-title">🌬️ Tuul Pärnu lahel · Keskkonnaagentuuri Pärnu jaam</h4></header>
+      <div class="bay-layout">
+       <div class="bay-map">
+        <svg id="ka-wind-bay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" role="img" aria-label="Pärnu lahe lihtsustatud kaart. Kinnitatud tuulesuund on ootel.">
+         <defs><clipPath id="ka-bay-clip"><circle cx="260" cy="260" r="195"/></clipPath>
+          <linearGradient id="ka-bay-sea" x2=".8" y2="1"><stop stop-color="#4290b8"/><stop offset="1" stop-color="#185473"/></linearGradient>
+          <linearGradient id="ka-bay-land" x2="1" y2="1"><stop stop-color="#b0cb90"/><stop offset="1" stop-color="#698d72"/></linearGradient>
+         </defs>
+         <circle cx="260" cy="260" r="218" fill="#092338"/>
+         <g clip-path="url(#ka-bay-clip)">
+          <rect x="65" y="65" width="390" height="390" fill="url(#ka-bay-sea)"/>
+          <path d="M65 65 H282 C284 98 268 120 258 145 C249 172 252 194 236 221 C211 254 196 282 169 313 C138 350 111 371 65 395 Z" fill="url(#ka-bay-land)" stroke="#d3e7bf" stroke-width="3"/>
+          <path d="M312 65 H455 V380 C415 357 382 339 354 312 C322 284 295 266 283 239 C273 211 279 182 286 163 C300 135 318 105 312 65 Z" fill="url(#ka-bay-land)" stroke="#d3e7bf" stroke-width="3"/>
+          <path d="M279 65 C285 95 269 119 261 145 C252 171 257 193 249 217 L273 217 C280 189 283 164 296 137 C310 111 317 87 309 65" fill="#7cb9d8" stroke="#c4e9f3" stroke-width="2"/>
+          <path d="M238 224 Q204 302 104 406 M277 226 Q252 299 221 365" stroke="#f4ddae" stroke-width="3" opacity=".65" fill="none"/>
+          <circle cx="265" cy="185" r="5" fill="#fff5bd" stroke="#265a75" stroke-width="2"/>
+          <text x="313" y="167" font-size="14" font-weight="800" fill="#effae8" stroke="#496d63" stroke-width="3" paint-order="stroke">PÄRNU</text>
+          <text x="314" y="184" font-size="11" font-weight="700" fill="#effae8" stroke="#496d63" stroke-width="3" paint-order="stroke">LAHT</text>
+          <text x="263" y="389" font-size="16" font-weight="800" text-anchor="middle" letter-spacing="2.5" fill="#eaf7ff" stroke="#155777" stroke-width="4" paint-order="stroke">PÄRNU LAHT</text>
+          <path d="M260 75 V445 M75 260 H445" stroke="#ddf7ff" stroke-width="1.5" opacity=".15"/>
+         </g>
+         <circle cx="260" cy="260" r="195" fill="none" stroke="#88bcd4" stroke-width="4"/>
+         <g id="ka-wind-bay-scale" aria-hidden="true"></g>
+         <g id="ka-wind-bay-arrow" transform="translate(260 260) rotate(0)" style="display:none" aria-hidden="true">
+          <path d="M0 109 L0 -83" stroke="#fff" stroke-width="13" stroke-linecap="round"/>
+          <path d="M0 109 L0 -83" stroke="#f72a31" stroke-width="8" stroke-linecap="round"/>
+          <path d="M0 -117 L-24 -69 L0 -80 L24 -69 Z" fill="#f72a31" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+          <circle r="7" fill="#f72a31" stroke="#fff" stroke-width="2"/>
+         </g>
+        </svg>
+       </div>
+       <div>
+        <div class="bay-bearing"><strong id="ka-bay-bearing">—</strong><span id="ka-bay-cardinal">Suund ootel</span></div>
+        <strong id="ka-bay-status" class="bay-status">Mõõtmine ootel</strong>
+        <p id="ka-bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
+        <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="ka-bay-speed">—</strong></div><div><small>Puhangud</small><strong id="ka-bay-gust">—</strong></div></div>
+        <p id="ka-bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
+        <details class="bay-help"><summary>Suuna selgitus</summary><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
+       </div>
+      </div>
+     </section>
+    </article>
+    </div>
+    <article class="panel live-panel">
+
      <details class="reading-details extra-measurements"><summary>TalTechi täiendavad sademenäidud (mõõteperiood kinnitamata)</summary>
       <div class="live-grid">
        <div class="live-tile"><div class="live-label">Sademete hulk · periood teadmata</div><strong id="live-precip">—</strong><small class="observation-stamp" id="live-precip-age">Mõõtmine ootel</small></div>
@@ -778,8 +820,8 @@ function bayFlow(degrees){
  if(diff>=130)return ['outward','Puhub lahest välja','Tuul liigub üldjoontes Pärnu poolt lahe suudme poole.'];
  return ['cross','Puhub üle lahe','Tuul puhub lahe pikitelje suhtes pigem külgsuunas.'];
 }
-function initBayScale(){
- const g=$('wind-bay-scale');if(g.childNodes.length)return;
+function initBayScale(g){
+ if(g.childNodes.length)return;
  const ns='http://www.w3.org/2000/svg',labels=['N','NE','E','SE','S','SW','W','NW'];
  for(let d=0;d<360;d+=15){
   const r=d*Math.PI/180,major=d%45===0,line=document.createElementNS(ns,'line');
@@ -792,32 +834,34 @@ function initBayScale(){
   t.setAttribute('class','cardinal');t.textContent=name;g.append(t);
  });
 }
-function renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp){
- initBayScale();
- const arrow=$('wind-bay-arrow'),svg=$('wind-bay-svg'),status=$('bay-status');
+function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airStamp){
+ const part=id=>$(prefix+id);
+ const write=(id,value)=>put(prefix+id,value);
+ initBayScale(part('wind-bay-scale'));
+ const arrow=part('wind-bay-arrow'),svg=part('wind-bay-svg'),status=part('bay-status');
  status.className='bay-status';
- put('bay-speed',hasWind?wind(a.wind_ms):'—');
- put('bay-gust',hasGust?wind(a.gust_ms):'—');
- put('bay-age',a?airStamp:'Värske mõõtmine puudub');
+ write('bay-speed',hasWind?wind(a.wind_ms):'—');
+ write('bay-gust',hasGust?wind(a.gust_ms):'—');
+ write('bay-age',a?airStamp:'Värske mõõtmine puudub');
  if(!hasDirection){
-  arrow.style.display='none';put('bay-bearing','—');put('bay-cardinal','Suund puudub');
-  put('bay-status','Tuulesuunda ei saa kinnitada');
-  put('bay-detail','Ilma kontrollitud jaamamõõtmiseta suunanoolt ei näidata.');
+  arrow.style.display='none';write('bay-bearing','—');write('bay-cardinal','Suund puudub');
+  write('bay-status','Tuulesuunda ei saa kinnitada');
+  write('bay-detail','Ilma kontrollitud jaamamõõtmiseta suunanoolt ei näidata.');
   svg.setAttribute('aria-label','Pärnu lahe skeem: tuulesuuna mõõtmine puudub või on aegunud.');return;
  }
  const degrees=a.wind_direction_deg%360,heading=(degrees+180)%360;
  const point=publicWindPoints[Math.round(degrees/45)%8];
- put('bay-bearing',fmt(degrees,0)+'°');
- put('bay-cardinal','Tuul '+point[1]+' ('+point[0]+')');
+ write('bay-bearing',fmt(degrees,0)+'°');
+ write('bay-cardinal','Tuul '+point[1]+' ('+point[0]+')');
  arrow.style.display='';arrow.setAttribute('transform','translate(260 260) rotate('+heading+')');
  svg.setAttribute('aria-label','Pärnu lahe skeem: tuul '+point[1]+' '+fmt(degrees,0)+' kraadi, nool näitab liikumissuunda '+fmt(heading,0)+' kraadi.');
  if(hasWind&&a.wind_ms<0.5){
-  put('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+'väga nõrk tuul');
-  put('bay-detail','Nii nõrga tuulega ei ole lahe suhtes antud suunatõlgendus usaldusväärne.');
+  write('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+'väga nõrk tuul');
+  write('bay-detail','Nii nõrga tuulega ei ole lahe suhtes antud suunatõlgendus usaldusväärne.');
  }else{
   const flow=bayFlow(degrees);status.classList.add(flow[0]);
-  put('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+flow[1]);
-  put('bay-detail',flow[2]+(isAirStale?' See ei kirjelda hetkeilma.':''));
+  write('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+flow[1]);
+  write('bay-detail',flow[2]+(isAirStale?' See ei kirjelda hetkeilma.':''));
  }
  if(isAirStale)status.classList.add('stale');
 }
@@ -850,10 +894,7 @@ function renderLive(){
  put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
  put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
  setTemperatureClass('live-windchill-tile',chill);
- put('live-station-wind',hasWind?wind(a.wind_ms):'—');
- put('live-station-gust',hasGust?wind(a.gust_ms):'—');
- put('live-station-direction',hasDirection?fmt(a.wind_direction_deg,0)+'°':'—');
- renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
+ renderBayCompass('',a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
  put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):'Värske EH2000 mõõtmine puudub või on aegunud');
  const comparisonTime=hasSea?timestamp(s.comparison_time_utc):null;
@@ -1381,13 +1422,12 @@ function renderLocalStations(){
  for(const [id,value] of [['temperature',t],['windchill',chill],['pressure',site?.pressure_hpa],['humidity',site?.humidity_pct]]){
   put('ka-'+id+'-age',numeric(value)?stamp:id==='windchill'?'Arvutus puudub':'Näit puudub');
  }
- for(const [id,key,unit,precision] of [
-  ['pressure','pressure_hpa',' hPa',1],['humidity','humidity_pct',' %',1],
-  ['station-wind','wind_ms',' m/s',1],['station-gust','gust_ms',' m/s',1],
-  ['station-direction','wind_direction_deg','°',0]
- ]){
-  put('ka-'+id,numeric(site?.[key])?fmt(site[key],precision)+unit:'—');
- }
+ put('ka-pressure',numeric(site?.pressure_hpa)?fmt(site.pressure_hpa,1)+' hPa':'—');
+ put('ka-humidity',numeric(site?.humidity_pct)?fmt(site.humidity_pct,1)+' %':'—');
+ const direction=site?.wind_direction_deg;
+ renderBayCompass('ka-',site,numeric(direction)&&direction>=0&&direction<=360,false,
+  numeric(site?.wind_ms),numeric(site?.gust_ms),stamp+' · jaama mõõtmisaeg kinnitamata');
+
 }
 function renderMarine(){renderLocalStations();
  renderOfficialWarnings();
