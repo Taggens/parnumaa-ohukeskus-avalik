@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T18:53:53Z",
+  "generated_at_utc": "2026-11-26T19:01:11Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T18:53:56Z",
+    "feed_timestamp_utc": "2026-11-26T19:01:13Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-26T18:53:57Z",
+    "checked": "2026-11-26T19:01:15Z",
     "items": [
       {
         "area": "Soome lahe idaosa",
