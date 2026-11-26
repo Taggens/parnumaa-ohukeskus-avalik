@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T00:16:12Z",
+  "generated_at_utc": "2026-11-26T00:31:11Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T00:16:14Z",
+    "feed_timestamp_utc": "2026-11-26T00:31:13Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -14,8 +14,8 @@
         "sea_level_eh2000_cm": 41.0,
         "water_temperature_c": 3.1,
         "air_temperature_c": 0.6,
-        "wind_ms": 3.3,
-        "gust_ms": 4.9,
+        "wind_ms": 3.2,
+        "gust_ms": 5.1,
         "wind_direction_deg": 289.0
       },
       {
@@ -26,9 +26,9 @@
         "sea_level_eh2000_cm": 48.0,
         "water_temperature_c": 6.7,
         "air_temperature_c": 1.2,
-        "wind_ms": 6.4,
-        "gust_ms": 7.7,
-        "wind_direction_deg": 339.0
+        "wind_ms": 6.1,
+        "gust_ms": 7.6,
+        "wind_direction_deg": 350.0
       },
       {
         "code": "26128",
@@ -36,11 +36,11 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 41.0,
-        "water_temperature_c": 2.5,
-        "air_temperature_c": 2.2,
-        "wind_ms": 4.6,
-        "gust_ms": 7.5,
-        "wind_direction_deg": 348.0
+        "water_temperature_c": 2.6,
+        "air_temperature_c": 2.0,
+        "wind_ms": 4.4,
+        "gust_ms": 6.5,
+        "wind_direction_deg": 360.0
       },
       {
         "code": "26226",
@@ -51,8 +51,8 @@
         "water_temperature_c": null,
         "air_temperature_c": 1.4,
         "wind_ms": 2.0,
-        "gust_ms": 3.5,
-        "wind_direction_deg": 356.0
+        "gust_ms": 3.7,
+        "wind_direction_deg": 358.0
       }
     ],
     "source_url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
