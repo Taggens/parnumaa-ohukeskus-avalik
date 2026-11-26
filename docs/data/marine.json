@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T19:31:14Z",
+  "generated_at_utc": "2026-11-26T19:35:00Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T19:31:16Z",
+    "feed_timestamp_utc": "2026-11-26T19:35:02Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,12 +11,12 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 25.0,
+        "sea_level_eh2000_cm": 26.0,
         "water_temperature_c": 2.8,
         "air_temperature_c": -2.4,
-        "wind_ms": 2.3,
-        "gust_ms": 4.4,
-        "wind_direction_deg": 304.0
+        "wind_ms": 1.6,
+        "gust_ms": 3.3,
+        "wind_direction_deg": 310.0
       },
       {
         "code": "86031",
@@ -25,9 +25,9 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 35.0,
         "water_temperature_c": 6.5,
-        "air_temperature_c": -2.1,
-        "wind_ms": 2.9,
-        "gust_ms": 4.2,
+        "air_temperature_c": -1.9,
+        "wind_ms": 3.2,
+        "gust_ms": 4.4,
         "wind_direction_deg": 30.0
       },
       {
@@ -36,10 +36,10 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 29.0,
-        "water_temperature_c": 3.4,
-        "air_temperature_c": -0.7,
-        "wind_ms": 2.5,
-        "gust_ms": 3.4,
+        "water_temperature_c": 3.3,
+        "air_temperature_c": -0.5,
+        "wind_ms": 2.7,
+        "gust_ms": 3.5,
         "wind_direction_deg": 18.0
       },
       {
@@ -49,21 +49,21 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": -1.2,
+        "air_temperature_c": -1.5,
         "wind_ms": 1.2,
-        "gust_ms": 2.6,
-        "wind_direction_deg": 356.0
+        "gust_ms": 2.3,
+        "wind_direction_deg": 360.0
       }
     ],
     "local_weather_stations": [
       {
         "water_temperature_c": 2.8,
         "air_temperature_c": -2.4,
-        "wind_ms": 2.3,
-        "gust_ms": 4.4,
-        "wind_direction_deg": 304.0,
+        "wind_ms": 1.6,
+        "gust_ms": 3.3,
+        "wind_direction_deg": 310.0,
         "pressure_hpa": 1027.4,
-        "humidity_pct": 86.4,
+        "humidity_pct": 86.5,
         "code": "41803",
         "name": "Pärnu"
       },
@@ -110,12 +110,22 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-26T19:31:17Z",
+    "checked": "2026-11-26T19:35:03Z",
     "items": [
       {
         "area": "Soome lahe idaosa",
         "message": "Põhja- ja loodetuul, puhanguti  kuni 15 m/s. Laine kõrgus 1-2 m. 2026-11-26 09:00 - 2026-11-27 01:00"
       }
     ]
+  },
+  "airport": {
+    "code": "EEPU",
+    "observed_at_utc": "2026-11-26T19:20:00Z",
+    "air_temperature_c": -3.0,
+    "dewpoint_c": -4.0,
+    "wind_ms": 2.06,
+    "gust_ms": null,
+    "wind_direction_deg": 330.0,
+    "pressure_hpa": 1027.0
   }
 }
