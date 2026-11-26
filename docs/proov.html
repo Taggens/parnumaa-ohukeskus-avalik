@@ -391,7 +391,16 @@ details.info p{font-size:11px;color:var(--muted)}
 #data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}</style>
 <style>
 #home{padding:clamp(12px,3vw,36px) 0}#home h2{font-size:clamp(24px,3vw,38px);margin:16px 0}.now-grid,#home-hours{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}.now-grid article,#home-hours article{padding:clamp(12px,2vw,24px);border:1px solid #335065;border-radius:12px;background:#112638}.now-grid h3{font-size:1rem;margin:0}.now-grid strong{display:block;font-size:clamp(26px,4vw,52px);margin:12px 0;color:#a1e8df}#home small{display:block;color:#bed0de}.home-links{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0}.home-links a{color:#9be3de}#home-hours{grid-template-columns:repeat(6,minmax(0,1fr))}#home-hours b,#home-hours strong{display:block;margin-bottom:6px}@media(max-width:800px){#home-hours{grid-template-columns:repeat(3,1fr)}.now-grid{grid-template-columns:1fr 1fr}.now-grid article:last-child{grid-column:1/-1}}
-.ka-sites{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}.ka-sites article{padding:14px;border:1px solid #355065;border-radius:12px}.ka-sites h4{margin:0 0 8px}.ka-sites p{margin:4px 0}</style></head>
+#live .station-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+#live .station-comparison>.panel{margin:0;min-width:0}
+#live .station-comparison .weather-measurements-grid,#live .station-tiles{display:grid;grid-column:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:10px}
+#live .station-comparison .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1/3}
+#live .station-comparison .weather-pressure-tile,#live .station-comparison .weather-humidity-tile{grid-column:2;grid-row:auto}
+#live .station-tiles>.live-tile{min-height:0;padding:12px 13px}
+#live .station-tiles .live-label{margin-bottom:6px}
+#live .station-tiles strong{font-size:21px}
+@media(max-width:850px){#live .station-comparison{grid-template-columns:minmax(0,1fr)}}
+</style></head>
 <body>
 <div id="app" class="app-shell">
  <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
@@ -428,12 +437,27 @@ details.info p{font-size:11px;color:var(--muted)}
      <strong id="live-situation-title">Olukorra hindamiseks ootan mõõteandmeid</strong>
      <p id="live-situation-detail">Värskeid mõõtmisi ei ole veel kontrollitud. Puuduv näit ei tähenda ohutut olukorda.</p>
     </div>
+    <div class="station-comparison">
     <article class="panel live-panel">
      <div class="panel-title"><div><h3>TalTechi sadamajaama mõõtmised</h3><p id="live-time">Jaama mõõtmisaja kontroll on ootel…</p></div></div>
      <div class="live-banner" id="live-banner" role="status">TalTechi mõõteandmete kontroll on ootel.</div>
-     <div class="live-grid primary-live-grid">
+      <div class="weather-measurements-grid" aria-label="Muud sadamajaama mõõtmised">
+      <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
+       <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
+      </div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      </div>
+    </article>
+    <article class="panel live-panel">
+     <div class="panel-title"><h3>Keskkonnaagentuuri Pärnu jaam</h3></div>
+     <p class="live-banner" id="ka-time" role="status">Kontrollin jaama andmeid…</p>
+     <div id="ka-sites" class="station-tiles"></div>
+    </article>
+    </div>
+    <article class="panel live-panel">
      <section class="bay-compass" aria-labelledby="bay-compass-title">
-      <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahel</h4></header>
+      <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahel · TalTechi sadamajaam</h4></header>
       <div class="bay-layout">
        <div class="bay-map">
         <svg id="wind-bay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" role="img" aria-label="Pärnu lahe lihtsustatud kaart. Kinnitatud tuulesuund on ootel.">
@@ -474,15 +498,6 @@ details.info p{font-size:11px;color:var(--muted)}
        </div>
       </div>
      </section>
-      <div class="weather-measurements-grid" aria-label="Muud sadamajaama mõõtmised">
-      <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
-       <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
-      </div>
-      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      </div>
-     </div>
-
      <details class="reading-details extra-measurements"><summary>TalTechi täiendavad sademenäidud (mõõteperiood kinnitamata)</summary>
       <div class="live-grid">
        <div class="live-tile"><div class="live-label">Sademete hulk · periood teadmata</div><strong id="live-precip">—</strong><small class="observation-stamp" id="live-precip-age">Mõõtmine ootel</small></div>
@@ -492,7 +507,6 @@ details.info p{font-size:11px;color:var(--muted)}
      </details>
      <details class="reading-details technical-details"><summary>Mõõtmiste tehnilised piirangud ja algallikas</summary><p>Live-lehe kohalik tuule tähelepanupiir 15 m/s põhineb ainult värskel keskmise tuule mõõtmisel, mitte puhangul. Avalikus vaates puuduvad administraatori teavitusseaded. TalTechi mõõtmise puudumine või vananemine ei tähenda vaikimisi ohutuid olusid. Jaamanäit ei ole prognoos.</p><p><a href="https://on-line.msi.ttu.ee/parnu/" target="_blank" rel="noopener noreferrer">Ava TalTechi algne leht ja graafikud ↗</a></p></details>
     </article>
-<article class="panel"><h3>Keskkonnaagentuuri ilmavaatlused · Pärnu</h3><p id="ka-time">Kontrollin jaamade andmeid…</p><div id="ka-sites" class="ka-sites"></div></article>
     <div class="live-priority-grid">
      <article class="panel priority-reading" id="hourly-rain-card">
       <div class="priority-heading"><h3>Viimase kinnitatud tunni sadu · Pärnu</h3><span class="reading-source">Keskkonnaagentuur</span></div>
@@ -1346,14 +1360,16 @@ function renderLocalStations(){
  if(!marineEligible()||!Array.isArray(sites)||!sites.length){
  put('ka-time','Jaamade värsked andmed puuduvad.');return;}
  put('ka-time','XML-voo aeg '+local(obs.feed_timestamp_utc)+' (Eesti aeg). Jaama täpne mõõtmisaeg on kinnitamata.');
- const fields=[['air_temperature_c','Õhk','°C'],['wind_ms','Tuul','m/s'],['gust_ms','Puhang','m/s'],['wind_direction_deg','Tuule suund','°'],['humidity_pct','Niiskus','%'],['pressure_hpa','Õhurõhk','hPa']];
- for(const site of sites){
- const card=document.createElement('article'),heading=document.createElement('h4');
- heading.textContent=site.name;card.append(heading);
+ const fields=[['air_temperature_c','Õhutemperatuur','°C'],['pressure_hpa','Õhurõhk','hPa'],['wind_ms','Keskmine tuul','m/s'],['humidity_pct','Õhuniiskus','%'],['gust_ms','Puhangud','m/s'],['wind_direction_deg','Tuule suund','°']];
+ const site=sites[0];
  for(const [key,label,unit] of fields){
- if(!Number.isFinite(site[key]))continue;
- const line=document.createElement('p');line.textContent=label+' '+site[key].toLocaleString('et-EE')+' '+unit;card.append(line);}
- if(card.children.length===1)card.append('Näidud puuduvad');box.append(card);}
+  const tile=document.createElement('div');
+  tile.className='live-tile';
+  el(tile,'div','live-label',label);
+  const value=site[key];
+  el(tile,'strong','',Number.isFinite(value)?value.toLocaleString('et-EE')+(unit==='°'?'':' ')+unit:'—');
+  box.append(tile);
+ }
 }
 function renderMarine(){renderLocalStations();
  renderOfficialWarnings();
