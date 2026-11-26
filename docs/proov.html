@@ -1,0 +1,1536 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081421">
+<meta name="description" content="Pärnu Ilmakeskuse avalik hetkeilm, ilmaprognoos, meretase ja Pärnumaa teeilmajaamade mõõtmised.">
+<meta name="robots" content="noindex"><title>Proovivaade · Pärnu Ilmakeskus · Ilmaülevaade</title>
+<link rel="icon" href="./icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-192.png" sizes="192x192">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Ilmakeskus">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--sidebar:#091726;--surface:#101f30;--surface2:#13273a;--border:#20384b;--text:#e8f1f7;--muted:#91a3b5;--teal:#65d0c4;--blue:#7ba8ff;--amber:#f8c271;--red:#ef8b83;--radius:15px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-size:14px;line-height:1.55}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:#86d8d1;text-decoration:none}a:hover{text-decoration:underline}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #83e1ce;outline-offset:3px}
+[hidden]{display:none!important}
+.app-shell{display:flex;min-height:100vh}
+.sidebar{background:var(--sidebar);border-right:1px solid #1c3043;width:240px;flex-shrink:0;display:flex;flex-direction:column;min-height:100vh;position:sticky;top:0;height:100vh;overflow-y:auto}
+.branding{display:flex;align-items:center;gap:12px;padding:28px 22px 32px}
+.brand-icon{height:36px;width:36px;display:grid;place-items:center;background:#83e1ce;border-radius:12px;color:#103c3a;font-size:24px}
+.brand-title{font-size:17px;font-weight:800;letter-spacing:0}
+.brand-sub{font-size:12px;color:#b1c9cc;margin:0 0 3px}
+.nav{display:grid;gap:4px;padding:0 11px}
+.nav-link{display:flex;align-items:center;gap:14px;text-align:left;border:none;color:#9cb1c1;background:none;border-radius:7px;padding:13px 16px;font-weight:550;min-height:46px;width:100%}
+.nav-link .nav-icon{font-size:21px;width:25px;text-align:center}
+.nav-link.active{color:#effffb;background:#244449}
+.nav-link:hover{background:#152b3d}
+.side-bottom{margin:auto 20px 26px;border-top:1px solid var(--border);padding-top:21px}
+.small-label,.eyebrow{font-size:10px;color:#7e9baa;font-weight:750;letter-spacing:.17em}
+.side-status{font-size:12px;margin-top:12px;display:flex;align-items:center;gap:8px}
+.side-bottom p{font-size:11px;line-height:1.65;color:#8ca4b6}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--teal);display:inline-block;flex-shrink:0}
+.dot.warning{background:var(--amber)}.dot.error{background:var(--red)}.dot.neutral{background:#74879a}
+.main-wrap{min-width:0;flex:1}
+.topbar{min-height:101px;border-bottom:1px solid #1a3041;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:19px clamp(20px,3vw,48px);background:#0b1827}
+.top-heading{display:flex;align-items:center;gap:13px;min-width:0}
+.top-heading h1{font-size:22px;margin:5px 0 0;letter-spacing:-.03em;font-weight:680}
+.top-actions{display:flex;align-items:center;gap:16px}
+.clock{color:#9fb1c1;font-size:12px;white-space:nowrap}
+.role-indicator{border:1px solid #397b85;border-radius:18px;padding:5px 9px;color:#9feaf0;font-size:12px;white-space:nowrap}
+.refresh-button,.subtle-button{background:#163945;color:#b8f4ed;border:1px solid #2b626b;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:670}
+.refresh-button:hover,.subtle-button:hover{background:#204a58}
+.refresh-button:disabled{opacity:.5;cursor:wait}
+.menu-toggle{display:none;background:none;border:0;color:var(--text);font-size:21px;padding:8px;border-radius:8px}
+.content{padding:25px clamp(20px,3vw,48px) 15px;max-width:1600px;margin:auto}
+.intro{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:12px;margin-bottom:22px;flex-wrap:wrap}
+.pill{display:inline-block;background:#133641;border:1px solid #225463;color:#8dddd6;padding:7px 11px;border-radius:30px;font-size:10px;letter-spacing:.04em;white-space:nowrap}
+.screen{display:none}.screen.active{display:block}
+.section-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:22px}
+.section-header h2{font-size:21px;letter-spacing:-.03em;margin:0 0 5px}
+.section-header p{margin:0;color:var(--muted);line-height:1.5;font-size:12px}
+.section-header select,.panel select{background:#132a3a;border:1px solid #2b4957;border-radius:9px;color:#dfe9ee;padding:10px 13px;min-width:176px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:17px}
+.stat-card,.panel{background:linear-gradient(155deg,#112538,#0e1c2c);border:1px solid #21384b;border-radius:var(--radius);box-shadow:0 10px 25px #03101b20}
+.stat-card{padding:23px;min-height:150px}
+.stat-caption{color:var(--muted);font-size:11px;line-height:1.5;min-height:33px}
+.stat-value{font-weight:750;letter-spacing:-.06em;font-size:29px;margin:7px 0 5px;font-variant-numeric:tabular-nums}
+.stat-foot{font-size:10px;color:#91a8b8;line-height:1.5}
+.stat-card.temp-frost,.live-tile.temp-frost{background:linear-gradient(150deg,#19446a,#12304b);border-color:#4a94cc}
+.stat-card.temp-strong,.live-tile.temp-strong{background:linear-gradient(150deg,#12385f,#102944);border-color:#5da6e8}
+.stat-card.temp-deep,.live-tile.temp-deep{background:linear-gradient(150deg,#10264b,#101e38);border-color:#8cb6ff}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin-bottom:17px}
+.panel{padding:22px;min-width:0;margin-bottom:18px}
+.split-grid .panel{margin-bottom:0;min-height:225px}
+.panel-title{display:flex;align-items:start;justify-content:space-between;gap:10px;margin-bottom:20px}
+.panel-title h3{margin:0;font-size:14px;letter-spacing:-.01em;font-weight:710}
+.panel-title p{margin:6px 0 0;color:var(--muted);font-size:11px}
+.kicker,.chip{font-size:10px;color:var(--teal);border:1px solid #275d63;border-radius:6px;padding:5px 8px;white-space:nowrap}
+.trust-summary{border:1px solid #35576a;background:#102638;border-radius:13px;margin:12px 0 16px;padding:15px 17px}
+.trust-summary-heading{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin-bottom:12px}
+.trust-summary-heading h3{font-size:.98rem;margin:0;color:#e3f3fa}
+.trust-summary-heading p{font-size:.76rem;color:#aec8d5;margin:0;line-height:1.5}
+.trust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.trust-item{border:1px solid #315268;background:#122e41;border-radius:9px;padding:12px;min-width:0}
+.trust-item strong{font-size:.82rem;line-height:1.45;display:block;color:#e1eff5}
+.trust-item p{font-size:.75rem;line-height:1.55;margin:7px 0 0;color:#bad1df}
+.trust-item.concern{border-color:#b08a55;background:#342d27}
+.trust-item.concern strong{color:#ffe1b6}
+.trust-item.incomplete{border-color:#587184;background:#222d39}
+.trust-item.incomplete strong{color:#f0d5aa}
+.risk-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:#a9c4ce;margin-bottom:18px}
+.risk-legend span{white-space:nowrap}
+.risk-dot{display:inline-block;width:8px;height:8px;border-radius:100%;margin-right:5px}
+.risk-dot.watch{background:#e0d478}.risk-dot.high{background:#ecac70}.risk-dot.severe{background:#ee888c}
+.banner{padding:16px 19px;margin:0 0 17px;border:1px solid #a7824f;border-radius:13px;background:#332c23;color:#ffdfb0;line-height:1.5}
+.banner.ok{border-color:#376e76;background:#142e37;color:#c4e7e4}
+.banner strong{display:block}
+.banner p{margin:5px 0 0;font-size:12px}
+.live-priority-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:17px}
+.priority-reading{margin:0;min-width:0}
+.priority-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.priority-heading h3{margin:0 0 12px;font-size:1rem}
+.reading-source{font-size:.7rem;color:#b3d1dd;border:1px solid #38596c;border-radius:12px;padding:3px 8px}
+.priority-reading .stat-value{display:block;margin-top:8px;margin-bottom:10px}
+.observation-stamp{font-size:.76rem;line-height:1.45;color:#a9d9dd;margin:7px 0}
+.reading-subline{font-size:.82rem;color:#bacfd7;line-height:1.55}
+.reading-details{border-top:1px solid #355367;margin-top:14px;padding-top:11px}
+.reading-details summary{cursor:pointer;color:#b9eee3;font-weight:650;font-size:.82rem}
+.reading-details p{font-size:.8rem;color:#bbd0db;line-height:1.6;margin:10px 0}
+.table-scroll{overflow-x:auto;width:100%}
+table{border-collapse:collapse;width:100%;text-align:left;min-width:610px}
+th{color:#8fa6b8;font-size:11px;font-weight:650;padding:12px;border-bottom:1px solid #335065;white-space:nowrap}
+td{border-bottom:1px solid #23394a;padding:13px 12px;font-size:12px;color:#c7d6e0;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td strong{color:#e8f3f4}
+.table-hours{max-height:510px;overflow-y:auto}
+.table-hours th{background:#102335;position:sticky;top:0;z-index:1}
+.fineprint{font-size:11px;color:#91a8b8;line-height:1.6;margin:15px 0 0}
+.footer{display:flex;gap:15px;justify-content:space-between;border-top:1px solid #1d3648;color:#7893a6;padding:21px 0 12px;font-size:10px;margin-top:22px;flex-wrap:wrap}
+.action-row{display:flex;flex-wrap:wrap;gap:10px}
+.forecast-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin-bottom:18px}
+.forecast-controls label{display:grid;gap:7px;color:#afc6d0;font-size:11px;font-weight:650}
+.forecast-controls select{min-width:200px}
+.model-info{color:#a9c1cc;font-size:11px;margin-bottom:13px}
+.station-search{background:#132a3a;color:var(--text);border:1px solid #31546a;border-radius:9px;padding:10px 13px;min-height:43px;min-width:190px}
+.station-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.station-card{border:1px solid #2a485b;background:linear-gradient(150deg,#12293b,#0c1c2e);border-radius:13px;padding:18px;min-width:0}
+.station-head{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.station-head h3{margin:0;font-size:15px}
+.station-badge{border:1px solid #356a68;border-radius:12px;padding:3px 9px;background:#153c3e;color:#abefe1;font-size:10px;white-space:nowrap}
+.station-badge.missing{border-color:#697c85;color:#c0cfd5;background:#21303d}
+.station-badge.risk{border-color:#d48975;color:#ffd1c5;background:#522f30;font-weight:750;white-space:normal;text-align:right;max-width:65%;overflow-wrap:anywhere}
+.station-temp{font-size:29px;line-height:1.2;font-weight:750;letter-spacing:-.04em;margin:12px 0 3px}
+.station-sub{color:var(--muted);font-size:11px}
+.station-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px 14px;border-top:1px solid var(--border);margin-top:15px;padding-top:15px}
+.station-values span{display:block;color:var(--muted);font-size:10px}
+.station-values strong{font-size:12px}
+.station-footer{margin-top:17px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;font-size:11px}
+.station-footer time{color:#9eb8c5}
+.stat-risk{color:var(--amber)!important}
+.stat-danger{color:var(--red)!important}
+.empty{padding:20px;color:var(--muted);font-size:12px;text-align:center}
+details.info{border-top:1px solid #355367;margin-top:17px;padding-top:13px}
+details.info summary{cursor:pointer;color:#b9eee3;font-size:12px;font-weight:650}
+details.info p{font-size:11px;color:var(--muted)}
+#drawer-scrim{display:none}
+@media(max-width:1150px){.sidebar{width:205px}.branding{padding-left:17px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.split-grid{grid-template-columns:1fr}.station-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.app-shell{display:block}.sidebar{height:auto;min-height:0;position:fixed;z-index:1001;bottom:0;left:0;top:0;width:255px;transform:translateX(-100%);transition:transform .2s;box-shadow:8px 0 40px #0008}.sidebar.open{transform:translateX(0)}#drawer-scrim.open{display:block;position:fixed;inset:0;z-index:1000;background:#03101bcc}.menu-toggle{display:inline-block}.topbar{padding:15px 18px;min-height:78px}.top-heading h1{font-size:17px}.clock{display:none}.top-actions{gap:8px}.refresh-button{padding:9px}.refresh-button .text{display:none}.content{padding:19px 15px}.intro{gap:8px}.section-header{align-items:flex-start;flex-wrap:wrap}.stat-grid{gap:10px}.stat-card{padding:15px;min-height:125px}.stat-value{font-size:24px}.panel{padding:16px}.station-grid{grid-template-columns:1fr}.live-priority-grid,.trust-grid{grid-template-columns:1fr}.footer{display:block;line-height:1.8}}
+@media(max-width:420px){.role-indicator{display:none}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-caption{font-size:10px}.station-search{width:100%}.forecast-controls label{width:100%}.forecast-controls select{width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sidebar{transition:none}}
+
+/* Family-page inspired information blocks; no private pages or server data are embedded. */
+.family-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 17px}
+.family-row .stat-card{min-height:136px}
+.family-note{border:1px solid #375268;background:#102739;color:#bdd1df;border-radius:11px;padding:15px 17px;font-size:12px;margin:12px 0 20px}
+.family-note strong{color:#f2f7fa}
+.family-live-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.family-live-tile{background:#132b3e;border:1px solid #2b4558;border-radius:12px;padding:17px;min-width:0}
+.family-live-tile small{font-size:11px;display:block;color:#a2baca}
+.family-live-tile strong{font-size:24px;letter-spacing:-.04em;display:block;margin:10px 0 5px}
+.family-live-tile p{font-size:11px;color:#a5bac8;margin:6px 0 0}
+.family-model-trust{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:#afc5d0;font-size:11px;margin:-2px 0 16px}
+.forecast-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.forecast-big{display:block;font-size:36px;font-weight:780;letter-spacing:-.05em;margin:14px 0 8px}
+.forecast-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}
+.forecast-mini-grid>div{padding:12px;border:1px solid #315269;background:#102a3b;border-radius:10px}
+.forecast-mini-grid small{display:block;color:#a4bcca;font-size:10px}
+.forecast-mini-grid strong{display:block;margin-top:6px;font-size:15px}
+.forecast-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:14px 0}
+.forecast-summary-grid>div{background:#142d41;border:1px solid #2c4a61;border-radius:11px;padding:15px}
+.forecast-summary-grid small{display:block;font-size:11px;color:#a6bdca}
+.forecast-summary-grid strong{display:block;font-size:21px;margin-top:8px}
+.forecast-hour-picker{display:flex;align-items:center;gap:8px;font-size:11px;color:#a7c3cd}
+.forecast-hour-picker select{min-width:93px}
+.road-table th{white-space:nowrap}.road-table td{white-space:nowrap}.road-table td:first-child{font-weight:700}
+/* Arvuti tabel: jää ja libedus ainult värske kinnitatud teeilmajaama näidu korral. */
+.road-table tbody tr.road-hazard td{background:#3b2630;border-bottom-color:#7f5056;color:#f1d9e2}
+.road-table tbody tr.road-hazard td:nth-child(3){color:#ffd5c5;font-weight:800}
+.road-mobile-cards{display:none}
+.source-catalog{display:grid;gap:10px}
+.source-entry{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;background:#112b3b;border:1px solid #305067;border-radius:11px}
+.source-entry strong{display:block;font-size:12px}.source-entry small{display:block;color:#acc2ce;font-size:11px;margin-top:3px}
+.source-badge{font-size:10px;font-weight:750;white-space:nowrap;color:#a9eee0;border:1px solid #408477;border-radius:99px;padding:5px 9px}
+.source-badge.missing{color:#ffdca8;border-color:#b28d5c}
+@media(max-width:1120px){.family-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.family-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.forecast-top-grid{grid-template-columns:1fr}.road-table-desktop{display:none}.road-mobile-cards{display:grid}.forecast-summary-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.family-live-grid,.family-row{grid-template-columns:1fr 1fr}.family-row .stat-card{padding:13px;min-height:110px}.forecast-summary-grid{grid-template-columns:1fr}.forecast-mini-grid{grid-template-columns:1fr 1fr}.forecast-big{font-size:30px}}
+
+
+/* Originaalse pereversiooni Ilmaprognoosi komponentide kujundus */
+.okf-screen{--okf-base:#091c2b;--okf-panel:#0e2537;--okf-edge:#1c5063;--okf-turq:#5ed5de;--okf-ink:#eef8ff;--okf-muted:#9bb8c8;color:var(--okf-ink)}
+.okf-screen .okf-header{align-items:center;gap:14px}
+.okf-choosers{display:flex;flex-wrap:wrap;gap:10px}
+.okf-choosers label,.okf-hour-choice{display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--okf-muted)}
+.okf-choosers select,.okf-hour-choice select{background:#092633;color:var(--okf-ink);border:1px solid var(--okf-edge);border-radius:9px;min-width:150px;padding:8px 10px;max-width:100%}
+.okf-trust-line{display:flex;flex-wrap:wrap;gap:9px 18px;margin:0 0 15px;font-size:.78rem;color:var(--okf-muted)}
+.okf-trust-line span:first-child{color:var(--okf-turq)}
+.okf-display-tip{margin:-5px 0 12px;color:var(--okf-muted);font-size:.76rem;line-height:1.55}
+.okf-accuracy{margin:0 0 16px}
+.okf-accuracy-block{margin-top:12px}
+.okf-accuracy-scroll{overflow-x:auto}
+.okf-accuracy-table{border-collapse:collapse;width:100%;min-width:440px;font-size:.78rem}
+.okf-accuracy-table th,.okf-accuracy-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #285062}
+.okf-accuracy-table th{color:var(--okf-muted);font-weight:600}
+.okf-accuracy h4{margin:12px 0 3px;font-size:.9rem}
+.okf-accuracy .okf-accuracy-status{margin:0 0 8px}
+.okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:16px}
+.okf-bottom-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr)}
+.okf-card{background:linear-gradient(145deg,#11283b,#0b1d2d 95%);border:1px solid #215164;border-radius:16px;padding:20px 22px;min-width:0;box-shadow:0 7px 18px #00000012}
+.okf-card h3{color:#f1f9ff;font-weight:750;font-size:1.05rem;margin:0 0 12px}
+.okf-card h3 small{font-size:.75rem;color:var(--okf-muted);font-weight:450}
+.okf-subtle{color:var(--okf-muted);font-size:.79rem;line-height:1.55;margin:8px 0 0}
+.okf-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.09em;color:#7acddb;margin-bottom:8px}
+.okf-hero{display:flex;justify-content:space-between;gap:20px;min-height:175px}
+.okf-hero h3{margin:0 0 12px}
+.okf-temperature{font-size:2.85rem;font-weight:800;line-height:1.05;letter-spacing:-.045em}
+.okf-measurements{display:grid;grid-template-columns:repeat(2,minmax(70px,1fr));gap:16px;align-content:center;min-width:180px}
+.okf-measurements>div{color:var(--okf-muted);font-size:.75rem}
+.okf-measurements strong{display:block;margin-top:4px;color:#f1f9ff;font-size:1.06rem}
+.okf-prognosis{background:linear-gradient(145deg,#11354a,#0a1d2f 90%)}
+.okf-weather-main{display:flex;align-items:center;gap:16px;margin-top:12px}
+.okf-weather-main>span{font-size:4.2rem;line-height:1.1}
+.okf-weather-main p{margin:0;font-size:1rem;font-weight:650}
+.okf-weather-main p.okf-subtle{font-size:.78rem;margin-top:8px;font-weight:450}
+.okf-hour-card{padding:16px 0 14px;margin-bottom:16px}
+.okf-hour-card>.okf-subtle{padding:0 18px}
+.okf-title-line{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 18px 10px}
+.okf-title-line h3{margin:0}
+.okf-title-line .okf-subtle{margin:4px 0 0}
+.okf-scroll{overflow-x:auto;padding:0 1px;scrollbar-color:#266479 #081b2b}
+.okf-hour-table{border-collapse:separate;border-spacing:0;min-width:960px;width:100%;table-layout:fixed}
+.okf-hour-table th,.okf-hour-table td{border-top:1px solid #183d4e;border-right:1px solid #153444;text-align:center;padding:11px 6px;min-width:85px;font-size:.82rem;vertical-align:middle;color:#e9f6fb;overflow-wrap:anywhere}
+.okf-hour-table thead th{background:#123349;color:#cce9f4;font-weight:750;white-space:nowrap}
+.okf-hour-table th:first-child{position:sticky;left:0;z-index:1;min-width:120px;width:120px;background:#0d293a;text-align:left;padding-left:14px}
+.okf-hour-table thead th:first-child{z-index:2;background:#16364b}
+.okf-hour-table tbody tr:nth-child(even) td{background:#0c2233b0}
+.okf-weather-symbol{display:block;font-size:1.65rem;line-height:1.4}
+.okf-small{display:block;color:var(--okf-muted);font-size:.68rem;line-height:1.3;margin-top:3px}
+.okf-flag{display:inline-flex;align-items:center;gap:3px;max-width:100%;background:#62471444;border:1px solid #c59b31a6;color:#fbe19e;padding:4px 8px;border-radius:8px;font-size:.74rem;font-weight:700;line-height:1.3;margin:2px;white-space:normal}
+.okf-flag.okf-high{background:#772b2444;color:#ffb5a6;border-color:#d87f68a6}
+/* Perevaate moodi kompaktsed tunniprognoosi tähelepanu-ikoonid */
+.okf-hour-table .okf-flag.okf-flag-icon{display:inline-grid;place-items:center;vertical-align:middle;width:29px;height:29px;min-width:29px;max-width:29px;padding:0;margin:1px 3px;border:1px solid #b18d2e;border-radius:7px;background:#102a3b;color:#f4dda2;font-size:1.17rem;font-weight:400;line-height:1;cursor:pointer;white-space:nowrap}
+.okf-hour-table .okf-flag.okf-flag-icon.okf-high{border-color:#cb7970;background:#3d2835;color:#ffd5c3}
+.okf-hour-table .okf-flag.okf-flag-icon:hover,.okf-hour-table .okf-flag.okf-flag-icon:focus-visible{background:#29475a;outline:2px solid #8be7dc;outline-offset:2px}
+.okf-hour-table td:has(.okf-flag-icon){white-space:nowrap}
+.okf-period-data{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0 15px}
+.okf-period-data>div{border-right:1px solid #1d4356;padding-right:8px}
+.okf-period-data>div:last-child{border-right:0}
+.okf-period-data small{display:block;color:var(--okf-muted);font-size:.73rem}
+.okf-period-data strong{display:block;font-size:1.36rem;margin-top:6px;overflow-wrap:anywhere}
+.okf-flag-row{min-height:40px}
+.okf-alert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
+.okf-alert{border:1px solid #ad8a26;border-radius:11px;background:#5f481b33;padding:12px}
+.okf-alert.okf-alert-high{border-color:#bc6458;background:#7d312933}
+.okf-alert strong{display:block;color:#fce18f;font-size:.87rem;margin-bottom:7px}
+.okf-alert-high strong{color:#ffd0bf}
+.okf-alert small{display:block;color:var(--okf-muted);line-height:1.5;font-size:.73rem}
+.okf-model-row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #194253;font-size:.82rem}
+.okf-model-row strong{white-space:nowrap}
+.okf-model-row:last-child{border-bottom:0}
+.okf-bottom-grid .subtle-button{margin-top:13px}
+.okf-disclaimer{font-size:.77rem;color:var(--okf-muted);line-height:1.6;margin:0 0 20px}
+.okf-weather-icon{display:block;width:36px;height:36px;margin:0 auto;flex-shrink:0;overflow:visible}
+.okf-weather-icon.okf-icon-large{width:70px;height:70px}
+.okf-weather-main>span{display:grid;place-items:center;font-size:initial;flex-shrink:0;min-width:70px}
+.okf-hour-table .okf-small{max-width:95px;margin:6px auto 0;line-height:1.35;font-size:.71rem;overflow-wrap:normal;hyphens:auto}
+.okf-hour-table td{min-width:92px}
+.okf-fog-summary{margin:12px 0 8px;color:#b7d8e2;font-size:.8rem;line-height:1.55}
+.okf-fog-summary strong{color:#eaf8fd;font-weight:750}
+.okf-fog-times{display:flex;gap:7px;flex-wrap:wrap;margin:7px 0}
+.okf-fog-time{padding:5px 9px;border:1px solid #567b88;background:#102b3b;border-radius:8px;color:#e1f4f9;white-space:normal}
+.okf-fog-time.strong{border-color:#d2a85e;color:#ffe5af}
+.okf-weather-main p{line-height:1.45}
+@media(max-width:520px){.okf-weather-icon.okf-icon-large{width:58px;height:58px}.okf-weather-main>span{min-width:58px}}
+@media(max-width:1000px){.okf-top-grid,.okf-forecast-grid,.okf-bottom-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.okf-screen .okf-header{align-items:stretch}.okf-choosers{width:100%}.okf-choosers label{flex:1;min-width:130px}.okf-choosers select{min-width:0;width:100%}.okf-card{padding:16px}.okf-hero{flex-direction:column}.okf-measurements{min-width:0}.okf-period-data strong{font-size:1.1rem}.okf-weather-main>span{font-size:3.5rem}.okf-temperature{font-size:2.5rem}}
+
+
+/* Live-ilma põhistruktuur pärineb pereversiooni Live-ilma paneelidest. */
+#live .situation-banner{padding:18px 20px;margin:0 0 17px;border:1px solid #59768a;border-radius:13px;background:#172c3d;color:#e8f5fc;line-height:1.5}
+#live .situation-banner strong{display:block;font-size:1.08rem;letter-spacing:.01em}
+#live .situation-banner p{margin:7px 0 0;color:#c6d8e3;font-size:.86rem}
+#live .situation-banner.incomplete{border-color:#aa8556;background:#332c23}
+#live .situation-banner.incomplete p{color:#ead2ad}
+#live .situation-banner.watch{border-color:#ef8d55;background:#4c2b27}
+#live .situation-banner.watch p{color:#ffe2c6}
+#live .situation-banner.normal{border-color:#376e76;background:#142e37}
+#live .live-panel{padding:22px}
+#live .live-banner{padding:13px 15px;border:1px solid #355669;background:#112a3b;border-radius:10px;color:#a9d8e1;font-size:12px;line-height:1.6;margin:10px 0 17px}
+#live .live-banner.stale,#live .live-banner.error{background:#3a3020;color:#f2d9a1;border-color:#8c6835}
+#live .live-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+#live .live-tile{border-radius:12px;background:#12293c;border:1px solid #2c485c;padding:18px 16px;min-height:113px;min-width:0}
+#live .live-tile .live-label{font-size:12px;color:#a7c5d3;margin-bottom:13px}
+#live .live-tile strong{display:block;font-size:24px;color:#ebfaff;letter-spacing:-.02em}
+#live .live-tile small{display:block;font-size:10px;margin-top:9px;color:#a5b7bf;line-height:1.45}
+#live .live-tile small.observation-stamp{color:#a6d8e4;font-size:.72rem;font-weight:600}
+#live .live-secondary{margin-top:18px;padding-top:15px;border-top:1px solid var(--border);border-radius:8px}
+#live .live-secondary strong{font-size:25px}
+#live .live-secondary small{display:block;margin-top:8px;line-height:1.5}
+#live .sea-local-levels{font-size:12px;line-height:1.6;color:#b8cad6;margin:7px 0 12px}
+#live .sea-level-watch{color:#f3db7a;font-weight:700}
+#live .sea-level-high{color:#f3a270;font-weight:700}
+#live .sea-level-severe{color:#ff7985;font-weight:700}
+#live #sea-risk-card.is-stale .stat-value{color:#a7c0cc}
+#live #sea-risk-card.is-stale .observation-stamp{color:#f0c882;font-weight:700}
+#live .reading-trend{font-weight:700;font-size:.91rem;color:#aee7de;margin:6px 0}
+#live .reading-details{border-top:1px solid #355367;margin-top:14px;padding-top:11px;line-height:1.5}
+#live .reading-details summary,#live .compact-details summary{cursor:pointer;color:#b9eee3;font-weight:650;font-size:.82rem}
+#live .reading-details p{font-size:.8rem;color:#bbd0db;line-height:1.6;margin:10px 0}
+#live .extra-measurements{margin-top:19px}
+#live .extra-measurements .live-grid{margin-top:12px}
+#live .compact-details{margin-top:16px}
+#live .compact-details #live-risk-summary{margin-top:12px;font-size:13px;line-height:1.6}
+#live .live-tile.temp-frost{background:linear-gradient(150deg,#19446a,#12304b);border-color:#4a94cc}
+#live .live-tile.temp-strong{background:linear-gradient(150deg,#12385f,#102944);border-color:#5da6e8}
+#live .live-tile.temp-deep{background:linear-gradient(150deg,#10264b,#101e38);border-color:#8cb6ff}
+#live .risk-watch{border-color:#b18c34;background:linear-gradient(155deg,#493b17,#252512)}
+#live .risk-high{border-color:#cb7946;background:linear-gradient(155deg,#563019,#2d221b)}
+#live .risk-severe{border-color:#c45066;background:linear-gradient(155deg,#55232e,#301b27)}
+@media(max-width:1050px){#live .live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:750px){#live .situation-banner{padding:15px}#live .live-priority-grid{grid-template-columns:1fr}}
+@media(max-width:620px){#live .live-panel{padding:14px}#live .live-grid{gap:10px}#live .live-tile{padding:14px;min-height:100px}#live .live-tile strong{font-size:20px}}
+
+
+/* Avaliku Live-ilma Pärnu lahe tuulekompass. */
+#live .bay-compass{margin-top:0;padding:12px 14px;background:linear-gradient(145deg,#143146,#0d2335);border:1px solid #375d72;border-radius:14px}
+#live .bay-compass h4{font-size:15px;margin:0;color:#effcff}
+#live .bay-compass header p{font-size:11px;color:#b0cfdb;margin:2px 0 0}
+#live .bay-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;align-items:center;margin-top:6px}
+#live .bay-map{width:100%;max-width:210px;margin:auto}
+#live .bay-map svg{display:block;width:100%;height:auto}
+#live .bay-map .tick{stroke:#bedfeb;stroke-width:1.5}
+#live .bay-map .tick.major{stroke:#f4fbff;stroke-width:2.5}
+#live .bay-map .cardinal{font-size:26px;font-weight:800;fill:#effbff;stroke:#103148;stroke-width:5px;paint-order:stroke;text-anchor:middle;dominant-baseline:middle}
+#live .bay-bearing{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+#live .bay-bearing strong{color:#eafaff;font-size:clamp(1.6rem,2.5vw,2rem);line-height:1.2}
+#live .bay-bearing span{font-size:12px;font-weight:700;color:#b8d9e6}
+#live .bay-status{display:inline-block;background:#25485b;border:1px solid #507a91;color:#ecf9ff;border-radius:8px;padding:5px 9px;margin:6px 0 5px;font-size:12px;line-height:1.3}
+#live .bay-status.inward{background:#4a3628;border-color:#a68154;color:#ffebca}
+#live .bay-status.outward{background:#18403e;border-color:#548f88;color:#c6f7e8}
+#live .bay-status.cross{background:#243956;border-color:#6486b3;color:#dfedff}
+#live .bay-status.stale{background:#493d29;border-color:#94794d;color:#fce6b9}
+#live .bay-detail{color:#c4dce7;font-size:12px;line-height:1.4;margin:0}
+#live .bay-stats{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+#live .bay-stats>div{background:#112c40;border:1px solid #3a596b;border-radius:8px;padding:6px 9px;min-width:90px}
+#live .bay-stats small{color:#b3d3df;font-size:10px;display:block}
+#live .bay-stats strong{display:block;color:#eefaff;font-size:17px;line-height:1.25}
+#live .bay-age{margin:6px 0 0;color:#a9d7e4;font-size:10px;line-height:1.35}
+#live .bay-help{margin-top:5px;color:#a4bdca;font-size:11px;line-height:1.45}
+#live .bay-help summary{cursor:pointer;color:#9cded6;font-size:11px}
+#live .bay-help p{margin:5px 0 0}
+@media(max-width:760px){#live .bay-layout{grid-template-columns:150px minmax(0,1fr);gap:10px}#live .bay-map{max-width:150px}}
+@media(max-width:420px){#live .bay-compass{padding:10px}#live .bay-layout{grid-template-columns:minmax(110px,42%) minmax(0,1fr);gap:8px}#live .bay-bearing strong{font-size:1.45rem}#live .bay-bearing span{font-size:11px}#live .bay-stats{gap:4px}#live .bay-stats>div{padding:4px 6px;min-width:0;flex:1 1 100%}#live .bay-stats strong{font-size:15px}#live .bay-stats small{display:inline;margin-right:5px}#live .bay-detail{font-size:11px}}
+
+/* Kompaktne Live-ilma töölaud: tuulekompassi kõrval ilmajaama mõõtmised. */
+#live .primary-live-grid{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:stretch;gap:12px}
+#live .primary-live-grid>.bay-compass{grid-column:1;margin:0;min-width:0}
+#live .weather-measurements-grid{grid-column:2;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+#live .weather-measurements-grid>.live-tile{min-width:0;min-height:0;padding:12px 13px}
+#live .weather-measurements-grid>.live-tile .live-label{margin-bottom:6px;font-size:11px}
+#live .weather-measurements-grid>.live-tile strong{font-size:21px}
+#live .weather-measurements-grid>.live-tile small{margin-top:5px;line-height:1.35}
+#live .weather-measurements-grid>#live-temperature-tile{grid-row:1/3;grid-column:1}
+#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:12px;padding-top:10px}
+#live .weather-measurements-grid>#live-temperature-tile .live-secondary strong{font-size:21px}
+#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}
+#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}
+@media(max-width:1050px){#live .primary-live-grid{grid-template-columns:minmax(0,1fr)}#live .primary-live-grid>.bay-compass{grid-column:1}#live .weather-measurements-grid{grid-column:1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:2;grid-row:1}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:3;grid-row:1}}
+@media(max-width:620px){#live .weather-measurements-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#live .weather-measurements-grid>#live-temperature-tile{grid-column:1/-1;grid-row:1}#live .weather-measurements-grid>.weather-pressure-tile{grid-column:1;grid-row:2}#live .weather-measurements-grid>.weather-humidity-tile{grid-column:2;grid-row:2}#live .weather-measurements-grid>#live-temperature-tile .live-secondary{margin-top:9px;padding-top:8px}}
+
+/* Prognoosi KKK ja legend. Vaikimisi suletud ja ka telefonis loetav. */
+.okf-guide{margin:0 0 17px;border:1px solid #365768;border-radius:12px;background:#112638;overflow:hidden}
+.okf-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none;padding:13px 16px;color:#d5f6f0;font-weight:720;font-size:14px}
+.okf-guide>summary::-webkit-details-marker{display:none}
+.okf-guide>summary::after{content:"";width:.55em;height:.55em;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.okf-guide[open]>summary::after{transform:rotate(225deg)}
+.okf-guide-content{padding:0 16px 16px}
+.okf-guide-intro{margin:0 0 12px;color:#acc6d4;font-size:12px;line-height:1.6}
+.okf-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.okf-guide-item{min-width:0;border:1px solid #2c485c;border-radius:9px;background:#102233}
+.okf-guide-item>summary{cursor:pointer;padding:12px 13px;color:#d7ebf5;font-weight:680;font-size:12px;line-height:1.5}
+.okf-guide-item>summary:hover{color:#aff1e6}
+.okf-guide-answer{padding:0 13px 12px;color:#b9d1df;font-size:12px;line-height:1.65}
+.okf-guide-answer p{margin:0 0 8px}
+.okf-guide-answer p:last-child{margin-bottom:0}
+.okf-guide-answer ul{margin:0;padding-left:19px}
+.okf-guide-answer li{margin:3px 0}
+.okf-guide-answer strong{color:#e1f2f8}
+.okf-guide-note{margin:12px 0 0;color:#b8cbd8;font-size:11px;line-height:1.6}
+@media(max-width:760px){.okf-guide-grid{grid-template-columns:minmax(0,1fr)}.okf-guide>summary{padding:12px 13px}.okf-guide-content{padding:0 12px 13px}}
+
+ .rivers-subtitle{margin:22px 0 8px}.rivers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.river-card{min-width:0}.river-cardtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.river-status{font-size:.76rem;color:#b5eee2;border:1px solid #48796f;border-radius:7px;padding:3px 7px}.river-old{color:#f5ca91;border-color:#8d7155}.river-big{font-size:1.7rem;font-weight:750;font-variant-numeric:tabular-nums;margin:9px 0}.rivers-chart{display:block;width:100%;height:auto}@media(max-width:850px){.rivers-grid{grid-template-columns:1fr}}
+.marine-subtitle{margin:22px 0 10px}.marine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.marine-card{min-width:0}.marine-card-head{display:flex;gap:12px;justify-content:space-between;align-items:start;flex-wrap:wrap}.marine-tag{font-size:.76rem;padding:3px 8px;border-radius:7px;border:1px solid #507f75;color:#baecdf}.marine-tag.missing{color:#ffd2a0;border-color:#8a735d}.marine-number{font-size:1.9rem;font-weight:750;font-variant-numeric:tabular-nums;margin:8px 0 4px}.marine-number.missing{color:var(--muted)}.marine-card.marine-watch{border-color:#beac62;background:#342d21}.marine-card.marine-high{border-color:#d78a56;background:#372921}.marine-card.marine-severe{border-color:#e06c72;background:#452629}.marine-meta{color:#b7c8d4;font-size:.8rem;line-height:1.6;margin:7px 0}.marine-metrics{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px}.marine-metrics>span{border:1px solid #39576c;padding:6px 9px;border-radius:8px;font-variant-numeric:tabular-nums;font-size:.85rem}@media(max-width:800px){.marine-grid{grid-template-columns:1fr}}
+#data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}</style>
+<style>
+#home{padding:clamp(12px,3vw,36px) 0}#home h2{font-size:clamp(24px,3vw,38px);margin:16px 0}.now-grid,#home-hours{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}.now-grid article,#home-hours article{padding:clamp(12px,2vw,24px);border:1px solid #335065;border-radius:12px;background:#112638}.now-grid h3{font-size:1rem;margin:0}.now-grid strong{display:block;font-size:clamp(26px,4vw,52px);margin:12px 0;color:#a1e8df}#home small{display:block;color:#bed0de}.home-links{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0}.home-links a{color:#9be3de}#home-hours{grid-template-columns:repeat(6,minmax(0,1fr))}#home-hours b,#home-hours strong{display:block;margin-bottom:6px}@media(max-width:800px){#home-hours{grid-template-columns:repeat(3,1fr)}.now-grid{grid-template-columns:1fr 1fr}.now-grid article:last-child{grid-column:1/-1}}
+</style></head>
+<body>
+<div id="app" class="app-shell">
+ <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
+  <div class="branding"><div class="brand-icon" aria-hidden="true">◉</div><div><div class="brand-sub">Pärnu</div><div class="brand-title">Ilmakeskus</div></div></div>
+  <nav class="nav" id="nav" aria-label="Jaotised">
+   <button type="button" class="nav-link active" data-section="home" aria-current="page">Pärnu praegu</button><button type="button" class="nav-link" data-section="live"><span class="nav-icon">◉</span> Live-ilm</button>
+   <button type="button" class="nav-link" data-section="forecast"><span class="nav-icon">≋</span> Ilmaprognoos</button>
+   <button type="button" class="nav-link" data-section="radar"><span class="nav-icon">☂</span> Sajuradar</button>
+   <button type="button" class="nav-link" data-section="roads"><span class="nav-icon">🚗</span> Teeolud</button>
+   <button type="button" class="nav-link" data-section="rivers"><span class="nav-icon">🌊</span> Jõeseire</button>
+   <button type="button" class="nav-link" data-section="marine"><span class="nav-icon">⚓</span> Mereseire</button>
+   <button type="button" class="nav-link" data-section="sources"><span class="nav-icon">◷</span> Allikad</button>
+  </nav>
+ </aside>
+ <div id="drawer-scrim" aria-hidden="true"></div>
+ <div class="main-wrap">
+  <header class="topbar"><div class="top-heading">
+   <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Ava menüü" aria-controls="nav" aria-expanded="false">☰</button>
+   <div><div class="eyebrow">PÄRNU / AVALIK ILMASEIRE</div><h1 id="page-title">Live-ilm</h1></div>
+  </div><div class="top-actions">
+   <time id="clock" class="clock"></time><span class="role-indicator">Avalik vaade</span>
+   <button type="button" id="refresh" class="refresh-button">↻ <span class="text">Uuenda andmeid</span></button>
+  </div></header>
+  <main class="content">
+   <div id="offline-banner" class="banner" hidden>Võrguühendus puudub. Viimaseid tulemusi ei esitata hetkeolukorrana.</div>
+   <div class="intro"><div class="pill">Pärnu ilmakeskuse proovivaade</div><span id="published">Kontrollin viimast avaldatud andmefaili…</span></div>
+   <div id="data-message" class="banner" role="status"><strong>Kontrollin andmeid…</strong><p>Andmefaili laadimine ja värskuskontroll.</p></div>
+   <aside class="panel" aria-labelledby="official-warning-title"><strong id="official-warning-title">Keskkonnaagentuuri ametlikud hoiatused</strong><div id="official-warning-list">Kontrollin hoiatusvoogu…</div><a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ametlik hoiatuskaart ↗</a></aside>
+   <section id="home" class="screen active">
+<h2>Pärnu praegu</h2><div class="now-grid"><article><h3>Pärnu sadama õhutemperatuur</h3><strong id="home-temp">—</strong><small id="home-airtime"></small></article><article><h3>Keskmine tuul</h3><strong id="home-wind">—</strong><small id="home-gust"></small></article><article><h3>Pärnu meretase</h3><strong id="home-sea">—</strong><small id="home-seatime"></small><small id="home-trend"></small></article></div>
+<h2>Järgmised 6 tundi</h2><p id="home-model"></p><div id="home-hours"></div><nav class="home-links"><a href="#forecast">Prognoos →</a><a href="#radar">Sajuradar →</a><a href="#marine">Mereseire →</a><a href="#rivers">Jõeseire →</a><a href="#roads">Teeolud →</a></nav></section><section id="live" class="screen" aria-labelledby="live-heading">
+    <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Pärnu sadama ja tunnijaama eri allikate mõõtmised. Näidud ei kirjelda automaatselt kogu maakonda.</p></div><span class="chip">Kontrollitud mõõteajad</span></div>
+    <div id="live-situation" class="situation-banner incomplete" role="status" aria-live="polite">
+     <strong id="live-situation-title">Olukorra hindamiseks ootan mõõteandmeid</strong>
+     <p id="live-situation-detail">Värskeid mõõtmisi ei ole veel kontrollitud. Puuduv näit ei tähenda ohutut olukorda.</p>
+    </div>
+    <article class="panel live-panel">
+     <div class="panel-title"><div><h3>TalTechi sadamajaama mõõtmised</h3><p id="live-time">Jaama mõõtmisaja kontroll on ootel…</p></div></div>
+     <div class="live-banner" id="live-banner" role="status">TalTechi mõõteandmete kontroll on ootel.</div>
+     <div class="live-grid primary-live-grid">
+     <section class="bay-compass" aria-labelledby="bay-compass-title">
+      <header><h4 id="bay-compass-title">🌬️ Tuul Pärnu lahel</h4></header>
+      <div class="bay-layout">
+       <div class="bay-map">
+        <svg id="wind-bay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" role="img" aria-label="Pärnu lahe lihtsustatud kaart. Kinnitatud tuulesuund on ootel.">
+         <defs><clipPath id="bay-clip"><circle cx="260" cy="260" r="195"/></clipPath>
+          <linearGradient id="bay-sea" x2=".8" y2="1"><stop stop-color="#4290b8"/><stop offset="1" stop-color="#185473"/></linearGradient>
+          <linearGradient id="bay-land" x2="1" y2="1"><stop stop-color="#b0cb90"/><stop offset="1" stop-color="#698d72"/></linearGradient>
+         </defs>
+         <circle cx="260" cy="260" r="218" fill="#092338"/>
+         <g clip-path="url(#bay-clip)">
+          <rect x="65" y="65" width="390" height="390" fill="url(#bay-sea)"/>
+          <path d="M65 65 H282 C284 98 268 120 258 145 C249 172 252 194 236 221 C211 254 196 282 169 313 C138 350 111 371 65 395 Z" fill="url(#bay-land)" stroke="#d3e7bf" stroke-width="3"/>
+          <path d="M312 65 H455 V380 C415 357 382 339 354 312 C322 284 295 266 283 239 C273 211 279 182 286 163 C300 135 318 105 312 65 Z" fill="url(#bay-land)" stroke="#d3e7bf" stroke-width="3"/>
+          <path d="M279 65 C285 95 269 119 261 145 C252 171 257 193 249 217 L273 217 C280 189 283 164 296 137 C310 111 317 87 309 65" fill="#7cb9d8" stroke="#c4e9f3" stroke-width="2"/>
+          <path d="M238 224 Q204 302 104 406 M277 226 Q252 299 221 365" stroke="#f4ddae" stroke-width="3" opacity=".65" fill="none"/>
+          <circle cx="265" cy="185" r="5" fill="#fff5bd" stroke="#265a75" stroke-width="2"/>
+          <text x="313" y="167" font-size="14" font-weight="800" fill="#effae8" stroke="#496d63" stroke-width="3" paint-order="stroke">PÄRNU</text>
+          <text x="314" y="184" font-size="11" font-weight="700" fill="#effae8" stroke="#496d63" stroke-width="3" paint-order="stroke">SADAM</text>
+          <text x="263" y="389" font-size="16" font-weight="800" text-anchor="middle" letter-spacing="2.5" fill="#eaf7ff" stroke="#155777" stroke-width="4" paint-order="stroke">PÄRNU LAHT</text>
+          <path d="M260 75 V445 M75 260 H445" stroke="#ddf7ff" stroke-width="1.5" opacity=".15"/>
+         </g>
+         <circle cx="260" cy="260" r="195" fill="none" stroke="#88bcd4" stroke-width="4"/>
+         <g id="wind-bay-scale" aria-hidden="true"></g>
+         <g id="wind-bay-arrow" transform="translate(260 260) rotate(0)" style="display:none" aria-hidden="true">
+          <path d="M0 109 L0 -83" stroke="#fff" stroke-width="13" stroke-linecap="round"/>
+          <path d="M0 109 L0 -83" stroke="#f72a31" stroke-width="8" stroke-linecap="round"/>
+          <path d="M0 -117 L-24 -69 L0 -80 L24 -69 Z" fill="#f72a31" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+          <circle r="7" fill="#f72a31" stroke="#fff" stroke-width="2"/>
+         </g>
+        </svg>
+       </div>
+       <div>
+        <div class="bay-bearing"><strong id="bay-bearing">—</strong><span id="bay-cardinal">Suund ootel</span></div>
+        <strong id="bay-status" class="bay-status">Mõõtmine ootel</strong>
+        <p id="bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
+        <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="bay-speed">—</strong></div><div><small>Puhangud</small><strong id="bay-gust">—</strong></div></div>
+        <p id="bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
+        <details class="bay-help"><summary>Suuna selgitus</summary><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
+       </div>
+      </div>
+     </section>
+      <div class="weather-measurements-grid" aria-label="Muud sadamajaama mõõtmised">
+      <div class="live-tile" id="live-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="live-temperature">—</strong><small id="live-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="live-temperature-note">Temperatuuriolek ootel</small>
+       <div class="live-secondary" id="live-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="live-windchill">—</strong><small id="live-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="live-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
+      </div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="live-pressure">—</strong><small id="live-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="live-humidity">—</strong><small id="live-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      </div>
+     </div>
+
+     <details class="reading-details extra-measurements"><summary>TalTechi täiendavad sademenäidud (mõõteperiood kinnitamata)</summary>
+      <div class="live-grid">
+       <div class="live-tile"><div class="live-label">Sademete hulk · periood teadmata</div><strong id="live-precip">—</strong><small class="observation-stamp" id="live-precip-age">Mõõtmine ootel</small></div>
+       <div class="live-tile"><div class="live-label">Sademete kestvus · periood teadmata</div><strong id="live-precip-duration">—</strong><small class="observation-stamp" id="live-precip-duration-age">Mõõtmine ootel</small></div>
+      </div>
+      <p class="fineprint">Kui TalTechi sademenäidu mõõteperioodi pole kinnitatud, ei tohi seda käsitleda viimase tunni sajukogusena ega kasutada tunnisaju hoiatusena.</p>
+     </details>
+     <details class="reading-details technical-details"><summary>Mõõtmiste tehnilised piirangud ja algallikas</summary><p>Live-lehe kohalik tuule tähelepanupiir 15 m/s põhineb ainult värskel keskmise tuule mõõtmisel, mitte puhangul. Avalikus vaates puuduvad administraatori teavitusseaded. TalTechi mõõtmise puudumine või vananemine ei tähenda vaikimisi ohutuid olusid. Jaamanäit ei ole prognoos.</p><p><a href="https://on-line.msi.ttu.ee/parnu/" target="_blank" rel="noopener noreferrer">Ava TalTechi algne leht ja graafikud ↗</a></p></details>
+    </article>
+    <div class="live-priority-grid">
+     <article class="panel priority-reading" id="hourly-rain-card">
+      <div class="priority-heading"><h3>Viimase kinnitatud tunni sadu · Pärnu</h3><span class="reading-source">Keskkonnaagentuur</span></div>
+      <strong class="stat-value" id="hourly-rain-value">—</strong>
+      <p class="observation-stamp" id="hourly-rain-freshness">Mõõtmisaeg kontrollimata</p>
+      <p class="reading-subline" id="hourly-rain-time">Kinnitatud tunnivaatlus ootel.</p>
+      <details class="reading-details"><summary>Allikas ja mõõteperiood</summary><p>Keskkonnaagentuuri Pärnu jaam. Täistunni mõõteperiood ja sajukogus peavad olema kinnitatud. Teejaama sajuintensiivsus ei asenda tunni kogust.</p><p><a href="https://www.ilmateenistus.ee/ilm/ilmavaatlused/vaatlusandmed/tunniandmed/" target="_blank" rel="noopener noreferrer">Ava tunnivaatlused ↗</a></p></details>
+     </article>
+     <article class="panel priority-reading" id="sea-risk-card">
+      <div class="priority-heading"><h3>Meretase · Pärnu</h3><span class="reading-source">EH2000</span></div>
+      <strong class="stat-value" id="marine-value">—</strong>
+      <p class="observation-stamp" id="marine-freshness">Mõõtmisaeg kontrollimata</p>
+      <p class="reading-trend" id="marine-trend">Tunnimuutus: kinnitamata</p>
+      <details class="reading-details"><summary>Piirid, allikas ja selgitus</summary><p class="sea-local-levels">Kohalikud tähelepanupiirid: <span class="sea-level-watch">+100 cm kollane</span> · <span class="sea-level-high">+150 cm oranž</span> · <span class="sea-level-severe">+180 cm punane</span>. Need ei ole ametlikud hoiatusastmed.</p><p id="marine-meta">Kontrollin mõõtmisaega ja EH2000 kõrgussüsteemi.</p><p><a href="https://on-line.msi.ttu.ee/meretase/graph.php?jaam=parnu" target="_blank" rel="noopener noreferrer">Ava Pärnu meretaseme mõõtegraafik ↗</a></p></details>
+     </article>
+    </div>
+    <details class="panel compact-details"><summary>Mõõdetud ilma kohalikud tähelepanupiirid</summary><div id="live-risk-summary" role="status">Kohalike piiride kontroll ootel.</div></details>
+   </section>
+   <section id="forecast" class="screen okf-screen" aria-labelledby="okf-heading">
+  <div class="section-header okf-header"><div><h2 id="okf-heading">🌤️ Ilmaprognoos</h2><p>Pärnu Ilmakeskuse prognoosivaade. Värsked mõõtmised ja mudeliprognoosid on eraldi.</p></div><div class="okf-choosers">
+    <label>Asukoht<select id="okf-place" aria-label="Prognoosi asukoht"><option value="parnu">Pärnu</option><option value="haademeeste">Häädemeeste</option><option value="tostamaa">Tõstamaa</option><option value="sindi">Sindi</option></select></label>
+    <label>Mudel<select id="okf-model" aria-label="Ilmaprognoosi mudel"><option value="auto">Automaatne valik</option><option value="ecmwf_ifs025">ECMWF IFS</option><option value="icon_eu">DWD ICON-EU</option><option value="gfs_global">NOAA GFS</option><option value="metno_nordic">MET Nordic</option><option value="dmi_harmonie_arome_europe">DMI HARMONIE</option><option value="fmi_meps">FMI HARMONIE–MEPS</option></select></label>
+  </div></div>
+  <div class="okf-trust-line"><span id="okf-state">Andmete kontroll ootel</span><span id="okf-source">Mudelivalik ootel</span><span id="okf-updated">Aeg ootel</span></div>
+
+
+  <details class="okf-guide" id="forecast-guide">
+   <summary>📖 Kuidas ilmaandmeid ja prognoose lugeda? · KKK ja legend</summary>
+   <div class="okf-guide-content">
+    <p class="okf-guide-intro">Lühikesed selgitused ilmaikoonide, numbrite ja andmete usaldusväärsuse kohta. Ava sind huvitav küsimus.</p>
+    <div class="okf-guide-grid">
+     <details class="okf-guide-item">
+      <summary>🌡️ Mis vahe on mõõdetud ilmal ja prognoosil?</summary>
+      <div class="okf-guide-answer"><p><strong>Mõõdetud ilm</strong> näitab ilmajaama tegelikku mõõtmist kindlal ajal ja kindlas kohas. Prognoosilehel puudutab see Pärnu sadamajaama, mitte automaatselt kogu linna.</p><p><strong>Ilmaprognoos</strong> on arvutimudeli hinnang tulevaste tundide ilma kohta. See ei ole jaamamõõtmine ega garanteeritud tulemus.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌤️ Mida ilmaikoonid tähendavad?</summary>
+      <div class="okf-guide-answer"><ul>
+       <li><strong>☀️ / 🌙</strong> Selge või vähese pilvisusega ilm. Öösel kuvatakse päikese asemel kuu.</li>
+       <li><strong>🌤️ / ☁️</strong> Osaliselt pilves või pilves. Öises osalise pilvisuse ikoonis on kuu ja pilv.</li>
+       <li><strong>🌧️</strong> Vihm või uduvihm; <strong>❄️</strong> lumi; <strong>🌨️</strong> segasadu; <strong>🧊</strong> jäätuv sadu.</li>
+       <li><strong>🌫️</strong> Udu või härmatist tekitav udu; <strong>⛈️</strong> äike.</li>
+       <li><strong>?</strong> Ilma liiki ei saa olemasolevate andmete põhjal määrata.</li>
+      </ul><p>Ikoon kirjeldab valitud mudeli prognoosi, mitte kinnitatud hetkeilma. Ülaltoodud sümbolid on selgitavad näited.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌬️ Mida tähendavad tuul, puhangud ja m/s?</summary>
+      <div class="okf-guide-answer"><p><strong>Tuul (m/s)</strong> näitab mudeli prognoositud keskmist tuulekiirust. <strong>Puhang</strong> on lühiajaline tugevam tuulehoog, mis võib keskmisest tuulest märksa suurem olla.</p><p>Näiteks 5 m/s tuult ja 12 m/s puhangud ei tähenda, et tuul puhub kogu aeg 12 m/s.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌧️ Mida tähendavad sademed ja 24/48 tunni kokkuvõte?</summary>
+      <div class="okf-guide-answer"><p><strong>Sadu (1 h)</strong> on prognoositud sajukogus ühe tunni jooksul millimeetrites. Näiteks 2 mm vastab ligikaudu 2 liitrile veele ruutmeetri kohta.</p><p><strong>24/48 tunni kokkuvõtted</strong> näitavad vahemiku temperatuuriulatust, suurimat tuulepuhangut ja sademete summat ainult piisava tunnikatvuse korral. Kui vajalikud andmed puuduvad, jätab leht kokkuvõtte arvutamata.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🛰️ Mis on ECMWF, ICON, GFS ja HARMONIE?</summary>
+      <div class="okf-guide-answer"><p>Need on erinevad arvutuslikud ilmaprognoosimudelid. Lehel saab valida ECMWF IFS-i, DWD ICON-EU, NOAA GFS-i, MET Nordicu ning DMI ja FMI HARMONIE mudelite vahel.</p><p>Prognoosid võivad erineda eri lähteandmete ja arvutusviiside tõttu. <strong>Automaatne valik</strong> valib ühe sobiva värske mudeli, mitte kuue mudeli keskmist ega ühist kinnitatud ennustust.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>⚠️ Mida tähendavad tähelepanumärgid?</summary>
+      <div class="okf-guide-answer"><p>Need on <strong>kohalikud, mudeliprognoosi põhjal arvutatud tähelepanumärgid</strong>, näiteks tugev puhang, külm, udu või jäätuva saju võimalus. Need ei ole Keskkonnaagentuuri ametlikud ilmahoiatused.</p><p>Märgi puudumine ei kinnita ohutut ilma. Avalikust prognoosivaatest telefoni push-teavitusi ei saadeta.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🌊 Kuidas lugeda meretaset ja lahe tuulekompassi?</summary>
+      <div class="okf-guide-answer"><p><strong>Meretase</strong> on sentimeetrites EH2000 kõrgussüsteemis, mitte vee sügavus. Meie kohalikud tähelepanupiirid on <strong>+100 cm kollane, +150 cm oranž, +180 cm punane</strong>. Need ei ole ametlikud hoiatusastmed.</p><p><strong>Kompassi punane nool</strong> näitab suunda, kuhu tuul liigub. Kraadid näitavad meteoroloogilist suunda ehk kust tuul tuleb. Märked „puhub lahte” ja „puhub lahest välja” on ligikaudsed. Tuulesuund üksi ei näita üleujutusohtu.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🕒 Miks näen kriipsu või kirja „andmed aegunud”?</summary>
+      <div class="okf-guide-answer"><p><strong>—</strong> tähendab, et usaldusväärset näitu ei saa praegu kuvada, näiteks puuduvate, kontrollimata või aegunud andmete tõttu.</p><p><strong>„MITTE HETKETASE”</strong> või „varasem mõõtmine” tähistab kontrollitud, kuid vananenud näitu, mida ei kasutata värske ohuolukorra kinnitamiseks. <strong>Prognoosi vastuvõtuaeg</strong> ei ole tingimata mudeli arvutusjooksu aeg.</p></div>
+     </details>
+     <details class="okf-guide-item">
+      <summary>🚗 Kas teeilmajaama näit kinnitab sõiduohutust?</summary>
+      <div class="okf-guide-answer"><p>Ei. Teeilmajaam mõõdab tingimusi ainult oma asukohas. Sama tee mujal võib olla libedam või kuivem. Puuduv või aegunud näit ei tähenda ohutuid teeolusid.</p><p>Ametlikku teeinfot vaata <a href="https://tarktee.ee/" target="_blank" rel="noopener noreferrer">Tark Teest</a>.</p></div>
+     </details>
+    </div>
+    <p class="okf-guide-note">Pärnu Ilmakeskus on informatiivne ilmaveeb. Ametlikke ilmahoiatusi vaata <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistusest</a>.</p>
+   </div>
+  </details>
+  <div class="okf-top-grid">
+    <article class="okf-card okf-hero"><div><div class="okf-eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 id="okf-observed-title">Pärnu sadama hetkeilm</h3><div class="okf-temperature" id="okf-observed-temp">—</div><p id="okf-observed-time" class="okf-subtle">Mõõtmine ootel</p></div><div class="okf-measurements"><div>Tuul<strong id="okf-observed-wind">—</strong></div><div>Puhangud<strong id="okf-observed-gust">—</strong></div><div>Õhuniiskus<strong id="okf-observed-humidity">—</strong></div><div>Õhurõhk<strong id="okf-observed-pressure">—</strong></div></div></article>
+    <article class="okf-card okf-hero okf-prognosis"><div class="okf-eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="okf-location-title">Asukoht</h3><div class="okf-weather-main"><span id="okf-current-icon" aria-hidden="true">▫️</span><div><p id="okf-current-desc">Prognoosi ootel</p><p class="okf-subtle">Prognoos ei ole jaamamõõtmine ega ametlik hoiatus.</p></div></div></article>
+  </div>
+  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div>
+  <div id="okf-fog-summary" class="okf-fog-summary" role="status" aria-live="polite">Kontrollin mudelite uduprognoosi…</div>
+  <p id="okf-visibility-note" class="okf-subtle">Mudelite nähtavuskauguse prognoos pole praeguses andmevoos saadaval.</p>
+  <p id="okf-flag-detail" class="okf-subtle" aria-live="polite">Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
+  <div class="okf-forecast-grid">
+    <article class="okf-card okf-period"><h3>▣ Järgmised 24 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-24-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-24-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-24-rain">—</strong></div></div><div class="okf-flag-row" id="okf-24-flags"></div><p id="okf-24-status" class="okf-subtle">Ootel</p></article>
+    <article class="okf-card okf-period"><h3>▣ Järgmised 48 tundi</h3><div class="okf-period-data"><div><small>Temperatuur</small><strong id="okf-48-temp">—</strong></div><div><small>Suurim puhang</small><strong id="okf-48-gust">—</strong></div><div><small>Sadu kokku</small><strong id="okf-48-rain">—</strong></div></div><div class="okf-flag-row" id="okf-48-flags"></div><p id="okf-48-status" class="okf-subtle">Ootel</p></article>
+  </div>
+  <div class="okf-bottom-grid"><article class="okf-card"><h3>⚠ Olulisemad tähelepanud <small>(prognoosi põhjal)</small></h3><div id="okf-alerts" class="okf-alert-grid"></div><p class="okf-subtle">Kohalikud sõelamärgid, mitte Keskkonnaagentuuri ametlikud hoiatused. Sellest vaatest telefoniteavitusi ei saadeta.</p></article>
+  <article class="okf-card"><h3>ℹ Valitud mudeli andmed</h3><div id="okf-model-list"></div><p id="okf-model-note" class="okf-subtle">Mudelivaliku andmeallikat kontrollitakse.</p><p class="okf-subtle">Kuvatud aeg näitab andmete vastuvõttu, mitte tingimata mudeli arvutusjooksu. Automaatne valik eelistab kõige värskemat vastuvõturühma ja alles siis mudelite eelistusjärjekorda. Põhjalik mudelivõrdlus jääb administraatorile.</p></article></div>
+  <article class="okf-card okf-accuracy" aria-labelledby="okf-accuracy-title">
+    <h3 id="okf-accuracy-title">📊 Prognoosi täpsus · Pärnu</h3>
+    <p id="okf-accuracy-status" class="okf-subtle okf-accuracy-status" role="status">Täpsusajaloo andmed ootel.</p>
+    <div id="okf-accuracy-body"></div>
+    <p class="okf-subtle">Võrdlus kasutab Pärnu sadama kontrollitud temperatuuri- ja tuulemõõtmisi. MAE on keskmine absoluutviga: väiksem on parem. Võrreldakse meie salvestushetkel ligikaudu 24 tunni kaugusele ulatunud prognoose, mitte kinnitatud mudelijooksu vanust. See ei ole kogu Pärnumaa täpsushinnang.</p>
+  </article>
+  <p class="okf-disclaimer">Andmed pärinevad olemasolevatest ilmaandmete allikatest, uut API-t ei lisata. Prognoosimudeli täpne lähtejooks võib olla kinnitamata. Värske mõõtmine kuvatakse ainult Pärnu sadama jaamast, kui selle mõõtmisaeg on kontrollitud. 24 ja 48 tunni kokkuvõtte katvust kontrollitakse valitud mudeli tunniandmetest.</p>
+</section>
+   <section id="roads" class="screen" aria-labelledby="roads-heading">
+    <div class="section-header"><div><h2 id="roads-heading">Teeolud Pärnumaal</h2><p>DATEX II teeilmajaamade mõõtmised samasuguse tabelivaatega nagu perelehel.</p></div><span class="kicker">TRANSPORDIAMET · DATEX II</span></div>
+    <article class="panel"><div class="panel-title"><div><h3>11 Pärnumaa teeilmajaama</h3><p id="roads-time">Viimane allikakontroll ootel</p></div><span id="roads-summary" class="kicker">Kontrollin mõõtmisi…</span></div>
+     <div class="road-table-desktop table-scroll" tabindex="0" aria-label="Teeilmajaamade tabel, vajadusel keri horisontaalselt"><table class="road-table"><thead><tr><th>Jaam</th><th>Teekate °C</th><th>Teekatte seisund</th><th>Õhk °C</th><th>Sademed</th><th>Nähtavus</th><th>Tuul</th><th>Kaart</th><th>Andmete seis</th><th>Mõõdetud (Eesti aeg)</th></tr></thead><tbody id="road-table-body"><tr><td colspan="10">Ootan mõõtmisi…</td></tr></tbody></table></div>
+     <p class="fineprint">Jaamad on kinnitatud Pärnumaa maakonnapiiri järgi. Mõõtmiste värskuse piir on 50 minutit ning allika enda kontrolli aeg eraldi kuni 40 minutit. Punakas tabelirida ja ⚠ tähistavad värskel jaamamõõtmisel märgitud jääd või libedust. Teeilmajaama näit kirjeldab ainult mõõtmiskohta.</p>
+    </article>
+    <article class="panel"><div class="panel-title"><div><h3>Teeilmajaamad telefonis</h3><p>Telefonis avaneb mõõtmiste kaardivaade</p></div><input type="search" id="station-filter" class="station-search" placeholder="Otsi jaama…" aria-label="Otsi teeilmajaama"></div>
+     <div id="station-list" class="station-grid road-mobile-cards"></div>
+     <p class="fineprint">Puuduv või vananenud mõõtmine ei tähenda ohutut teeolukorda. Liiklussündmusi avalikus vaates ei kuvata.</p>
+    </article>
+   </section>
+   <section id="radar" class="screen" aria-labelledby="radar-heading">
+    <div class="section-header"><div><h2 id="radar-heading">Pärnumaa sajuradar</h2><p>Keskkonnaagentuuri KAIA radarikomposiit</p></div></div>
+    <article class="panel"><strong id="radar-time">Radarikaadri laadimine…</strong><div class="panel" style="margin:12px 0;padding:12px 14px;background:var(--surface2)">
+     <label for="radar-history" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:650">🕒 Radarikaadrite ajalugu <span id="radar-history-time">Kaadrite laadimine…</span></label>
+     <input id="radar-history" type="range" min="0" max="0" value="0" step="1" disabled aria-label="Vali varasem radarikaader" style="display:block;width:100%;margin:12px 0 4px;accent-color:var(--teal)">
+     <div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted)"><span id="radar-history-start">Vanem kaader</span><span id="radar-history-end">Viimane kaader</span></div>
+     <p id="radar-history-note" class="fineprint" style="margin:7px 0 0">Ajalugu näitab ainult päriselt avaldatud radarikaadreid.</p>
+    </div>
+    <div id="radar-map" aria-label="Pärnumaa sajuradari kaart" style="height:clamp(285px,48vh,480px);border-radius:12px;background:#dae4eb;isolation:isolate"></div>
+    <div class="radar-scale"><strong>Saju intensiivsus (mm/h)</strong><div><span style="--rate:#8eddf3">0,05</span><span style="--rate:#55bbf0">0,1</span><span style="--rate:#3493da">0,3</span><span style="--rate:#1e6cc7">0,5</span><span style="--rate:#26a68b">1</span><span style="--rate:#4bbc56">2</span><span style="--rate:#e3d43d">4</span><span style="--rate:#fd9c30">8</span><span style="--rate:#ec413d">16</span><span style="--rate:#b839ab">50+</span></div></div></article>
+    <h3>Radarikaja saabumishinnang</h3><div id="radar-cards" class="rivers-grid"></div>
+    <p class="fineprint">Hinnang ulatub kuni 90 minuti kaugusele. Radar mõõdab sadu kõrgemal atmosfääris. Maapinnale jõudmise aeg võib erineda.</p>
+   </section>
+   <section id="rivers" class="screen" aria-labelledby="rivers-heading">
+    <div class="section-header"><div><h2 id="rivers-heading">🌊 Pärnumaa jõeseire</h2><p>Viimati avaldatud ametliku XML-voo jõenäidud ja ajaloolised tunnikeskmised.</p></div><span class="kicker">KESKKONNAAGENTUUR</span></div>
+    <p class="fineprint" id="rivers-status">Jõeseireandmete laadimine…</p>
+    <h3 class="rivers-subtitle">Viimased avaldatud jõenäidud</h3><p id="rivers-feed" class="fineprint">Andmevoo aeg kontrollimisel…</p>
+    <div id="rivers-observed" class="rivers-grid" aria-label="Operatiivsed jõenäidud"></div>
+    <details class="panel reading-details water-guide"><summary>Kuidas näitu lugeda?</summary>
+    <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></details>
+    <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes. Näidatud on eraldi viimase tunnikeskmise aeg ja meie viimase ajalooandmete päringu aeg.</p>
+    <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
+    <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
+   </section>
+
+   <section id="marine" class="screen" aria-labelledby="marine-heading">
+    <div class="section-header"><div><h2 id="marine-heading">⚓ Pärnumaa mereseire</h2><p>Pärnu, Häädemeeste ja Virtsu meretasemed ning Kihnu rannikujaama ilm.</p></div><span class="kicker">KESKKONNAAGENTUUR · TALTECH</span></div>
+    <p class="fineprint" id="marine-status">Mereseire andmefaili kontroll…</p>
+    <h3 class="marine-subtitle">Meretasemed · Pärnumaa rannik</h3>
+    <div id="marine-levels" class="marine-grid" aria-label="Rannikujaamade meretasemed"></div>
+    <details class="panel reading-details water-guide"><summary>Kuidas näitu lugeda?</summary>
+     <p id="marine-feed-time" class="fineprint">Ametliku rannikujaamade XML-voo aeg kontrollimisel…</p>
+     <p class="fineprint"><strong>Pärnu</strong> põhijaama kinnitatud meretaseme mõõtmisaeg tuleb olemasolevast seirest. <strong>Häädemeeste ja Virtsu</strong> andmed tulevad Keskkonnaagentuuri XML-ist, kus <strong>andmevoo aeg ei kinnita üksikjaama mõõtmishetke</strong>. Pärnu XML-näit on ainult varuvariant, mitte automaatse hoiatuse alus. Kihnu puhul kasutame ilmajaama tuulenäite, mitte kinnitamata sadama meretaset. Kõik mereveetasemed on märgitud EH2000 sentimeetrites.</p>
+     <p class="fineprint">Kohalikud meretaseme tähelepanupiirid (+100 / +150 / +180 cm) kehtivad meie süsteemis <strong>ainult Pärnu värske ja kontrollitud mõõtmise kohta</strong>. Need ei ole ametlikud hoiatusastmed. Mereseire jaotis ei saada telefoniteavitusi.</p>
+    </details>
+    <h3 class="marine-subtitle">Sadamad ja rannikujaamad · ilm</h3>
+    <div id="marine-weather" class="marine-grid" aria-label="Rannikujaamade ilmavaatlused"></div>
+    <article class="panel" style="margin-top:18px"><div class="panel-title"><div><h3>Mereprognoosid ja lisasadamad</h3><p>Katsetamine pooleli</p></div></div>
+     <p class="fineprint"><strong>NEMO meretasemeprognoosi</strong> ja <strong>SWAN laineprognoosi</strong> ei kuvata enne, kui NetCDF muutujad, Pärnu lahe mudelivõrk, ajatemplid ja kõrgussüsteem on kontrollitud. <strong>Munalaiu</strong> sadama mõõteandmete automaatset liidest pole veel kinnitatud. Kihnu ilmajaam ei võrdu kinnitatud Munalaiu sadamajaamaga.</p><p><a href="https://on-line.msi.ttu.ee/munalaid/" target="_blank" rel="noopener noreferrer">TalTech · Munalaiu sadam ↗</a> · <a href="https://on-line.msi.ttu.ee/kihnu/" target="_blank" rel="noopener noreferrer">TalTech · Kihnu sadam ↗</a> (nende lehtede näite me veel automaatselt ei avalda).</p>
+     <p><a href="https://www.ilmateenistus.ee/meri/vaatlusandmed/kogu-rannik/andmed-tabelis/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri rannikuvaatlused ↗</a> · <a href="https://keskkonnaportaal.ee/et/avaandmed/ilma-mudelprognoosid" target="_blank" rel="noopener noreferrer">NEMO ja SWAN andmeallikad ↗</a></p>
+    </article>
+    <p class="fineprint">Allikad: <a href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/" target="_blank" rel="noopener noreferrer">Keskkonnaagentuuri XML-dokumentatsioon</a>, <a href="https://on-line.msi.ttu.ee/meretase/graph.php?jaam=parnu" target="_blank" rel="noopener noreferrer">Pärnu meretaseme allikas</a> ja olemasolev TalTechi sadamajaama mõõtevoog. Puuduv või aegunud näit ei tähenda ohutut olukorda. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
+   </section>
+   <section id="sources" class="screen" aria-labelledby="sources-heading">
+    <div class="section-header"><div><h2 id="sources-heading">Andmeallikad</h2><p>Pärnu mõõtmiste, ilmaprognooside ja teeilmaandmete päritolu.</p></div></div>
+    <article class="panel"><div class="panel-title"><div><h3>Allikate viimane teadaolev seis</h3><p>Mõõtmiste ja ilmaprognooside vastuvõtmise aeg, mitte oletuslik turvaseis</p></div><span class="kicker">ALLIKATE TERVIS</span></div><div id="source-catalog" class="source-catalog"><div class="empty">Ootan allikaid…</div></div></article>
+    <div class="split-grid">
+     <article class="panel"><div class="panel-title"><div><h3>Ilm ja meretase</h3><p>Pärnu mõõtmised</p></div></div><p>Pärnu sadama ilmaandmed ning Pärnu meretaseme mõõtmised EH2000 süsteemis.</p><div class="stat-foot" id="sources-live-time">Ilmamõõtmine: kinnitamata</div><div class="stat-foot" id="sources-sea-time">Meretase: kinnitamata</div></article>
+     <article class="panel"><div class="panel-title"><div><h3>Ilmaprognoos</h3><p>Kuus mudelit neljas piirkonnas</p></div></div><p>ECMWF IFS, DWD ICON-EU, NOAA GFS, MET Nordic ja DMI HARMONIE (Open-Meteo vahendusel), FMI HARMONIE–MEPS.</p><div class="stat-foot" id="sources-forecast-time">Prognoosi värskus: kinnitamata</div></article>
+     <article class="panel"><div class="panel-title"><div><h3>Teeilma mõõtmised</h3><p>Transpordiamet · DATEX II</p></div></div><p>11 kontrollitud Pärnumaa teeilmajaama. Mõõtmisajad ja andmete olemasolu võivad jaamade lõikes erineda.</p><div class="stat-foot" id="sources-roads-time">Viimane kontroll: kinnitamata</div><p><a target="_blank" rel="noopener noreferrer" href="https://tarktee.ee/">Ametlik teeinfo ↗</a></p></article>
+     <article class="panel"><div class="panel-title"><div><h3>Ametlikud hoiatused</h3><p>Hoiatusi ei järeldata teeilma- ega mudeliandmetest</p></div></div><p>Pärnu Ilmakeskus ei väljasta praegu automaatset ametliku hoiatuse olekut. Kehtivaid hoiatusi kontrolli otse Ilmateenistusest.</p><p><a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/">Ilmateenistuse hoiatused ↗</a></p></article>
+    </div>
+    <article class="panel"><div class="panel-title"><div><h3>Mudelite ja piirkondade kontrolliajad</h3><p>Sarnane perelehe Allikate jaotise tabeliga</p></div></div>
+      <details class="info"><summary>Ava kuue mudeli allikate ajad</summary><div class="table-scroll" style="margin-top:14px"><table><thead><tr><th>Mudel</th><th>Piirkond</th><th>Värskus</th><th>Viimati vastu võetud</th></tr></thead><tbody id="sources-model-table"><tr><td colspan="4">Ootan prognoose…</td></tr></tbody></table></div>
+       <p class="fineprint">Vastuvõtuaeg ei ole mudeli lähtejooksu aeg. Tabel ei ole mudelite tulemuste võrdlus.</p>
+      </details>
+    </article>
+   </section>
+   <footer class="footer"><span>Pärnu Ilmakeskus · Avalik vaade · Andmete puudumine ≠ ohutu olukord · <a href="https://m.me/ch/Tfgs2U37qe5dkC1e/" target="_blank" rel="noopener noreferrer" aria-label="Pärnu Ilmakeskuse Messengeri chat">💬 Ilmakeskuse Messenger</a></span><span id="footer-updated">—</span></footer>
+  </main>
+ </div>
+</div>
+<script>
+'use strict';
+const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme','Papiniidu','Reiu','Ristiküla','Ünnaste','Võiste'];
+const modelNames={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
+const modelOrder=Object.keys(modelNames);
+const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
+const titles={home:'Pärnu praegu',live:'Live-ilm',forecast:'Ilmaprognoos',radar:'Sajuradar',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad'};
+const $=id=>document.getElementById(id);
+const put=(id,str)=>{$(id).textContent=str};
+const el=(parent,tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=value;parent.append(node);return node};
+const numeric=v=>typeof v==='number'&&Number.isFinite(v);
+const fmt=(v,precision=1)=>numeric(v)?v.toLocaleString('et-EE',{minimumFractionDigits:precision,maximumFractionDigits:precision}):'—';
+const timestamp=v=>{if(numeric(v))return v*1000;const n=typeof v==='string'?Date.parse(v):NaN;return Number.isFinite(n)?n:null};
+const fresh=(v,minutes)=>{const t=timestamp(v),diff=t===null?Infinity:Date.now()-t;return diff>=-300000&&diff<=minutes*60000};
+const local=v=>{const t=timestamp(v);return t===null?'—':new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(t))};
+const temp=v=>numeric(v)?fmt(v)+' °C':'—';
+const wind=v=>numeric(v)?fmt(v)+' m/s':'—';
+let state=null,loading=false;
+function active(){return !!(state&&state.schema===1&&state.weather&&state.roads&&fresh(state.published_at_utc,30))}
+function weather(){return active()?state.weather:{}}
+function roads(){const r=active()?state.roads:null;return r&&r.available===true&&fresh(r.checked_at_utc,40)&&Array.isArray(r.stations)?r:null}
+function stationFresh(s){return !!(s&&s.status==='varske'&&fresh(s.measured_at_utc,50)&&s.values&&typeof s.values==='object'&&Object.keys(s.values).length)}
+function air(){const w=weather();return w.live&&fresh(w.live.observed_at_utc,30)?w.live:null}
+function sea(){const w=weather();return w.sea&&w.sea.vertical_datum==='EH2000'&&fresh(w.sea.observed_at_utc,40)?w.sea:null}
+function hourlyRain(){
+ const r=weather().hourly_rain;
+ if(!r||r.station!=='Pärnu'||r.unit!=='mm'||r.timestamp_verified!==true||r.period_hours!==1||
+    !numeric(r.value_mm)||r.value_mm<0||r.value_mm>250||
+    !fresh(r.observed_at_utc,90)||!fresh(r.source_received_at_utc,r.retained_previous===true?90:35))return null;
+ const start=timestamp(r.period_start_utc),end=timestamp(r.observed_at_utc);
+ if(start===null||end===null||end-start!==3600000)return null;
+ return r;
+}
+function forecastModel(place,selected='auto'){
+ const p=weather().places?.[place],models=Array.isArray(p?.models)?p.models:[],now=Date.now()/1000;
+ // MEPS ei ilmu 35-minutilise intervalliga: vastuvõtu lubatud vanus
+ // katab mitmetunnise mudelitsükli. Eraldi kontrollime tegeliku jooksu vanust.
+ const valid=models.filter(m=>{
+  if(!m||!modelOrder.includes(m.id)||!Array.isArray(m.hours))return false;
+  if(!fresh(m.source_received_at_utc,m.id==='fmi_meps'?210:240)){
+   if(selected!==m.id || m.id==='fmi_meps' || !m.retained_previous || !fresh(m.source_received_at_utc,7200))return false;
+  }
+  if(m.id==='fmi_meps'){
+   const run=timestamp(m.run_utc),age=run===null?Infinity:Date.now()-run;
+   if(age< -300000||age>9*3600000)return false;
+  }
+  return m.hours.some(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+18*3600);
+ });
+ if(selected!=='auto')return valid.find(m=>m.id===selected)||null;
+ if(!valid.length)return null;
+ // This is source reception time, never an inferred model-run time.
+ const newest=Math.max(...valid.map(m=>timestamp(m.source_received_at_utc)));
+ const recent=valid.filter(m=>newest-timestamp(m.source_received_at_utc)<=30*60000);
+ return modelOrder.map(id=>recent.find(m=>m.id===id)).find(Boolean)||null;
+}
+function sourceAgeLabel(sourceTime){
+ const ms=timestamp(sourceTime);
+ if(ms===null)return 'vastuvõtuaeg teadmata';
+ const minutes=Math.max(0,Math.round((Date.now()-ms)/60000));
+ return minutes<60?minutes+' min tagasi':Math.floor(minutes/60)+' h '+(minutes%60)+' min tagasi';
+}
+function runTimeLabel(model){
+ if(model?.retained_previous)return 'Viimane salvestatud prognoos · saadud '+local(model.source_received_at_utc)+(model.last_poll_failed?' · viimane päring ebaõnnestus':' · aegunud');
+ if(!model||!model.run_utc)return 'Lähtejooksu aeg teadmata';
+ const run=timestamp(model.run_utc),received=timestamp(model.source_received_at_utc);
+ return run!==null&&received!==null&&run<=received+300000&&run>=received-7*86400000?'Allika märgitud jooks '+local(model.run_utc):'Lähtejooksu aeg kinnitamata';
+}
+function upcoming(place,selected='auto',windowHours=12){
+ const model=forecastModel(place,selected),now=Date.now()/1000;
+ const hours=model?model.hours.filter(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<=now+windowHours*3600).sort((a,b)=>a.t-b.t).slice(0,windowHours):[];
+ return {model,hours};
+}
+function setTemperatureClass(id,v){
+ const card=$(id);card.classList.remove('temp-frost','temp-strong','temp-deep');
+ if(!numeric(v))return;
+ if(v<=-20)card.classList.add('temp-deep');
+ else if(v<=-10)card.classList.add('temp-strong');
+ else if(v<0)card.classList.add('temp-frost');
+}
+function publicWindChill(temperatureC,windMs){
+ if(!numeric(temperatureC)||!numeric(windMs)||temperatureC>10||windMs<1.4)return null;
+ const kmh=windMs*3.6,factor=Math.pow(kmh,0.16);
+ return 13.12+0.6215*temperatureC-11.37*factor+0.3965*temperatureC*factor;
+}
+const publicWindPoints=[['N','põhjast'],['NE','kirdest'],['E','idast'],['SE','kagust'],['S','lõunast'],['SW','edelast'],['W','läänest'],['NW','loodest']];
+
+function bayFlow(degrees){
+ // Lahe pikitelg ligikaudu 35° lahe suudmest Pärnu suunas.
+ const heading=(degrees+180)%360,diff=Math.abs((heading-35+540)%360-180);
+ if(diff<=50)return ['inward','Puhub lahte','Tuul liigub üldjoontes Pärnu lahe suudmest Pärnu poole.'];
+ if(diff>=130)return ['outward','Puhub lahest välja','Tuul liigub üldjoontes Pärnu poolt lahe suudme poole.'];
+ return ['cross','Puhub üle lahe','Tuul puhub lahe pikitelje suhtes pigem külgsuunas.'];
+}
+function initBayScale(){
+ const g=$('wind-bay-scale');if(g.childNodes.length)return;
+ const ns='http://www.w3.org/2000/svg',labels=['N','NE','E','SE','S','SW','W','NW'];
+ for(let d=0;d<360;d+=15){
+  const r=d*Math.PI/180,major=d%45===0,line=document.createElementNS(ns,'line');
+  line.setAttribute('x1',260+Math.sin(r)*(major?202:207));line.setAttribute('y1',260-Math.cos(r)*(major?202:207));
+  line.setAttribute('x2',260+Math.sin(r)*215);line.setAttribute('y2',260-Math.cos(r)*215);
+  line.setAttribute('class','tick'+(major?' major':''));g.append(line);
+ }
+ labels.forEach((name,i)=>{const r=i*Math.PI/4,t=document.createElementNS(ns,'text');
+  t.setAttribute('x',260+Math.sin(r)*235);t.setAttribute('y',260-Math.cos(r)*235);
+  t.setAttribute('class','cardinal');t.textContent=name;g.append(t);
+ });
+}
+function renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp){
+ initBayScale();
+ const arrow=$('wind-bay-arrow'),svg=$('wind-bay-svg'),status=$('bay-status');
+ status.className='bay-status';
+ put('bay-speed',hasWind?wind(a.wind_ms):'—');
+ put('bay-gust',hasGust?wind(a.gust_ms):'—');
+ put('bay-age',a?airStamp:'Värske mõõtmine puudub');
+ if(!hasDirection){
+  arrow.style.display='none';put('bay-bearing','—');put('bay-cardinal','Suund puudub');
+  put('bay-status','Tuulesuunda ei saa kinnitada');
+  put('bay-detail','Ilma kontrollitud jaamamõõtmiseta suunanoolt ei näidata.');
+  svg.setAttribute('aria-label','Pärnu lahe skeem: tuulesuuna mõõtmine puudub või on aegunud.');return;
+ }
+ const degrees=a.wind_direction_deg%360,heading=(degrees+180)%360;
+ const point=publicWindPoints[Math.round(degrees/45)%8];
+ put('bay-bearing',fmt(degrees,0)+'°');
+ put('bay-cardinal','Tuul '+point[1]+' ('+point[0]+')');
+ arrow.style.display='';arrow.setAttribute('transform','translate(260 260) rotate('+heading+')');
+ svg.setAttribute('aria-label','Pärnu lahe skeem: tuul '+point[1]+' '+fmt(degrees,0)+' kraadi, nool näitab liikumissuunda '+fmt(heading,0)+' kraadi.');
+ if(hasWind&&a.wind_ms<0.5){
+  put('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+'väga nõrk tuul');
+  put('bay-detail','Nii nõrga tuulega ei ole lahe suhtes antud suunatõlgendus usaldusväärne.');
+ }else{
+  const flow=bayFlow(degrees);status.classList.add(flow[0]);
+  put('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+flow[1]);
+  put('bay-detail',flow[2]+(isAirStale?' See ei kirjelda hetkeilma.':''));
+ }
+ if(isAirStale)status.classList.add('stale');
+}
+function renderLive(){
+ // Keep current-risk checks on fresh observations. Up to 60-minute-old verified
+ // readings may be shown as historical, never as current conditions or alerts.
+ const freshAir=air(),pastAir=!freshAir&&active()&&state.weather.live&&fresh(state.weather.live.observed_at_utc,60)?state.weather.live:null;
+ const a=freshAir||pastAir,isAirStale=!!(a&&!freshAir);
+ // Hoia värske meretaseme piir 40 min. Kuni 2 h vanune kontrollitud
+ // mõõtmine võib jääda nähtavaks AINULT varasema näiduna, mitte hoiatusalusena.
+ const freshSea=sea(),pastSea=!freshSea&&active()&&state.weather.sea&&
+   state.weather.sea.vertical_datum==='EH2000'&&fresh(state.weather.sea.observed_at_utc,120)?state.weather.sea:null;
+ const s=freshSea||pastSea,isSeaStale=!!(s&&!freshSea);
+ const rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
+ const hasGust=!!(a&&numeric(a.gust_ms)&&a.gust_ms>=0&&a.gust_ms<=100);
+ const hasTemp=!!(a&&numeric(a.temperature_c)),hasPressure=!!(a&&numeric(a.pressure_hpa)&&a.pressure_hpa>=800&&a.pressure_hpa<=1100);
+ const hasHumidity=!!(a&&numeric(a.humidity_pct)&&a.humidity_pct>=0&&a.humidity_pct<=100);
+ const hasDirection=!!(a&&numeric(a.wind_direction_deg)&&a.wind_direction_deg>=0&&a.wind_direction_deg<=360);
+ const hasSea=!!(s&&numeric(s.level_cm));
+ const airStamp=a?(isAirStale?'⚠ Varasem mõõtmine ':'Mõõdetud ')+local(a.observed_at_utc)+' (Eesti aeg)'+(isAirStale?' · '+sourceAgeLabel(a.observed_at_utc)+' · MITTE HETKEILM':''):'Värske jaamamõõtmine puudub';
+ const label=(id,available)=>put(id,available?airStamp:'Värske mõõtmine puudub');
+ put('live-time',a?(isAirStale?'⚠ Viimane varasem mõõtmine ':'Viimane mõõtmine ')+local(a.observed_at_utc)+(isAirStale?' · ei ole hetkeilm':''):'Värske mõõtmine puudub');
+ put('live-temperature',hasTemp?temp(a.temperature_c):'—');label('live-temperature-age',hasTemp);
+ setTemperatureClass('live-temperature-tile',hasTemp?a.temperature_c:null);
+ put('live-temperature-note',!hasTemp?'⚠ Mõõtmine aegunud või kinnitamata':isAirStale?'⚠ Varasem mõõtmine, mitte hetkeilm':a.temperature_c<=-20?'❄ −20 °C või külmem':a.temperature_c<=-10?'❄ −10 °C või külmem':a.temperature_c<0?'❄ Miinuskraadid':'TalTechi mõõdetud õhutemperatuur');
+ put('live-pressure',hasPressure?fmt(a.pressure_hpa,1)+' hPa':'—');label('live-pressure-age',hasPressure);
+ put('live-humidity',hasHumidity?fmt(a.humidity_pct,0)+' %':'—');label('live-humidity-age',hasHumidity);
+ const chill=hasTemp&&hasWind?publicWindChill(a.temperature_c,a.wind_ms):null;
+ put('live-windchill',chill!==null?temp(chill):'—');
+ put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
+ put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
+ setTemperatureClass('live-windchill-tile',chill);
+ renderBayCompass(a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
+ put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
+ put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):'Värske EH2000 mõõtmine puudub või on aegunud');
+ const comparisonTime=hasSea?timestamp(s.comparison_time_utc):null;
+ const measuredTime=hasSea?timestamp(s.observed_at_utc):null;
+ const trendGap=comparisonTime!==null&&measuredTime!==null?(measuredTime-comparisonTime)/60000:null;
+ const confirmedTrend=hasSea&&!isSeaStale&&s.trend_verified===true&&numeric(s.change_last_hour_cm)&&
+    Math.abs(s.change_last_hour_cm)<=1100&&trendGap!==null&&trendGap>=50&&trendGap<=70;
+ put('marine-trend',isSeaStale?'Tunnimuutus: vananenud mõõtmise põhjal ei kuvata':confirmedTrend?(s.change_last_hour_cm>0?'↑ ':s.change_last_hour_cm<0?'↓ ':'→ ')+(s.change_last_hour_cm>0?'+':'')+fmt(s.change_last_hour_cm,1)+' cm / '+Math.round(trendGap)+' min':'Tunnimuutus: võrreldavad mõõtmised puuduvad');
+ put('marine-meta',hasSea?(isSeaStale?'Viimane kontrollitud mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'. See on varasem näit, mitte hetketase, ja seda ei kasutata ohu tähelepanupiiride kontrolliks.':'Mõõtmine '+local(s.observed_at_utc)+'. Kõrgussüsteem '+s.vertical_datum+'.'+(confirmedTrend?' Tunnimuutus võrreldud sama jaama mõõtmisega '+local(s.comparison_time_utc)+'.':' Tunnimuutust ei ole kinnitatud.')):'Meretaseme värske mõõtmine puudub või on aegunud.');
+ const level=hasSea&&!isSeaStale?s.level_cm:null;
+ const marineCard=$('sea-risk-card');
+ marineCard.classList.remove('risk-watch','risk-high','risk-severe');
+ marineCard.classList.toggle('is-stale',isSeaStale);
+ if(level!==null&&level>=180)marineCard.classList.add('risk-severe');
+ else if(level!==null&&level>=150)marineCard.classList.add('risk-high');
+ else if(level!==null&&level>=100)marineCard.classList.add('risk-watch');
+ const optionalPrecip=!!(a&&numeric(a.precipitation_mm)&&a.precipitation_mm>=0);
+ put('live-precip',optionalPrecip?fmt(a.precipitation_mm,1)+' mm':'—');
+ label('live-precip-age',optionalPrecip);
+ const optionalDuration=!!(a&&numeric(a.precip_duration_s)&&a.precip_duration_s>=0);
+ put('live-precip-duration',optionalDuration?fmt(a.precip_duration_s,0)+' s':'—');
+ label('live-precip-duration-age',optionalDuration);
+ // A validated one-hour source reading may be shown; harbor/road rainfall is
+ // never repurposed as the official Pärnu full-hour accumulation.
+ put('hourly-rain-value',rain?fmt(rain.value_mm,1)+' mm':'—');
+ put('hourly-rain-freshness',rain?(rain.retained_previous===true?'⚠ Varasem kinnitatud mõõtmine ':'Mõõdetud ')+local(rain.observed_at_utc)+' (Eesti aeg)':'Kinnitatud täistunni mõõtmine puudub');
+ put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).'+(rain.retained_previous===true?' Uue täistunni mõõtmine on ootel; see ei ole hetkesadu.':''):'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
+ const banner=$('live-banner');
+ banner.classList.toggle('stale',!freshAir);
+ banner.textContent=isAirStale?'⚠ Sadamajaama viimane teadaolev mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg) on aegunud. Näidud on ajaloolised, mitte hetkeilm ega hoiatusalus.':a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
+ const missing=[];
+ if(isAirStale)missing.push('värsked sadamajaama mõõtmised');
+ else {
+  if(!hasWind)missing.push('keskmine tuul');
+  if(!hasGust)missing.push('tuulepuhangud');
+  if(!hasTemp)missing.push('õhutemperatuur');
+ }
+ if(!freshSea||!numeric(freshSea.level_cm))missing.push('värske meretase');
+ if(!rain)missing.push('tunnisadu');
+ else if(rain.retained_previous===true)missing.push('uue täistunni sademenäitu');
+ const events=[];
+ if(freshAir&&hasWind&&a.wind_ms>=15)events.push('Keskmine tuul vähemalt 15 m/s ('+fmt(a.wind_ms)+' m/s)');
+ if(level!==null&&level>=100)events.push('Meretase üle kohaliku +'+(level>=180?'180':level>=150?'150':'100')+' cm piiri ('+fmt(level,0)+' cm)');
+ const situation=$('live-situation');
+ situation.classList.remove('normal','watch','incomplete');
+ situation.classList.add(events.length?'watch':missing.length?'incomplete':'normal');
+ put('live-situation-title',events.length?'⚠ Kohalik tähelepanupiir on saavutatud või ületatud':missing.length?'Andmed on osalised · ohutut olukorda ei saa kinnitada':'Jälgitavad kohalikud tähelepanupiirid pole ületatud');
+ put('live-situation-detail',(events.length?events.join(' · ')+'. ':'')+(missing.length?'Puuduvad või aegunud: '+missing.join(', ')+'. ':'')+'Need on kohalikud tähelepanupiirid, mitte ametlikud hoiatused.');
+ const risk=$('live-risk-summary');risk.replaceChildren();
+ el(risk,'h3','','Avalikus Live-ilmas jälgitavad kohalikud tähelepanupiirid');
+ el(risk,'p','',freshAir&&hasWind?'Keskmine tuul: '+fmt(a.wind_ms)+' m/s; tähelepanupiir 15 m/s.':'Keskmise tuule tähelepanupiiri ei saa värske mõõtmise puudumisel kontrollida.');
+ el(risk,'p','',level===null?(isSeaStale?'Meretase: viimane kontrollitud mõõtmine '+local(s.observed_at_utc)+' on aegunud; kohalikke tähelepanupiire selle põhjal ei hinnata.':'Meretase: värske kontrollitud mõõtmine puudub; kohalikke tähelepanupiire ei saa hinnata.'):'Meretase: '+(level>=0?'+':'')+fmt(level,0)+' cm EH2000; kohalikud tähelepanupiirid +100, +150 ja +180 cm.');
+ el(risk,'p','','Kinnitatud tunnisadu ja administraatori teavitusseaded ei ole avalikus andmevoos. Näidatud tasemed ei ole ametlikud hoiatused.');
+}
+
+function okfWeather(h){
+ const c=Number.isInteger(h?.weather_code)?h.weather_code:null;
+ const precip=numeric(h?.precip)&&h.precip>=0.1;
+ if(c!==null){
+  if([95,96,99].includes(c))return {kind:'thunder',label:'Äike'};
+  if([56,57,66,67].includes(c))return {kind:'freeze',label:'Jäätuv sadu'};
+  if([68,69].includes(c))return {kind:'sleet',label:'Segasadu'};
+  if([71,73,75,77,85,86].includes(c))return {kind:'snow',label:'Lumesadu'};
+  if([51,53,55].includes(c))return {kind:'drizzle',label:'Uduvihm'};
+  if([61,63,65,80,81,82].includes(c))return {kind:'rain',label:'Vihm'};
+  if(c===0)return {kind:'sun',label:'Selge'};
+  if(c===1||c===2)return {kind:'partial',label:'Osaliselt pilves'};
+  if(c===3)return {kind:'cloud',label:'Pilves'};
+  if(c===45)return {kind:'fog',label:'Udu'};
+  if(c===48)return {kind:'fog',label:'Härmatist tekitav udu'};
+ }
+ if(precip)return {kind:'precip',label:'Sadu, liik teadmata'};
+ if(numeric(h?.cloud)&&h.cloud>=0&&h.cloud<=100){
+  if(h.cloud<=10)return {kind:'sun',label:'Vähene pilvisus'};
+  if(h.cloud<=40)return {kind:'partial',label:'Osaliselt pilves'};
+  if(h.cloud<=75)return {kind:'partial',label:'Vahelduv pilvisus'};
+  return {kind:'cloud',label:'Pilves'};
+ }
+ return {kind:'unknown',label:'Ilma liik määramata'};
+}
+
+/* Prognoosi päikese/kuu ikooni jaoks arvutame Päikese kõrguse tunniajast (UTC).
+   Päikesetõus ja -loojang sõltuvad kuupäevast ning valitud Pärnumaa asukohast.
+   -0,833° sisaldab päikeseketta ja atmosfääri murdumise tavapärast parandust. */
+const okfPlaceCoordinates={
+ parnu:[58.3859,24.4971],haademeeste:[58.0788,24.4960],
+ tostamaa:[58.3325,23.9973],sindi:[58.4030,24.6677]
+};
+function okfDaylight(utcSeconds,place){
+ if(!numeric(utcSeconds)||!okfPlaceCoordinates[place])return null;
+ const [latitude,longitude]=okfPlaceCoordinates[place],rad=Math.PI/180;
+ const julianDay=utcSeconds/86400+2440587.5,days=julianDay-2451545;
+ const anomaly=(357.528+0.9856003*days)*rad;
+ const eclipticLongitude=(280.460+0.9856474*days+1.915*Math.sin(anomaly)+0.020*Math.sin(2*anomaly))*rad;
+ const obliquity=(23.439-0.0000004*days)*rad;
+ const rightAscension=Math.atan2(Math.cos(obliquity)*Math.sin(eclipticLongitude),Math.cos(eclipticLongitude));
+ const declination=Math.asin(Math.sin(obliquity)*Math.sin(eclipticLongitude));
+ const siderealTime=(280.46061837+360.98564736629*days)*rad;
+ const hourAngle=siderealTime+longitude*rad-rightAscension;
+ const lat=latitude*rad;
+ const elevation=Math.asin(Math.sin(lat)*Math.sin(declination)+Math.cos(lat)*Math.cos(declination)*Math.cos(hourAngle));
+ return elevation>=-0.833*rad;
+}
+function okfWeatherAtTime(h,place){
+ const weather=okfWeather(h),daylight=okfDaylight(h?.t,place);
+ if(daylight===false){
+  if(weather.kind==='sun')return {...weather,kind:'moon',label:'Selge öö'};
+  if(weather.kind==='partial')return {...weather,kind:'moon-partial',label:'Öösel osaliselt pilves'};
+ }
+ return weather;
+}
+
+function okfSvgIcon(target,weather,isLarge=false){
+ target.replaceChildren();
+ const namespace='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(namespace,'svg');
+ svg.setAttribute('viewBox','0 0 64 64');
+ svg.setAttribute('class','okf-weather-icon'+(isLarge?' okf-icon-large':''));
+ svg.setAttribute('role','img');
+ svg.setAttribute('aria-label',weather.label);
+ const draw=(tag,attributes)=>{
+  const node=document.createElementNS(namespace,tag);
+  for(const [key,value] of Object.entries(attributes))node.setAttribute(key,String(value));
+  svg.append(node);
+  return node;
+ };
+ const sun=()=>{
+  draw('circle',{cx:24,cy:24,r:10,fill:'#f7c96c',stroke:'#fce3a1','stroke-width':2});
+  for(let a=0;a<360;a+=45){
+   const rad=a*Math.PI/180;
+   draw('line',{x1:24+14*Math.cos(rad),y1:24+14*Math.sin(rad),x2:24+19*Math.cos(rad),y2:24+19*Math.sin(rad),stroke:'#f9ce77','stroke-width':2.7,'stroke-linecap':'round'});
+  }
+ };
+ const moon=()=>{
+  draw('path',{d:'M31 8C21 11 16 20 17 30C18 40 27 48 39 46C29 42 24 35 24 27C24 18 27 12 31 8Z',fill:'#e7f2ff',stroke:'#bdd8ef','stroke-width':2,'stroke-linejoin':'round'});
+ };
+ const cloud=()=>{
+  draw('path',{d:'M17 47H45C52 47 57 42 57 35C57 28 52 23 45 23C42 16 36 12 28 12C19 12 12 18 11 27C5 29 3 33 3 38C3 44 9 47 17 47Z',fill:'#244d60',stroke:'#bbdce7','stroke-width':2.6,'stroke-linejoin':'round'});
+ };
+ const rain=(shape='rain')=>{
+  if(shape==='snow'){
+   for(const cx of [17,32,47]){draw('line',{x1:cx-4,y1:54,x2:cx+4,y2:62,stroke:'#b6e2ff','stroke-width':2});draw('line',{x1:cx+4,y1:54,x2:cx-4,y2:62,stroke:'#b6e2ff','stroke-width':2});}
+  }else if(shape==='sleet'){
+   for(const cx of [17,32,47])draw('circle',{cx,cy:57,r:2.8,fill:'#a8d7ff'});
+  }else if(shape==='precip'){
+   for(const cx of [17,32,47])draw('circle',{cx,cy:57,r:2.4,fill:'#96d3e5'});
+  }else{
+   for(const cx of [17,32,47])draw('line',{x1:cx+2,y1:53,x2:cx-2,y2:61,stroke:'#75d4f0','stroke-width':3,'stroke-linecap':'round'});
+  }
+ };
+ const kind=weather.kind;
+ if(kind==='unknown'){
+  draw('circle',{cx:32,cy:32,r:24,fill:'#183a4c',stroke:'#79a9bc','stroke-width':2.5});
+  draw('path',{d:'M24 24C24 15 40 13 43 23C46 30 34 34 32 39',fill:'none',stroke:'#bdd6e3','stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round'});
+  draw('circle',{cx:32,cy:47,r:2.5,fill:'#bdd6e3'});
+ }else if(kind==='sun'){sun()}
+ else if(kind==='partial'){sun();cloud()}
+ else if(kind==='moon'){moon()}
+ else if(kind==='moon-partial'){moon();cloud()}
+ else{
+  cloud();
+  if(kind==='rain'||kind==='drizzle'||kind==='precip')rain(kind);
+  if(kind==='snow')rain('snow');
+  if(kind==='sleet'||kind==='freeze')rain('sleet');
+  if(kind==='fog'){
+   for(const cy of [54,60])draw('line',{x1:9,y1:cy,x2:54,y2:cy,stroke:'#afcbd5','stroke-width':2.3,'stroke-linecap':'round'});
+  }
+  if(kind==='thunder')draw('path',{d:'M35 49L27 59H34L30 64L43 54H35Z',fill:'#f6cf70',stroke:'#f3bf59','stroke-width':1});
+ }
+ target.append(svg);
+ return svg;
+}
+function okfAttention(h){
+ const flags=[],code=Number.isInteger(h?.weather_code)?h.weather_code:null;
+ if(code!==null){
+  if(code===45)flags.push({icon:'🌫️',label:'Udu võimalik · mudeliprognoos, mitte kinnitatud nähtavus',level:'watch'});
+  if(code===48)flags.push({icon:'🌫️',label:'Härmatist tekitav udu võimalik · mudeliprognoos, ei kinnita jäidet',level:'watch'});
+  if([56,57,66,67].includes(code))flags.push({icon:'🧊',label:'Jäätuv sadu',level:'high'});
+  else if([68,69].includes(code))flags.push({icon:'🌨️',label:'Segasadu',level:'watch'});
+  else if([71,73,75,77,85,86].includes(code))flags.push({icon:'❄️',label:'Lumesadu',level:'watch'});
+  if([95,96,99].includes(code))flags.push({icon:'⛈️',label:'Äike',level:'high'});
+  if([96,99].includes(code))flags.push({icon:'🧊',label:'Rahe võimalik',level:'high'});
+ }
+ if(numeric(h?.gust)&&h.gust>=25)flags.push({icon:'💨',label:'Väga tugev puhang',level:'high'});
+ else if(numeric(h?.gust)&&h.gust>=15)flags.push({icon:'💨',label:'Tugev puhang',level:'watch'});
+ else if(numeric(h?.wind)&&h.wind>=10)flags.push({icon:'🌬️',label:'Tugev keskmine tuul',level:'watch'});
+ if(numeric(h?.temp)){
+  if(h.temp<=-20)flags.push({icon:'🥶',label:'Väga madal temperatuur',level:'high'});
+  else if(h.temp<=-10)flags.push({icon:'🥶',label:'Tugev külm',level:'watch'});
+  else if(h.temp<=0)flags.push({icon:'🌡️',label:'Null või külmem · kuni 0 °C; ei kinnita libedust',level:'watch'});
+ }
+ if(numeric(h?.precip)){
+  if(h.precip>=10)flags.push({icon:'🌧️',label:'Väga tugev tunnisadu',level:'high'});
+  else if(h.precip>=5)flags.push({icon:'🌧️',label:'Tugevam tunnisadu',level:'watch'});
+ }
+ return flags;
+}
+function okfAddFlag(target,flag,hourTime=null){
+ const compact=hourTime!==null;
+ const n=el(target,compact?'button':'span','okf-flag '+(flag.level==='high'?'okf-high':'okf-watch')+(compact?' okf-flag-icon':''),compact?flag.icon:flag.icon+' '+flag.label);
+ if(compact){
+  n.type='button';
+  n.title=flag.label;
+  n.setAttribute('aria-label',flag.label);
+  n.addEventListener('click',()=>{
+   put('okf-flag-detail','Prognoosiaeg '+local(hourTime)+' · '+flag.label+'. Need on mudelipõhised tähelepanumärgid, mitte kinnitatud teeolud või ametlikud hoiatused; puuduv märk ei tõenda ohutust.');
+  });
+ }
+ return n;
+}
+function okfFogHours(place,windowHours=24){
+ const now=Date.now()/1000,models=modelOrder.map(id=>forecastModel(place,id)).filter(Boolean);
+ const eligibleModels=models.filter(m=>m.hours.some(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&Number.isInteger(h.weather_code)&&h.weather_code>=0&&h.weather_code<=99));
+ const forecastTimes=[...new Set(eligibleModels.flatMap(m=>m.hours.filter(h=>numeric(h?.t)&&h.t>=now-60&&h.t<now+windowHours*3600&&[45,48].includes(h.weather_code)).map(h=>h.t)))].sort((a,b)=>a-b);
+ return {validModelCount:models.length,eligibleModelCount:eligibleModels.length,records:forecastTimes.map(t=>{
+  let supported=0,fog=0,rime=false;
+  for(const m of models){
+   const h=m.hours.find(x=>numeric(x?.t)&&Math.abs(x.t-t)<=1800&&Number.isInteger(x.weather_code)&&x.weather_code>=0&&x.weather_code<=99);
+   if(!h)continue;
+   supported++;
+   if([45,48].includes(h.weather_code)){fog++;if(h.weather_code===48)rime=true;}
+  }
+  return {t,supported,fog,rime};
+ }).filter(r=>r.supported>0&&r.fog>0)};
+}
+function okfRenderFogSummary(place){
+ const target=$('okf-fog-summary');target.replaceChildren();
+ if(!active()){el(target,'span','','Värsket avalikku andmevoogu ei ole. Uduvõimalust ei saa hinnata.');return}
+ const {records,validModelCount,eligibleModelCount}=okfFogHours(place,24);
+ if(!validModelCount){el(target,'span','','Värskeid mudeliprognoose pole; uduvõimalust ei saa hinnata.');return}
+ if(!eligibleModelCount){el(target,'span','','Värsketel mudelitel puuduvad selle ajavahemiku udu hindamiseks ilmakoodid. See ei tõenda udu puudumist.');return}
+ if(!records.length){el(target,'span','','🌫️ Värskete mudelite ilmakoodid ei näita järgmise 24 h jooksul udu. See ei välista udu teket.');return}
+ el(target,'strong','','🌫️ Udu võimalik järgmise 24 h jooksul');
+ const times=el(target,'div','okf-fog-times');
+ for(const r of records.slice(0,6)){
+  const text=local(r.t)+' · '+r.fog+'/'+r.supported+' mudelit'+(r.rime?' · härmatisega udu võimalik':'');
+  el(times,'span','okf-fog-time'+(r.fog>=2?' strong':''),text);
+ }
+ if(records.length>6)el(target,'span','','Lisaks '+(records.length-6)+' prognoositundi.');
+ el(target,'small','okf-subtle','Arvestatud ainult sama tunni kehtiva ilmakoodiga mudeleid; ilma ilmakoodita mudel ei tähenda udu puudumist. Mudelid ei ole alati sõltumatud. See pole kinnitatud nähtavus ega ametlik hoiatus.');
+}
+function okfHourTable(hours,place){
+ put('okf-flag-detail','Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.');
+ const root=$('okf-hour-table');root.replaceChildren();
+ const selected=Number($('okf-hours').value)===24?24:12,list=hours.slice(0,selected);
+ const head=el(root,'thead'),tr=el(head,'tr');el(tr,'th','','Aeg');
+ for(const h of list)el(tr,'th','',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit'}).format(new Date(h.t*1000)));
+ const body=el(root,'tbody');
+ const build=(label,renderer)=>{const row=el(body,'tr');el(row,'th','',label);for(const h of list){const td=el(row,'td');renderer(h,td)}};
+ build('Ilm',(h,td)=>{const w=okfWeatherAtTime(h,place);const holder=el(td,'span','okf-weather-symbol');okfSvgIcon(holder,w);el(td,'small','okf-small',w.kind==='unknown'?'Andmed puuduvad':w.label)});
+ build('Temperatuur',(h,td)=>{td.textContent=numeric(h.temp)?fmt(h.temp,0)+' °C':'—'});
+ build('Sadu (1 h)',(h,td)=>{td.textContent=numeric(h.precip)?fmt(h.precip)+' mm':'—'});
+ build('Tuul',(h,td)=>{td.textContent=numeric(h.wind)?fmt(h.wind,0)+' m/s':'—'});
+ build('Puhangud',(h,td)=>{td.textContent=numeric(h.gust)?fmt(h.gust,0)+' m/s':'—'});
+ const availableVisibility=list.some(h=>numeric(h?.visibility_m)&&h.visibility_m>=0&&h.visibility_m<=100000);
+ if(availableVisibility)build('Nähtavus (mudel)',(h,td)=>{
+  const v=h?.visibility_m;
+  td.textContent=numeric(v)&&v>=0&&v<=100000?(v>=1000?fmt(v/1000,1)+' km':fmt(v,0)+' m'):'—';
+ });
+ put('okf-visibility-note',availableVisibility?'Nähtavuskaugus on valitud mudeli prognoos, mitte jaamas mõõdetud nähtavus. Puuduvad tunnid on tähistatud kriipsuga.':'Mudelite nähtavuskauguse arvväärtusi praegune andmevoog ei sisalda. Uduilmakood ei anna täpset nähtavuskaugust.');
+ build('Tähelepanu',(h,td)=>{const flags=okfAttention(h);if(!flags.length){td.textContent='—';return}flags.slice(0,2).forEach(f=>okfAddFlag(td,f,h.t));if(flags.length>2)el(td,'small','okf-small','+'+(flags.length-2))});
+ if(!list.length){const empty=el(body,'tr'),td=el(empty,'td','', 'Värskeid prognoositunde pole.');td.colSpan=2}
+}
+function okfPeriod(model,period){
+ const now=Date.now()/1000;
+ const hours=model?model.hours.filter(h=>h&&numeric(h.t)&&h.t>=now-60&&h.t<now+period*3600).sort((a,b)=>a.t-b.t):[];
+ const whole=hours.length>=period-1&&hours.length<=period+1&&hours.every((h,i)=>i===0||h.t-hours[i-1].t>=3300&&h.t-hours[i-1].t<=5400);
+ const validTemps=hours.every(h=>numeric(h.temp)),validGusts=hours.every(h=>numeric(h.gust));
+ const completeRain=whole&&hours.every(h=>numeric(h.precip)&&h.precip>=0);
+ return {hours,whole,
+  low:whole&&validTemps?Math.min(...hours.map(h=>h.temp)):null,
+  high:whole&&validTemps?Math.max(...hours.map(h=>h.temp)):null,
+  gust:whole&&validGusts?Math.max(...hours.map(h=>h.gust)):null,
+  rain:completeRain?hours.reduce((sum,h)=>sum+h.precip,0):null,
+  flags:hours.flatMap(okfAttention)};
+}
+function okfPeriodRender(prefix,period){
+ put(prefix+'-temp',period.low!==null&&period.high!==null?fmt(period.low,0)+'…'+fmt(period.high,0)+' °C':'—');
+ put(prefix+'-gust',period.gust!==null?fmt(period.gust,0)+' m/s':'—');
+ put(prefix+'-rain',period.rain!==null?fmt(period.rain)+' mm':'—');
+ put(prefix+'-status',!period.hours.length?'Prognoositunnid puuduvad':period.whole?'Täielik tunnivahemik':'Avalik andmevoog ei kata kogu ajavahemikku, kokkuvõtet ei arvutata.');
+ const box=$(prefix+'-flags');box.replaceChildren();
+ if(!period.whole){el(box,'span','okf-subtle','Piisava ajakatvuseta ei anta perioodi tähelepanumärke.');return}
+ const unique=[...new Map(period.flags.map(f=>[f.label,f])).values()].slice(0,3);
+ if(unique.length)unique.forEach(f=>okfAddFlag(box,f));
+ else el(box,'span','okf-subtle','Tähelepanumärke ei leitud (ei tõenda ohutust).');
+}
+function okfSelectedModelInfo(place){
+ const area=$('okf-model-list');area.replaceChildren();
+ const choice=$('okf-model').value,model=forecastModel(place,choice);
+ const name=model?modelNames[model.id]:choice==='auto'?'Automaatne valik':modelNames[choice]||'Valitud mudel';
+ let row=el(area,'div','okf-model-row');
+ el(row,'span','','Valitud mudel');el(row,'strong','',name);
+ row=el(area,'div','okf-model-row');
+ el(row,'span','','Andmed vastu võetud');
+ el(row,'strong','',model?local(model.source_received_at_utc)+' · '+sourceAgeLabel(model.source_received_at_utc):'—');
+ row=el(area,'div','okf-model-row');
+ el(row,'span','','Mudeli lähtejooks');
+ el(row,'strong','',runTimeLabel(model));
+ const futureTimes=new Set((model?.hours||[]).filter(h=>h&&numeric(h.t)&&h.t>Date.now()/1000).map(h=>h.t));
+ if(futureTimes.size){
+  row=el(area,'div','okf-model-row');
+  el(row,'span','','Avalikud prognoositunnid');
+  el(row,'strong','',futureTimes.size+' tundi · viimane '+local(new Date(Math.max(...futureTimes)*1000).toISOString()));
+ }
+ const raw=!model&&choice!=='auto'?weather().places?.[place]?.models?.find(m=>m&&m.id===choice):null;
+ const note=!model?(raw?'Selle mudeli viimane andmepakett võeti vastu '+local(raw.source_received_at_utc)+' ('+sourceAgeLabel(raw.source_received_at_utc)+'). Uuendatud prognoosi pole kinnitatud; proovi Automaatset valikut.':'Valitud mudeli värskeid prognoosiandmeid ei ole.'):model.related_meps===true?'Mudeli seos: MEPS-perekond. See ei ole teisest sõltumatu kinnitav prognoos.':'Mudeli vastuvõtuaeg ja tegelik lähtejooks võivad erineda.';
+ put('okf-model-note',note+(choice==='auto'?' Automaatvalik eelistab viimase 30 minuti kõige värskemat andmepaketi rühma.':''));
+}
+function renderForecastAccuracy(place){
+ const body=$('okf-accuracy-body');body.replaceChildren();
+ const status=$('okf-accuracy-status');
+ if(place!=='parnu'){status.textContent='Praegu kogume täpsuse võrdlusandmeid ainult Pärnu jaoks.';return}
+ const a=active()?state.accuracy:null;
+ if(!a||a.schema!==1||a.place!=='parnu'){status.textContent='Täpsusajaloo kogumist pole avalikus andmevoos veel kinnitatud.';return}
+ if(!a.first_captured_at_utc){status.textContent='Andmete kogumine on seadistatud, kuid esimesi prognoosikirjeid veel ei ole.';return}
+ const duration=numeric(a.history_days)?Math.max(0,a.history_days):0;
+ const stale=!fresh(a.last_captured_at_utc,720);
+ status.textContent='Kogutud ligikaudu '+fmt(duration,1)+' päeva võrdlusajalugu.'+(stale?' Viimane kogumiskord on üle 12 tunni vana.':' Esimesed usaldusväärsed tulemused vajavad piisavalt ajalugu.');
+ for(const days of [7,30]){
+  const p=Array.isArray(a.periods)?a.periods.find(x=>x&&x.days===days):null;
+  const section=el(body,'div','okf-accuracy-block');
+  el(section,'h4','', 'Viimased '+days+' päeva · ligikaudu 24 h ette');
+  if(!p||p.ready!==true||!Array.isArray(p.models)||!p.models.length){
+   el(section,'p','okf-subtle', 'Võrdlusajalugu ja kinnitatud mõõtmisi kogutakse. Tulemusi ei hinnata enne piisava valimi täitumist.');
+   continue;
+  }
+  const scroll=el(section,'div','okf-accuracy-scroll'),table=el(scroll,'table','okf-accuracy-table');
+  const head=el(table,'thead'),hdr=el(head,'tr');
+  for(const col of ['Mudel','Võrdlusi','Temp. viga','Tuule viga'])el(hdr,'th','',col);
+  const tb=el(table,'tbody');
+  for(const m of p.models){
+   if(!m||!modelNames[m.id]||!numeric(m.n)||m.n<12||!numeric(m.temp_mae_c)||!numeric(m.wind_mae_ms))continue;
+   const tr=el(tb,'tr');
+   for(const val of [modelNames[m.id],String(m.n),fmt(m.temp_mae_c,2)+' °C',fmt(m.wind_mae_ms,2)+' m/s'])el(tr,'td','',val);
+  }
+ }
+}
+function renderForecast(){
+ const place=$('okf-place').value,selected=$('okf-model').value,area={parnu:'Pärnu',haademeeste:'Häädemeeste',tostamaa:'Tõstamaa',sindi:'Sindi'}[place]||'Valitud asukoht';
+ const {model,hours}=upcoming(place,selected,48),first=hours[0]||null,actual=place==='parnu'?air():null;
+ put('okf-state',!active()?'Andmeedastus aegunud või puudub':model?'Mudeliprognoos saadaval':'Värske prognoos puudub');
+ put('okf-source',model?'Valitud mudel: '+modelNames[model.id]:'Valitud mudel: '+(selected==='auto'?'automaatne':modelNames[selected]||'—')+' · värskeid andmeid pole');
+ put('okf-updated',model?'Andmed vastu võetud '+local(model.source_received_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(model.source_received_at_utc):'Vastuvõtuaeg kinnitamata');
+ put('okf-observed-title',actual?'Pärnu sadama hetkeilm':place==='parnu'?'Pärnu sadama hetkeilm':'Vaatlus puudub');
+ put('okf-observed-temp',actual?temp(actual.temperature_c):'—');
+ put('okf-observed-wind',actual?wind(actual.wind_ms):'—');
+ put('okf-observed-gust',actual?wind(actual.gust_ms):'—');
+ put('okf-observed-humidity',actual&&numeric(actual.humidity_pct)?fmt(actual.humidity_pct,0)+' %':'—');
+ put('okf-observed-pressure',actual&&numeric(actual.pressure_hpa)?fmt(actual.pressure_hpa,0)+' hPa':'—');
+ put('okf-observed-time',actual?'Pärnu sadama mõõtmine '+local(actual.observed_at_utc)+' (Eesti aeg)':place!=='parnu'?'Selle asukoha jaoks pole kinnitatud jaamamõõtmist.':'Pärnu sadama värske mõõtmine puudub.');
+ put('okf-location-title',area);
+ const kind=okfWeatherAtTime(first,place);
+ okfSvgIcon($('okf-current-icon'),kind,true);
+ put('okf-current-desc',first?temp(first.temp)+' · '+kind.label:'Prognoosiandmed puuduvad');
+ okfHourTable(hours,place);
+ okfRenderFogSummary(place);
+ const day=okfPeriod(model,24),twoDays=okfPeriod(model,48);
+ okfPeriodRender('okf-24',day);okfPeriodRender('okf-48',twoDays);
+ const alerts=$('okf-alerts');alerts.replaceChildren();
+ let count=0;const unique=new Set();
+ if(model){
+  alertLoop: for(const h of day.hours)for(const flag of okfAttention(h)){
+   if(unique.has(flag.label))continue;unique.add(flag.label);
+   const card=el(alerts,'div','okf-alert'+(flag.level==='high'?' okf-alert-high':''));el(card,'strong','',flag.icon+' '+flag.label);el(card,'small','','Prognoositud järgmise 24 h jooksul · '+local(h.t));
+   if(++count>=5)break alertLoop;
+  }
+ }
+ if(!count)el(alerts,'p','okf-subtle',model?'Kinnitatud sisendväljade põhjal tähelepanulävesid ei ületatud. See ei tõenda ohutust.':'Värske prognoosi puudumise tõttu ei ole tähelepanumärke.');
+ okfSelectedModelInfo(place);
+ renderForecastAccuracy(place);
+}
+
+function renderRoads(){
+ const r=roads(),all=r?r.stations:[],count=all.filter(stationFresh).length;
+ put('roads-summary',r?'Värskeid mõõtmisi '+count+' / 11':'Värskeid mõõtmisi pole kinnitatud');
+ put('roads-time',r?'Allika kontroll: '+local(r.checked_at_utc):'DATEX II kontroll: värskeid andmeid pole');
+ const query=$('station-filter').value.trim().toLocaleLowerCase('et-EE'),root=$('station-list');root.replaceChildren();
+ let names=stationNames.filter(n=>n.toLocaleLowerCase('et-EE').includes(query));
+ if(!names.length){el(root,'div','empty','Sellise nimega teeilmajaama ei ole.');return}
+ names.forEach(name=>{
+  const s=all.find(x=>x&&x.name===name),valid=stationFresh(s),v=valid?s.values:{};
+  const road=valid?roadStateInfo(v.road_status):null;
+  const danger=valid&&road.hazardous;
+  const card=el(root,'article','station-card'),head=el(card,'div','station-head');
+  el(head,'h3','',name);
+  const badge=el(head,'span','station-badge'+(!valid?' missing':danger?' risk':''),!valid?'Värske näit puudub':danger?'⚠ '+road.text:road.text);
+  badge.setAttribute('aria-label',danger?'Ettevaatust: '+road.text:!valid?'Värske mõõtmine puudub':'Teekatte seisund: '+road.text);
+  el(card,'div','station-temp',valid?temp(v.road_temp_c):'—');el(card,'div','station-sub','Teekatte temperatuur');
+  const grid=el(card,'div','station-values');
+  [['Teekate',valid?road.text:'—'],['Õhutemperatuur',valid?temp(v.air_temp_c):'—'],['Tuul',valid?wind(v.wind_ms):'—'],['Nähtavus',valid&&numeric(v.visibility_m)?(v.visibility_m>=1000?fmt(v.visibility_m/1000)+' km':fmt(v.visibility_m,0)+' m'):'—']].forEach(pair=>{const c=el(grid,'div');el(c,'span','',pair[0]);el(c,'strong','',pair[1])});
+  const foot=el(card,'div','station-footer'),time=el(foot,'time','',valid?'Mõõdetud '+local(s.measured_at_utc):'Värske mõõtmine puudub');
+  if(valid&&timestamp(s.measured_at_utc)!==null)time.dateTime=new Date(timestamp(s.measured_at_utc)).toISOString();
+  if(s&&numeric(s.lat)&&numeric(s.lon)&&s.lat>57&&s.lat<60&&s.lon>22&&s.lon<27){
+   let a=el(foot,'a','','Ava kaardil ↗');a.href='https://www.openstreetmap.org/?mlat='+s.lat+'&mlon='+s.lon+'#map=13/'+s.lat+'/'+s.lon;a.target='_blank';a.rel='noopener noreferrer';
+  }
+ });
+}
+function renderSources(){
+ const w=weather(),a=air(),s=sea(),r=roads(),m=forecastModel('parnu');
+ put('sources-live-time',a?'Õhumõõtmine '+local(a.observed_at_utc):'Värske õhumõõtmine puudub');
+ put('sources-sea-time',s?'Meretaseme mõõtmine '+local(s.observed_at_utc):'Värske meretase puudub');
+ put('sources-forecast-time',m?'Prognoosi andmed saadud '+local(m.source_received_at_utc):'Värske prognoos puudub');
+ put('sources-roads-time',r?'DATEX II viimane kontroll '+local(r.checked_at_utc):'Värsked teeilma mõõtmised puuduvad');
+}
+
+function roadStateTokens(value){
+ if(typeof value!=='string')return [];
+ return [...new Set(value.split(',').map(x=>x.trim()).filter(Boolean))];
+}
+function roadStateInfo(value){
+ const tokens=roadStateTokens(value);
+ const known=tokens.filter(token=>Object.prototype.hasOwnProperty.call(roadLabels,token));
+ const unknown=tokens.length-known.length;
+ const hazardous=tokens.some(token=>token==='ice'||token==='slipperyRoad');
+ return {
+  text:tokens.length?known.map(token=>roadLabels[token]).concat(unknown?['Määratlemata']:[]).join(', '):'Seisund teadmata',
+  hazardous,
+  hasState:known.length>0
+ };
+}
+function detailRoadStatus(v){
+ return roadStateInfo(v).text;
+}
+function renderFamilyExtras(){
+ const w=weather(),r=roads();
+ renderFamilyRoadTable(r);
+ renderFamilySources(w);
+}
+function renderFamilyRoadTable(r){
+ const root=$('road-table-body');root.replaceChildren();
+ const arr=r?r.stations:[];
+ for(const name of stationNames){
+  const station=arr.find(s=>s&&s.name===name);
+  const good=stationFresh(station),v=good?station.values:{};
+  const road=good?roadStateInfo(v.road_status):null;
+  const hazard=!!(good&&road.hazardous);
+  const row=el(root,'tr',hazard?'road-hazard':'');
+  const p=good?'Värske':station?.status==='puudub'?'Puudub':'Aegunud';
+  const sdate=station?.measured_at_utc?local(station.measured_at_utc):'—';
+  const rain=good&&numeric(v.precipitation_mm_h)?fmt(v.precipitation_mm_h)+' mm/h':'—';
+  const visible=good&&numeric(v.visibility_m)?fmt(v.visibility_m,0)+' m':'—';
+  const cells=[name,good?fmt(v.road_temp_c):'—',good?(hazard?'⚠ ':'')+road.text:'—',good?fmt(v.air_temp_c):'—',rain,visible,good?wind(v.wind_ms):'—'];
+  for(const value of cells)el(row,'td','',value);
+  const td=el(row,'td');
+  if(station&&numeric(station.lat)&&numeric(station.lon)&&station.lat>57&&station.lat<60&&station.lon>22&&station.lon<27){
+   const link=el(td,'a','','Kaardil ↗');link.href='https://www.openstreetmap.org/?mlat='+station.lat+'&mlon='+station.lon+'#map=13/'+station.lat+'/'+station.lon;link.target='_blank';link.rel='noopener noreferrer';
+  }else el(td,'span','','—');
+  el(row,'td','',p);
+  el(row,'td','',sdate);
+ }
+}
+function renderFamilySources(w){
+ const area=$('source-catalog');area.replaceChildren();
+ const a=air(),s=sea(),r=roads(),rain=hourlyRain(),model=forecastModel('parnu');
+ const entries=[['Pärnu sadama mõõtmised',a?'Värske mõõtmine '+local(a.observed_at_utc):'Värskeid mõõtmisi pole',!!a],
+ ['Pärnu meretase EH2000',s?'Värske mõõtmine '+local(s.observed_at_utc):'Värskeid mõõtmisi pole',!!s],
+ ['Pärnu tunnisadu',rain?'Kinnitatud periood '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc):'Tunnisaju viimase perioodi andmed puuduvad või aegunud',!!rain],
+ ['Transpordiamet DATEX II',r?'Kontroll '+local(r.checked_at_utc)+' · '+r.stations.filter(stationFresh).length+'/11 jaama':'Värsket mõõtmist ei saa kinnitada',!!r],
+ ['Ilmamudelite vastuvõtt',model?'Andmed vastu võetud '+local(model.source_received_at_utc):'Värsket prognoosi pole',!!model]];
+ for(const [title,detail,ok] of entries){
+  const itemRoot=el(area,'div','source-entry'),div=el(itemRoot,'div');
+  el(div,'strong','',title);el(div,'small','',detail);
+  el(itemRoot,'span','source-badge'+(ok?'':' missing'),ok?'Värske':'Vajab kontrolli');
+ }
+ const body=$('sources-model-table');body.replaceChildren();
+ const places=[['parnu','Pärnu'],['haademeeste','Häädemeeste'],['tostamaa','Tõstamaa'],['sindi','Sindi']];
+ for(const [code,title] of places){
+  const models=w.places?.[code]?.models||[];
+  for(const id of modelOrder){
+   const m=models.find(x=>x?.id===id),ok=!!(m&&fresh(m.source_received_at_utc,id==='fmi_meps'?35:240)&&Array.isArray(m.hours)&&m.hours.some(x=>numeric(x?.t)&&x.t>Date.now()/1000-60));
+   const row=el(body,'tr');
+   for(const val of [modelNames[id],title,ok?'Värske':'Puudub / aegunud',m?.source_received_at_utc?local(m.source_received_at_utc):'—'])el(row,'td','',val);
+  }
+ }
+}
+
+
+let marineState=null;
+const coastStations=[['41803','Pärnu','Pärnu rannikujaam'],['86031','Häädemeeste','Häädemeeste rannikujaam'],['26128','Virtsu','Virtsu rannikujaam']];
+function marineEligible(){
+ const m=marineState,obs=m?.official_observations;
+ return !!(m?.schema==='marine-monitor-v1' && obs?.source_status==='ok' &&
+    fresh(m.generated_at_utc,90) && fresh(obs.feed_timestamp_utc,110) && Array.isArray(obs.stations));
+}
+function marineData(code){
+ return marineState?.official_observations?.stations?.find(x=>x&&String(x.code)===code)||null;
+}
+function marineDate(t){return timestamp(t)===null?'teadmata':local(t)+' (Eesti aeg)'}
+function marineValue(v,decimals=1){return numeric(v)?fmt(v,decimals):'—'}
+function renderOfficialWarnings(){
+ const box=$('official-warning-list'),w=marineState?.warnings;
+ box.replaceChildren();
+ if(!w || !Array.isArray(w.items) || !fresh(w.checked,30)){
+  box.textContent='Värske hoiatusseis on kinnitamata. Vaata ametlikku hoiatuskaarti.';return;
+ }
+ const other=document.createElement('details'),summary=document.createElement('summary');
+ summary.textContent='Teiste piirkondade hoiatused';other.append(summary);
+ const caption=document.createElement('p');
+ caption.textContent='Voogu kontrollitud '+local(w.checked)+'.';box.append(caption);
+ let localCount=0;
+ for(const item of w.items){
+  const relevant=/pärnu|liivi laht|eesti tervikuna|kogu eesti/i.test(item.area);
+  const p=document.createElement('p');p.textContent=item.area+' · '+item.message;
+  (relevant?box:other).append(p);if(relevant)localCount++;
+ }
+ if(!localCount)caption.append(' Voos '+(w.items.length?'puudub eraldi Pärnumaa või Liivi lahe kirje.':'hoiatuskirjeid ei olnud.'));
+ if(other.children.length>1)box.append(other);
+}
+function renderMarine(){
+ renderOfficialWarnings();
+ const levels=$('marine-levels'),weatherCards=$('marine-weather');
+ levels.replaceChildren();weatherCards.replaceChildren();
+ const good=marineEligible(),obs=marineState?.official_observations||{};
+ const dataAge=sourceAgeLabel(marineState?.generated_at_utc),feedAge=sourceAgeLabel(obs.feed_timestamp_utc);
+ put('marine-status',marineState?.schema==='marine-monitor-v1'?
+  'Meie rannikujaamade andmefail: '+marineDate(marineState.generated_at_utc)+' · '+dataAge+(good?' · ajakohane':' · aegunud või puudulik'):
+  'Keskkonnaagentuuri rannikujaamade andmefail puudub või on kontrollimata.');
+ put('marine-feed-time','Keskkonnaagentuuri XML-voo aeg: '+marineDate(obs.feed_timestamp_utc)+' · '+feedAge+'. Üksikjaama mõõtmisaeg XML-is kinnitamata.');
+ const ps=sea(),pFresh=!!(ps&&numeric(ps.level_cm)&&ps.vertical_datum==='EH2000');
+ const reportedMarine=good?marineData('41803'):null;
+ for(const [code,name,sub] of coastStations){
+  const isP=code==='41803',xml=good?marineData(code):null;
+  const sourceVerified=isP&&pFresh;
+  const fallback=isP&&!sourceVerified&&xml&&numeric(xml.sea_level_eh2000_cm);
+  const cm=sourceVerified?ps.level_cm:((isP&&fallback)||(!isP&&xml&&numeric(xml.sea_level_eh2000_cm)))?xml.sea_level_eh2000_cm:null;
+  const has=cm!==null&&numeric(cm);
+  const label=sourceVerified?'Kinnitatud mõõtmine':has?'XML viimati avaldatud':'Puudub / aegunud';
+  const card=el(levels,'article','panel marine-card'),head=el(card,'div','marine-card-head');
+  const left=el(head,'div');el(left,'strong','',name);el(left,'p','fineprint',sub);
+  el(head,'span',has?'marine-tag':'marine-tag missing',label);
+  if(sourceVerified&&cm>=180)card.classList.add('marine-severe');
+  else if(sourceVerified&&cm>=150)card.classList.add('marine-high');
+  else if(sourceVerified&&cm>=100)card.classList.add('marine-watch');
+  el(card,'p',has?'marine-number':'marine-number missing',has?(cm>=0?'+':'')+fmt(cm,0)+' cm':'—');
+  if(sourceVerified){
+   el(card,'p','marine-meta','Mõõdetud: '+marineDate(ps.observed_at_utc)+' · EH2000. Kontrollitud mõõtmisaeg.');
+   const prev=timestamp(ps.comparison_time_utc),cur=timestamp(ps.observed_at_utc);
+   if(ps.trend_verified===true&&numeric(ps.change_last_hour_cm)&&prev!==null&&cur!==null&&(cur-prev)>=50*60000&&(cur-prev)<=70*60000){
+    el(card,'p','marine-meta','Muutus '+Math.round((cur-prev)/60000)+' minuti jooksul: '+(ps.change_last_hour_cm>=0?'+':'')+fmt(ps.change_last_hour_cm,0)+' cm.');
+   }
+   el(card,'p','marine-meta','Meie Pärnu mõõtefail avaldatud: '+marineDate(state?.published_at_utc));
+  }else{
+   el(card,'p','marine-meta','Jaama mõõtmise täpne aeg: kinnitamata. '+(has?'See on viimati avaldatud XML-näit, mitte kontrollitud hetketase.':'Värske või sobiv väärtus puudub.'));
+   el(card,'p','marine-meta','XML-voo aeg: '+marineDate(obs.feed_timestamp_utc));
+  }
+  if(isP&&sourceVerified&&cm>=100)el(card,'p','marine-meta','Kohalik Pärnu tähelepanupiir ületatud · mitte ametlik hoiatus.');
+ }
+ for(const [code,name,sub] of [...coastStations,['26226','Kihnu','Kihnu ilmajaam (mitte sadama meretase)']]){
+  const xml=good?marineData(code):null;
+  const isP=code==='41803',a=isP?air():null;
+  const trusted=!!(isP&&a),v=trusted?a:xml||{},avail=!!(trusted||xml);
+  const windValue=trusted?v.wind_ms:v.wind_ms,gustValue=trusted?v.gust_ms:v.gust_ms,tempValue=trusted?v.temperature_c:v.air_temperature_c;
+  const valid=avail&&(numeric(windValue)||numeric(gustValue)||numeric(tempValue));
+  const card=el(weatherCards,'article','panel marine-card'),top=el(card,'div','marine-card-head');
+  const left=el(top,'div');el(left,'strong','',name);el(left,'p','fineprint',sub);
+  el(top,'span',valid?'marine-tag':'marine-tag missing',trusted?'Mõõtmisaeg kinnitatud':valid?'XML viimati avaldatud':'Puudub / aegunud');
+  const metrics=el(card,'div','marine-metrics');
+  el(metrics,'span','','Tuul '+(numeric(windValue)?fmt(windValue,1)+' m/s':'—'));
+  el(metrics,'span','','Puhang '+(numeric(gustValue)?fmt(gustValue,1)+' m/s':'—'));
+  el(metrics,'span','','Õhk '+(numeric(tempValue)?fmt(tempValue,1)+' °C':'—'));
+  if(numeric(v.wind_direction_deg))el(metrics,'span','','Tuule suund '+fmt(v.wind_direction_deg,0)+'°');
+  if(!isP&&xml&&numeric(xml.water_temperature_c))el(metrics,'span','','Vesi '+fmt(xml.water_temperature_c,1)+' °C');
+  el(card,'p','marine-meta',trusted?'Mõõdetud: '+marineDate(a.observed_at_utc):'Jaamapõhine mõõtmisaeg: kinnitamata. XML-voo aeg: '+marineDate(obs.feed_timestamp_utc));
+  if(isP&&!trusted&&xml)el(card,'p','marine-meta','Pärnu varuandmed pärinevad XML-ist, mitte TalTechi kinnitatud mõõtmisajaga sadamajaamast.');
+ }
+}
+let loadMarinePending=false;
+async function loadMarine(){
+ if(loadMarinePending)return;
+ loadMarinePending=true;
+ const c=new AbortController(),to=setTimeout(()=>c.abort(),12000);
+ try{const r=await fetch('./data/marine.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('marine HTTP');const v=await r.json();marineState=v?.schema==='marine-monitor-v1'?v:null}
+ catch(e){/* Keep the last response with its original timestamps. */}finally{loadMarinePending=false;clearTimeout(to);renderMarine()}
+}
+
+let riverState=null;
+const riverInfo=[['41137','Aesoo','Navesti'],['41183','Audru','Audru jõgi'],['41174','Kaansoo','Saarjõgi'],['41197','Laadi','Reiu'],['41198','Nurme','Sauga'],['41127','Oore','Pärnu jõgi'],['41140','Riisa','Halliste'],['41126','Tahkuse','Pärnu jõgi']];
+function riverAge(t){const x=Date.parse(t||'');return Number.isFinite(x)?(Date.now()-x)/3600000:Infinity}
+function riverDate(t){return riverAge(t)!==Infinity?new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(t))+' (Eesti aeg)':'teadmata'}
+function riverChart(host,pts){
+ if(pts.length<2){el(host,'p','fineprint','Graafikuks pole piisavalt kirjeid.');return}
+ const a=pts[0],b=pts[pts.length-1],min=Math.min(...pts.map(x=>x.cm)),max=Math.max(...pts.map(x=>x.cm)),pad=Math.max(1,(max-min)*.15);
+ if(b.ms<=a.ms)return;
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 700 175');svg.setAttribute('role','img');svg.setAttribute('aria-label','Ajalooline veetasemegraafik sentimeetrites');svg.classList.add('rivers-chart');host.append(svg);
+ const coord=p=>[40+(p.ms-a.ms)/(b.ms-a.ms)*640,145-(p.cm-min+pad)/(max-min+2*pad)*130];
+ let segments=[],part=[];
+ const flush=()=>{if(part.length>1)segments.push(part);part=[]};
+ pts.forEach((p,i)=>{if(i&&p.ms-pts[i-1].ms>5400000)flush();part.push(coord(p))});flush();
+ for(const seg of segments){const line=document.createElementNS(ns,'polyline');line.setAttribute('points',seg.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' '));line.setAttribute('fill','none');line.setAttribute('stroke','#65d0c4');line.setAttribute('stroke-width','2.7');line.setAttribute('stroke-linecap','round');line.setAttribute('stroke-linejoin','round');svg.append(line)}
+ for(const [text,x,y] of [[max.toFixed(0)+' cm',40,12],[min.toFixed(0)+' cm',40,163]]){const t=document.createElementNS(ns,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('fill','#b3c7d3');t.setAttribute('font-size',11);t.textContent=text;svg.append(t)}
+}
+function renderRivers(){
+ const live=$('rivers-observed'),history=$('rivers-history');live.replaceChildren();history.replaceChildren();
+ const x=riverState;if(!x||x.schema!=='river-monitor-v1'){put('rivers-status','Jõeseire andmefail puudub või on vigane. Jõgedel võib siiski oht esineda.');put('rivers-feed','Allika andmeid ei saa kinnitada.');return}
+ const feed=x.observations||{},hours=riverAge(feed.feed_timestamp_utc),fileHours=riverAge(x.generated_at_utc);
+ const feedGood=hours>=0&&hours<=2&&fileHours>=0&&fileHours<=3&&feed.source_status==='ok';
+ put('rivers-status','Veebilehe jõeseireandmed viimati uuendatud: '+riverDate(x.generated_at_utc)+(fileHours>3||fileHours<0?' · andmefail aegunud või kontrollimata':' · andmefail ajakohane'));
+ put('rivers-feed','Keskkonnaagentuuri XML-andmevoo aeg: '+riverDate(feed.feed_timestamp_utc)+'. '+(feedGood?'Üksikjaamade mõõtmise täpsed kellaajad on kinnitamata.':'Voog puudub või on vananenud; näite ei esitata värskena.'));
+ for(const [code,name,water] of riverInfo){
+  const op=Array.isArray(feed.stations)?feed.stations.find(v=>v&&String(v.code)===code):null;
+  const opOk=feedGood&&op&&numeric(op.cm);
+  let card=el(live,'article','panel river-card'),top=el(card,'div','river-cardtop');
+  el(top,'strong','',name);el(top,'span',opOk?'river-status':'river-status river-old',opOk?'Allika näit':'Puudub / vana');
+  el(card,'p','river-big',opOk?fmt(op.cm,0)+' cm':'—');
+  el(card,'p','fineprint',water+' · Mõõtmise kellaaeg: kinnitamata.');
+  el(card,'p','fineprint','XML-andmevoo aeg: '+riverDate(feed.feed_timestamp_utc));
+  if(!opOk)el(card,'p','fineprint','Puuduv või aegunud näit ei tähenda ohutut veetaset.');
+  const st=x.history&&Array.isArray(x.history.stations)?x.history.stations.find(v=>v&&String(v.code)===code):null;
+  const arr=Array.isArray(st?.hours)?st.hours:[],pts=arr.filter(p=>p&&numeric(p.cm)&&Number.isFinite(Date.parse(p.t))).map(p=>({t:p.t,cm:p.cm,ms:Date.parse(p.t)})).sort((a,b)=>a.ms-b.ms);
+  let h=el(history,'article','panel river-card'),heading=el(h,'div','river-cardtop');el(heading,'strong','',name);
+  const age=pts.length?(Date.now()-pts[pts.length-1].ms)/3600000:Infinity;
+  el(heading,'span',age>=0&&age<=48?'river-status':'river-status river-old',age>=0&&age<=48?'Ajalooline':'Vananenud');
+  if(!pts.length){el(h,'p','fineprint','Ajalugu puudub');continue}
+  const last=pts[pts.length-1],before=pts.find(p=>p.ms===last.ms-86400000);
+  el(h,'p','river-big',fmt(last.cm,1)+' cm');
+  el(h,'p','fineprint','Viimase tunnikeskmise aeg: '+riverDate(last.t)+' · jaama graafiku null.');
+  el(h,'p','fineprint','Ajalooandmed viimati hangitud: '+riverDate(x.history?.generated_at_utc));
+  if(before)el(h,'p','fineprint','Muutus 24 mõõtetunniga: '+(last.cm>=before.cm?'+':'')+fmt(last.cm-before.cm,1)+' cm');
+  riverChart(h,pts.slice(-72));
+ }
+}
+let loadRiversPending=false;
+async function loadRivers(){
+ if(loadRiversPending)return;
+ loadRiversPending=true;
+ const c=new AbortController(),timeout=setTimeout(()=>c.abort(),12000);
+ try{const r=await fetch('./data/rivers.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:c.signal});if(!r.ok)throw Error('load');const j=await r.json();riverState=j?.schema==='river-monitor-v1'?j:null}
+ catch(e){/* Keep the last response with its original timestamps. */}finally{loadRiversPending=false;clearTimeout(timeout);renderRivers()}
+}
+function renderPreviewHome(){
+ const a=air(),s=sea(),num=(v,u)=>numeric(v)?v.toLocaleString('et-EE')+' '+u:'—';
+ put('home-temp',num(a?.temperature_c,'°C'));put('home-airtime',a?'Mõõdetud '+local(a.observed_at_utc):'Värske mõõtmine puudub');
+ put('home-wind',num(a?.wind_ms,'m/s'));put('home-gust',a?'Puhang '+num(a.gust_ms,'m/s')+' · '+local(a.observed_at_utc):'Värske mõõtmine puudub');
+ put('home-sea',num(s?.level_cm,'cm'));put('home-seatime',s?'EH2000 · '+local(s.observed_at_utc):'Värske mõõtmine puudub');
+ put('home-trend',s?.trend_verified&&s.comparison_time_utc?'Muutus alates '+local(s.comparison_time_utc)+' · '+num(s.change_last_hour_cm,'cm'):'');
+ const {model,hours}=upcoming('parnu','auto',6),box=$('home-hours');box.replaceChildren();
+ put('home-model',model?model.name+' · '+runTimeLabel(model):'Värske prognoos puudub');
+ for(const h of hours){
+ const card=document.createElement('article');
+ for(const [tag,value] of [['b',new Date(h.t*1000).toLocaleTimeString('et-EE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Tallinn'})],['strong',num(h.temp,'°C')],['small','Tuul '+num(h.wind,'m/s')],['small','Sadu '+num(h.precip,'mm')]]){
+ const el=document.createElement(tag);el.textContent=value;card.append(el)}
+ box.append(card)}
+}
+function show(){renderPreviewHome();
+ const ok=active(),a=air(),s=sea(),r=roads();
+ put('published',state&&timestamp(state.published_at_utc)!==null?'Andmefail uuendatud '+local(state.published_at_utc):'Avaldamise aeg puudub');
+ put('footer-updated',state&&timestamp(state.published_at_utc)!==null?'Viimane andmeedastus '+local(state.published_at_utc):'Andmeedastus kontrollimata');
+ $('data-message').hidden=ok;
+ const first=$('data-message').querySelector('strong'),detail=$('data-message').querySelector('p');
+ first.textContent=ok?'Avalik andmeedastus on ajakohane':'Avalik andmeedastus puudub või on aegunud';
+ detail.textContent=ok?'Ilmamõõtmiste, mudelite ja teeilmajaamade värskus on eraldi kontrollitud.':'Ära tõlgenda puuduvaid või aegunud näite ohutute oludena. Vaata ametlikke allikaid.';
+ renderLive();renderForecast();renderRoads();renderSources();renderFamilyExtras();renderMarine();
+}
+const sections=Object.keys(titles);
+function selectSection(id,changeHash=true){
+ if(!sections.includes(id))return;
+ sections.forEach(n=>{$(n).classList.toggle('active',n===id);const b=document.querySelector('[data-section="'+n+'"]');b.classList.toggle('active',n===id);if(n===id)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+ put('page-title',titles[id]);
+ if(changeHash&&location.hash!=='#'+id)history.replaceState(null,'','#'+id);
+ closeMenu();
+}
+function closeMenu(){
+ $('sidebar').classList.remove('open');$('drawer-scrim').classList.remove('open');$('menu-toggle').setAttribute('aria-expanded','false');
+}
+document.querySelectorAll('[data-section]').forEach(b=>b.addEventListener('click',()=>selectSection(b.dataset.section)));
+document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>{selectSection(b.dataset.goto);scrollTo({top:0,behavior:'smooth'})}));
+$('menu-toggle').addEventListener('click',()=>{const open=$('sidebar').classList.toggle('open');$('drawer-scrim').classList.toggle('open',open);$('menu-toggle').setAttribute('aria-expanded',String(open))});
+$('drawer-scrim').addEventListener('click',closeMenu);
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu()});
+window.addEventListener('hashchange',()=>{const section=location.hash.slice(1);selectSection(sections.includes(section)?section:'home',true)});
+$('okf-place').addEventListener('change',renderForecast);
+$('okf-model').addEventListener('change',renderForecast);
+$('okf-hours').addEventListener('change',renderForecast);
+$('station-filter').addEventListener('input',renderRoads);
+function tickClock(){put('clock',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}).format(new Date()))}
+async function load(){
+ if(loading)return;loading=true;$('refresh').disabled=true;
+ const ctrl=new AbortController(),timeout=setTimeout(()=>ctrl.abort(),12000);
+ try{
+  const response=await fetch('./data/state.json?v='+Date.now(),{cache:'no-store',credentials:'omit',signal:ctrl.signal});
+  if(!response.ok)throw Error('public data HTTP');
+  const raw=await response.json();state=raw&&raw.schema===1?raw:null;
+ }catch(e){/* Existing age checks expire the last successful response. */}finally{clearTimeout(timeout);loading=false;$('refresh').disabled=false;show()}
+}
+function refreshPublicData(){load();loadRivers();loadMarine()}
+$('refresh').addEventListener('click',refreshPublicData);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshPublicData()});
+const hourCard=document.querySelector('.okf-hour-card');
+const hourAnchor=document.createComment('Tunniprognoosi asukoht');
+hourCard.before(hourAnchor);
+const phoneForecast=window.matchMedia('(max-width:760px)');
+function positionHourly(){if(phoneForecast.matches){document.querySelector('.okf-trust-line').after(hourCard)}else{hourAnchor.after(hourCard)}}
+positionHourly();phoneForecast.addEventListener('change',positionHourly);
+const originalHash=location.hash.slice(1);
+selectSection(sections.includes(originalHash)?originalHash:'home',!sections.includes(originalHash));
+function updateOnline(){ $('offline-banner').hidden=navigator.onLine!==false }
+window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);updateOnline();
+tickClock();load();loadRivers();loadMarine();
+setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);setInterval(()=>{if(!document.hidden)loadMarine()},300000);
+</script>
+<script src="./radar.js?v=20261124-history"></script>
+</body>
+</html>
