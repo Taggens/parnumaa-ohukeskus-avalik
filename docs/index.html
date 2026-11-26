@@ -399,7 +399,7 @@ details.info p{font-size:11px;color:var(--muted)}
 #live .station-comparison .bay-compass{margin-top:14px}
 @media(min-width:851px) and (max-width:1250px){#live .station-comparison .bay-layout{grid-template-columns:minmax(115px,40%) minmax(0,1fr);gap:8px}}
 #official-warnings.is-local{border-inline-start:4px solid #f0af55}
-</style></head>
+</style><style>#ka-station{max-width:100%;padding:.4em .7em;border:1px solid #486979;border-radius:7px;background:#112c40;color:#eefaff}#ka-wind-bay-svg.airport g[clip-path]{display:none}</style></head>
 <body>
 <div id="app" class="app-shell">
  <aside id="sidebar" class="sidebar" aria-label="Põhimenüü">
@@ -485,14 +485,14 @@ details.info p{font-size:11px;color:var(--muted)}
      </section>
     </article>
     <article class="panel live-panel">
-     <div class="panel-title"><div><h3>Keskkonnaagentuuri Pärnu jaama mõõtmised</h3><p id="ka-time">Jaama andmevoo kontroll on ootel…</p></div></div>
+     <div class="panel-title"><div><h3>Keskkonnaagentuuri mõõtmised</h3><label for="ka-station">Mõõtekoht </label><select id="ka-station"><option value="coast">Pärnu rannikujaam</option><option value="airport">Pärnu lennujaam · EEPU</option></select><p id="ka-time">Jaama andmevoo kontroll on ootel…</p></div></div>
      <div class="live-banner" id="ka-banner" role="status">Keskkonnaagentuuri mõõteandmete kontroll on ootel.</div>
       <div class="weather-measurements-grid" aria-label="Pärnu jaama mõõtmised">
       <div class="live-tile" id="ka-temperature-tile"><div class="live-label">Õhutemperatuur</div><strong id="ka-temperature">—</strong><small id="ka-temperature-age" class="observation-stamp">Mõõtmine ootel</small><small id="ka-temperature-note">Temperatuuriolek ootel</small>
        <div class="live-secondary" id="ka-windchill-tile"><div class="live-label">❄ Tuulekülm (arvutatud)</div><strong id="ka-windchill">—</strong><small id="ka-windchill-age" class="observation-stamp">Mõõtmine ootel</small><details class="reading-details"><summary>Arvutuse selgitus</summary><p id="ka-windchill-note">Arvutatud õhutemperatuurist ja keskmisest tuulest. Ei ole eraldi mõõdetud.</p></details></div>
       </div>
-      <div class="live-tile weather-pressure-tile"><div class="live-label">Õhurõhk</div><strong id="ka-pressure">—</strong><small id="ka-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
-      <div class="live-tile weather-humidity-tile"><div class="live-label">Õhuniiskus</div><strong id="ka-humidity">—</strong><small id="ka-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-pressure-tile"><div class="live-label"><span id="ka-pressure-label">Õhurõhk</span></div><strong id="ka-pressure">—</strong><small id="ka-pressure-age" class="observation-stamp">Mõõtmine ootel</small></div>
+      <div class="live-tile weather-humidity-tile"><div class="live-label"><span id="ka-moisture-label">Õhuniiskus</span></div><strong id="ka-humidity">—</strong><small id="ka-humidity-age" class="observation-stamp">Mõõtmine ootel</small></div>
       </div>
      <section class="bay-compass" aria-labelledby="ka-bay-compass-title">
       <header><h4 id="ka-bay-compass-title">🌬️ Tuul Pärnu lahel · Keskkonnaagentuuri Pärnu jaam</h4></header>
@@ -532,7 +532,7 @@ details.info p{font-size:11px;color:var(--muted)}
         <p id="ka-bay-detail" class="bay-detail">Nool ilmub, kui suuna mõõtmine on kontrollitud.</p>
         <div class="bay-stats"><div><small>Keskmine tuul</small><strong id="ka-bay-speed">—</strong></div><div><small>Puhangud</small><strong id="ka-bay-gust">—</strong></div></div>
         <p id="ka-bay-age" class="bay-age">Mõõteaja kontroll ootel</p>
-        <details class="bay-help"><summary>Suuna selgitus</summary><p>Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
+        <details class="bay-help"><summary>Suuna selgitus</summary><p id="ka-bay-svg-help">Punane nool näitab, kuhu tuul puhub. Kaart on lihtsustatud, mitte navigatsioonikaart. Suunatõlgendus on ligikaudne ega näita üksi üleujutusohtu. Meretaset tuleb jälgida eraldi.</p></details>
        </div>
       </div>
      </section>
@@ -833,7 +833,7 @@ function initBayScale(g){
   t.setAttribute('class','cardinal');t.textContent=name;g.append(t);
  });
 }
-function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airStamp){
+function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airStamp,airport=false){
  const part=id=>$(prefix+id);
  const write=(id,value)=>put(prefix+id,value);
  initBayScale(part('wind-bay-scale'));
@@ -842,18 +842,25 @@ function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airSt
  write('bay-speed',hasWind?wind(a.wind_ms):'—');
  write('bay-gust',hasGust?wind(a.gust_ms):'—');
  write('bay-age',a?airStamp:'Värske mõõtmine puudub');
+ if(airport)part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul lennujaamas puhub.';
+ else if(prefix==='ka-')part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul puhub. Lahe kaart on lihtsustatud.';
  if(!hasDirection){
   arrow.style.display='none';write('bay-bearing','—');write('bay-cardinal','Suund puudub');
   write('bay-status','Tuulesuunda ei saa kinnitada');
   write('bay-detail','Ilma kontrollitud jaamamõõtmiseta suunanoolt ei näidata.');
-  svg.setAttribute('aria-label','Pärnu lahe skeem: tuulesuuna mõõtmine puudub või on aegunud.');return;
+  svg.setAttribute('aria-label','Tuulekompass: tuulesuuna mõõtmine puudub või on aegunud.');return;
  }
  const degrees=a.wind_direction_deg%360,heading=(degrees+180)%360;
  const point=publicWindPoints[Math.round(degrees/45)%8];
  write('bay-bearing',fmt(degrees,0)+'°');
  write('bay-cardinal','Tuul '+point[1]+' ('+point[0]+')');
  arrow.style.display='';arrow.setAttribute('transform','translate(260 260) rotate('+heading+')');
- svg.setAttribute('aria-label','Pärnu lahe skeem: tuul '+point[1]+' '+fmt(degrees,0)+' kraadi, nool näitab liikumissuunda '+fmt(heading,0)+' kraadi.');
+ svg.setAttribute('aria-label','Tuulekompass: tuul '+point[1]+' '+fmt(degrees,0)+' kraadi, nool näitab liikumissuunda '+fmt(heading,0)+' kraadi.');
+ if(airport){
+  write('bay-status','Lennujaama tuul');
+  write('bay-detail','Nool näitab õhu liikumise suunda lennuväljal.');
+  return;
+ }
  if(hasWind&&a.wind_ms<0.5){
   write('bay-status',(isAirStale?'Varasem mõõtmine: ':'')+'väga nõrk tuul');
   write('bay-detail','Nii nõrga tuulega ei ole lahe suhtes antud suunatõlgendus usaldusväärne.');
@@ -1411,13 +1418,21 @@ function renderOfficialWarnings(){
  if(!localCount)caption.append(' Voos '+(w.items.length?'puudub eraldi Pärnumaa või Liivi lahe kirje.':'hoiatuskirjeid ei olnud.'));
  if(other.children.length>1)box.append(other);
 }
+$('ka-station').addEventListener('change',renderLocalStations);
 function renderLocalStations(){
+ const airport=$('ka-station').value==='airport';
+ const report=marineState?.airport;
  const obs=marineState?.official_observations;
- const site=marineEligible() && Array.isArray(obs?.local_weather_stations)
+ const coast=marineEligible() && Array.isArray(obs?.local_weather_stations)
   ? obs.local_weather_stations.find(s=>s.code==='41803' && s.name==='Pärnu') : null;
- const stamp=site?'Andmevoog '+local(obs.feed_timestamp_utc)+' (Eesti aeg)':'Värske andmevoog puudub';
+ const site=airport?(report?.code==='EEPU' && fresh(report.observed_at_utc,60)?report:null):coast;
+ const stamp=site?(airport?'Mõõdetud '+local(site.observed_at_utc):'Andmevoog '+local(obs.feed_timestamp_utc))+' (Eesti aeg)':'Värske vaatlus puudub';
+ put('ka-pressure-label',airport?'Õhurõhk (QNH)':'Õhurõhk');
+ put('ka-moisture-label',airport?'Kastepunkt':'Õhuniiskus');
+ put('ka-bay-compass-title',airport?'Tuul Pärnu lennujaamas · EEPU':'Tuul Pärnu lahel · Pärnu rannikujaam');
+ $('ka-wind-bay-svg').classList.toggle('airport',airport);
  put('ka-time',stamp);
- put('ka-banner',site?'Üksikjaama mõõtmise täpne aeg on kinnitamata.':'Jaama värsked andmed puuduvad.');
+ put('ka-banner',airport?(site?'Lennujaama METAR-vaatlus · NOAA Aviation Weather Center':'Viimase tunni EEPU vaatlus puudub.'):site?'Üksikjaama mõõtmise täpne aeg on kinnitamata.':'Jaama värsked andmed puuduvad.');
  $('ka-banner').classList.toggle('stale',!site);
  const t=site?.air_temperature_c, chill=publicWindChill(t,site?.wind_ms);
  put('ka-temperature',temp(t));
@@ -1426,14 +1441,14 @@ function renderLocalStations(){
  setTemperatureClass('ka-temperature-tile',t);
  setTemperatureClass('ka-windchill-tile',chill);
  put('ka-windchill-note','Arvutus kasutab Pärnu jaama õhutemperatuuri ja keskmist tuult. Temperatuur peab olema kuni +10 °C ja tuul vähemalt 1,4 m/s.');
- for(const [id,value] of [['temperature',t],['windchill',chill],['pressure',site?.pressure_hpa],['humidity',site?.humidity_pct]]){
+ for(const [id,value] of [['temperature',t],['windchill',chill],['pressure',site?.pressure_hpa],['humidity',airport?site?.dewpoint_c:site?.humidity_pct]]){
   put('ka-'+id+'-age',numeric(value)?stamp:id==='windchill'?'Arvutus puudub':'Näit puudub');
  }
  put('ka-pressure',numeric(site?.pressure_hpa)?fmt(site.pressure_hpa,1)+' hPa':'—');
- put('ka-humidity',numeric(site?.humidity_pct)?fmt(site.humidity_pct,1)+' %':'—');
+ put('ka-humidity',airport?temp(site?.dewpoint_c):numeric(site?.humidity_pct)?fmt(site.humidity_pct,1)+' %':'—');
  const direction=site?.wind_direction_deg;
  renderBayCompass('ka-',site,numeric(direction)&&direction>=0&&direction<=360,false,
-  numeric(site?.wind_ms),numeric(site?.gust_ms),stamp+' · jaama mõõtmisaeg kinnitamata');
+  numeric(site?.wind_ms),numeric(site?.gust_ms),airport?stamp:stamp+' · jaama mõõtmisaeg kinnitamata',airport);
 
 }
 function renderMarine(){renderLocalStations();
