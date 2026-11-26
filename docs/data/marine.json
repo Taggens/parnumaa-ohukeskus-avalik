@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-26T04:46:15Z",
+  "generated_at_utc": "2026-11-26T05:01:12Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-26T04:46:16Z",
+    "feed_timestamp_utc": "2026-11-26T05:01:14Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,12 +11,12 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 39.0,
+        "sea_level_eh2000_cm": 38.0,
         "water_temperature_c": 3.1,
         "air_temperature_c": 0.7,
-        "wind_ms": 3.0,
-        "gust_ms": 6.3,
-        "wind_direction_deg": 310.0
+        "wind_ms": 3.6,
+        "gust_ms": 7.0,
+        "wind_direction_deg": 331.0
       },
       {
         "code": "86031",
@@ -25,10 +25,10 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 46.0,
         "water_temperature_c": 6.7,
-        "air_temperature_c": 1.0,
-        "wind_ms": 6.4,
-        "gust_ms": 8.0,
-        "wind_direction_deg": 346.0
+        "air_temperature_c": 0.8,
+        "wind_ms": 7.0,
+        "gust_ms": 9.2,
+        "wind_direction_deg": 7.0
       },
       {
         "code": "26128",
@@ -37,10 +37,10 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 39.0,
         "water_temperature_c": 2.5,
-        "air_temperature_c": 2.3,
-        "wind_ms": 5.1,
-        "gust_ms": 6.7,
-        "wind_direction_deg": 4.0
+        "air_temperature_c": 2.2,
+        "wind_ms": 5.5,
+        "gust_ms": 7.6,
+        "wind_direction_deg": 15.0
       },
       {
         "code": "26226",
@@ -49,10 +49,10 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": 1.8,
-        "wind_ms": 2.4,
-        "gust_ms": 4.3,
-        "wind_direction_deg": 339.0
+        "air_temperature_c": 1.7,
+        "wind_ms": 2.5,
+        "gust_ms": 4.7,
+        "wind_direction_deg": 345.0
       }
     ],
     "source_url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
