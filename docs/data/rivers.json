@@ -1,10 +1,10 @@
 {
  "schema": "river-monitor-v1",
- "generated_at_utc": "2026-11-27T22:16:11Z",
+ "generated_at_utc": "2026-11-27T23:16:11Z",
  "observations": {
   "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
   "source_status": "ok",
-  "feed_timestamp_utc": "2026-11-27T22:16:13Z",
+  "feed_timestamp_utc": "2026-11-27T23:16:13Z",
   "station_measurement_time_verified": false,
   "datum_note": "Sisevete waterlevel: cm Amsterdami nulli suhtes, üksikjaama mõõtmishetk kinnitamata",
   "stations": [
@@ -17,7 +17,7 @@
    {
     "code": "41183",
     "name": "Audru",
-    "cm": 133.0,
+    "cm": 132.0,
     "station_time_verified": false
    },
    {
@@ -35,7 +35,7 @@
    {
     "code": "41198",
     "name": "Nurme",
-    "cm": 120.0,
+    "cm": 119.0,
     "station_time_verified": false
    },
    {
@@ -47,7 +47,7 @@
    {
     "code": "41140",
     "name": "Riisa",
-    "cm": 138.0,
+    "cm": 137.0,
     "station_time_verified": false
    },
    {
