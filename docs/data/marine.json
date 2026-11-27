@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-27T18:29:34Z",
+  "generated_at_utc": "2026-11-27T18:31:11Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-27T18:29:35Z",
+    "feed_timestamp_utc": "2026-11-27T18:31:13Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-27T18:29:37Z",
+    "checked": "2026-11-27T18:31:14Z",
     "items": []
   },
   "airport": {
