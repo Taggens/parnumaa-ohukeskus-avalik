@@ -430,7 +430,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <aside class="panel" aria-labelledby="official-warning-title"><strong id="official-warning-title">Keskkonnaagentuuri ametlikud hoiatused</strong><div id="official-warning-list">Kontrollin hoiatusvoogu…</div><a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ametlik hoiatuskaart ↗</a></aside>
    <section id="home" class="screen active">
 <h2>Pärnu praegu</h2><div class="now-grid"><article><h3>Pärnu sadama õhutemperatuur</h3><strong id="home-temp">—</strong><small id="home-airtime"></small></article><article><h3>Keskmine tuul</h3><strong id="home-wind">—</strong><small id="home-gust"></small></article><article><h3>Pärnu meretase</h3><strong id="home-sea">—</strong><small id="home-seatime"></small><small id="home-trend"></small></article></div>
-<h2>Järgmised 6 tundi</h2><p id="home-model"></p><div id="home-hours"></div><nav class="home-links"><a href="#live">Live-ilm ja jaamad →</a><a href="#forecast">Prognoos →</a><a href="#radar">Sajuradar →</a><a href="#marine">Mereseire →</a><a href="#rivers">Jõeseire →</a><a href="#roads">Teeolud →</a></nav></section><section id="live" class="screen" aria-labelledby="live-heading">
+<h2>Järgmised 6 tundi</h2><p id="home-model"></p><div id="home-hours"></div><p id="home-extremes"></p><nav class="home-links"><a href="#live">Live-ilm ja jaamad →</a><a href="#forecast">Prognoos →</a><a href="#radar">Sajuradar →</a><a href="#marine">Mereseire →</a><a href="#rivers">Jõeseire →</a><a href="#roads">Teeolud →</a></nav></section><section id="live" class="screen" aria-labelledby="live-heading">
     <div class="section-header"><div><h2 id="live-heading">Live-ilm · Pärnu</h2><p>Pärnu sadama ja tunnijaama eri allikate mõõtmised. Näidud ei kirjelda automaatselt kogu maakonda.</p></div><span class="chip">Kontrollitud mõõteajad</span></div>
     <div id="live-situation" class="situation-banner incomplete" role="status" aria-live="polite">
      <strong id="live-situation-title">Olukorra hindamiseks ootan mõõteandmeid</strong>
@@ -727,6 +727,7 @@ details.info p{font-size:11px;color:var(--muted)}
   </main>
  </div>
 </div>
+<script src="./temperature-summary.js?v=1"></script>
 <script>
 'use strict';
 const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme','Papiniidu','Reiu','Ristiküla','Ünnaste','Võiste'];
@@ -1557,6 +1558,7 @@ function renderPreviewHome(){
  put('home-sea',num(s?.level_cm,'cm'));put('home-seatime',s?'EH2000 · '+local(s.observed_at_utc):'Värske mõõtmine puudub');
  put('home-trend',s?.trend_verified&&s.comparison_time_utc?'Muutus alates '+local(s.comparison_time_utc)+' · '+num(s.change_last_hour_cm,'cm'):'');
  const {model,hours}=upcoming('parnu','auto',6),box=$('home-hours');box.replaceChildren();
+ put('home-extremes',temperatureSummary(model));
  put('home-model',model?model.name+' · '+runTimeLabel(model):'Värske prognoos puudub');
  for(const h of hours){
  const card=document.createElement('article');

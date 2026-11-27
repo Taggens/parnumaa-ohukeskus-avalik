@@ -643,7 +643,8 @@ details.info p{font-size:11px;color:var(--muted)}
     <article class="okf-card okf-hero"><div><div class="okf-eyebrow">MÕÕDETUD ILM · AINULT VÄRSKE JAAM</div><h3 id="okf-observed-title">Pärnu sadama hetkeilm</h3><div class="okf-temperature" id="okf-observed-temp">—</div><p id="okf-observed-time" class="okf-subtle">Mõõtmine ootel</p></div><div class="okf-measurements"><div>Tuul<strong id="okf-observed-wind">—</strong></div><div>Puhangud<strong id="okf-observed-gust">—</strong></div><div>Õhuniiskus<strong id="okf-observed-humidity">—</strong></div><div>Õhurõhk<strong id="okf-observed-pressure">—</strong></div></div></article>
     <article class="okf-card okf-hero okf-prognosis"><div class="okf-eyebrow">VALITUD MUDELI LÄHIM PROGNOOSITUND</div><h3 id="okf-location-title">Asukoht</h3><div class="okf-weather-main"><span id="okf-current-icon" aria-hidden="true">▫️</span><div><p id="okf-current-desc">Prognoosi ootel</p><p class="okf-subtle">Prognoos ei ole jaamamõõtmine ega ametlik hoiatus.</p></div></div></article>
   </div>
-  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="12">12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div>
+  <article class="okf-card okf-hour-card"><div class="okf-title-line"><div><h3>◷ Tunniprognoos</h3><p class="okf-subtle">Valitud mudel · Eesti aeg · vasakule ja paremale keritav</p></div><label class="okf-hour-choice">Näita<select id="okf-hours"><option value="6">6 tundi</option><option value="12" selected>12 tundi</option><option value="24">24 tundi</option></select></label></div><div class="okf-scroll" tabindex="0" aria-label="Tunniprognoosi tabel, vajadusel keri horisontaalselt"><table id="okf-hour-table" class="okf-hour-table"><tbody><tr><td>Ootan prognoosi…</td></tr></tbody></table></div>
+  <p id="okf-extremes" class="okf-subtle" aria-live="polite"></p>
   <div id="okf-fog-summary" class="okf-fog-summary" role="status" aria-live="polite">Kontrollin mudelite uduprognoosi…</div>
   <p id="okf-visibility-note" class="okf-subtle">Mudelite nähtavuskauguse prognoos pole praeguses andmevoos saadaval.</p>
   <p id="okf-flag-detail" class="okf-subtle" aria-live="polite">Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.</p></article>
@@ -735,6 +736,7 @@ details.info p{font-size:11px;color:var(--muted)}
   </main>
  </div>
 </div>
+<script src="./temperature-summary.js?v=1"></script>
 <script>
 'use strict';
 const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme','Papiniidu','Reiu','Ristiküla','Ünnaste','Võiste'];
@@ -851,7 +853,7 @@ function renderBayCompass(prefix,a,hasDirection,isAirStale,hasWind,hasGust,airSt
  write('bay-speed',hasWind?wind(a.wind_ms):'—');
  write('bay-gust',hasGust?wind(a.gust_ms):airport&&a?'Teates puudub':'—');
  if(airport)put('ka-compass-speed',hasWind?wind(a.wind_ms):'—');
- write('bay-age',a?airStamp:'Värske mõõtmine puudub');
+ write('bay-age',a?'':'Tuulevaatlus puudub');
  if(airport)part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul lennujaamas puhub.';
  else if(prefix==='ka-')part('bay-svg-help').textContent='Punane nool näitab, kuhu tuul puhub. Lahe kaart on lihtsustatud.';
  if(!hasDirection){
@@ -888,7 +890,7 @@ function renderLive(){
  const a=freshAir||pastAir,isAirStale=!!(a&&!freshAir);
  // Hoia värske meretaseme piir 40 min. Kuni 2 h vanune kontrollitud
  // mõõtmine võib jääda nähtavaks AINULT varasema näiduna, mitte hoiatusalusena.
- const freshSea=sea(),pastSea=!freshSea&&active()&&state.weather.sea&&
+ const freshSea=sea(),pastSea=!freshSea&&state?.schema===1&&state.weather?.sea&&
    state.weather.sea.vertical_datum==='EH2000'&&fresh(state.weather.sea.observed_at_utc,120)?state.weather.sea:null;
  const s=freshSea||pastSea,isSeaStale=!!(s&&!freshSea);
  const rain=hourlyRain(),hasWind=!!(a&&numeric(a.wind_ms)&&a.wind_ms>=0&&a.wind_ms<=100);
@@ -898,8 +900,9 @@ function renderLive(){
  const hasDirection=!!(a&&numeric(a.wind_direction_deg)&&a.wind_direction_deg>=0&&a.wind_direction_deg<=360);
  const hasSea=!!(s&&numeric(s.level_cm));
  const airStamp=a?(isAirStale?'⚠ Varasem mõõtmine ':'Mõõdetud ')+local(a.observed_at_utc)+' (Eesti aeg)'+(isAirStale?' · '+sourceAgeLabel(a.observed_at_utc)+' · MITTE HETKEILM':''):'Värske jaamamõõtmine puudub';
- const label=(id,available)=>put(id,available?airStamp:'Värske mõõtmine puudub');
- put('live-time',a?(isAirStale?'⚠ Viimane varasem mõõtmine ':'Viimane mõõtmine ')+local(a.observed_at_utc)+(isAirStale?' · ei ole hetkeilm':''):'Värske mõõtmine puudub');
+ const label=(id,available)=>put(id,available?'':'Värske mõõtmine puudub');
+ const lastAir=state?.weather?.live?.observed_at_utc;
+ put('live-time',a?(isAirStale?'Varasem mõõtmine ':'Mõõdetud ')+local(a.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(a.observed_at_utc):fresh(lastAir,1440)?'Viimane teadaolev mõõtmine '+local(lastAir)+' · '+sourceAgeLabel(lastAir):'Mõõtmisaeg puudub');
  put('live-temperature',hasTemp?temp(a.temperature_c):'—');label('live-temperature-age',hasTemp);
  setTemperatureClass('live-temperature-tile',hasTemp?a.temperature_c:null);
  put('live-temperature-note',!hasTemp?'⚠ Mõõtmine aegunud või kinnitamata':isAirStale?'⚠ Varasem mõõtmine, mitte hetkeilm':a.temperature_c<=-20?'❄ −20 °C või külmem':a.temperature_c<=-10?'❄ −10 °C või külmem':a.temperature_c<0?'❄ Miinuskraadid':'TalTechi mõõdetud õhutemperatuur');
@@ -907,12 +910,12 @@ function renderLive(){
  put('live-humidity',hasHumidity?fmt(a.humidity_pct,0)+' %':'—');label('live-humidity-age',hasHumidity);
  const chill=hasTemp&&hasWind?publicWindChill(a.temperature_c,a.wind_ms):null;
  put('live-windchill',chill!==null?temp(chill):'—');
- put('live-windchill-age',chill!==null?airStamp:hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
+ put('live-windchill-age',chill!==null?'':hasTemp&&hasWind?'Arvutus pole antud oludes rakendatav': 'Mõõtmised puuduvad või aegunud');
  put('live-windchill-note',!hasTemp||!hasWind?'Mõõtmisaeg aegunud või kinnitamata':isAirStale?'⚠ Arvutatud varasema mõõtmise põhjal, mitte hetkeilm':chill===null?'Arvutus vajab temperatuuri kuni +10 °C ja keskmist tuult vähemalt 1,4 m/s':'Arvutus: mõõdetud temperatuur + keskmine tuul; mitte eraldi mõõtmine.');
  setTemperatureClass('live-windchill-tile',chill);
  renderBayCompass('',a,hasDirection,isAirStale,hasWind,hasGust,airStamp);
  put('marine-value',hasSea?(s.level_cm>=0?'+':'')+fmt(s.level_cm,0)+' cm':'—');
- put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):'Värske EH2000 mõõtmine puudub või on aegunud');
+ put('marine-freshness',hasSea?(isSeaStale?'⚠ Varasem mõõtmine '+local(s.observed_at_utc)+' (Eesti aeg) · '+sourceAgeLabel(s.observed_at_utc)+' · MITTE HETKETASE':'Mõõdetud '+local(s.observed_at_utc)+' (Eesti aeg)'):state?.weather?.sea?.vertical_datum==='EH2000' && numeric(state.weather.sea.level_cm) && timestamp(state.weather.sea.observed_at_utc)!==null && timestamp(state.weather.sea.observed_at_utc)<=Date.now()?'Viimane kinnitatud meretase '+fmt(state.weather.sea.level_cm,0)+' cm · '+local(state.weather.sea.observed_at_utc)+' (Eesti aeg). Uuem mõõtmine puudub.':'Kinnitatud EH2000 mõõtmine puudub');
  const comparisonTime=hasSea?timestamp(s.comparison_time_utc):null;
  const measuredTime=hasSea?timestamp(s.observed_at_utc):null;
  const trendGap=comparisonTime!==null&&measuredTime!==null?(measuredTime-comparisonTime)/60000:null;
@@ -940,7 +943,8 @@ function renderLive(){
  put('hourly-rain-time',rain?'Mõõteperiood: '+local(rain.period_start_utc)+' – '+local(rain.observed_at_utc)+' (Eesti aeg).'+(rain.retained_previous===true?' Uue täistunni mõõtmine on ootel; see ei ole hetkesadu.':''):'Tunnisadu ei ole avalikus andmevoos praegu kinnitatud.');
  const banner=$('live-banner');
  banner.classList.toggle('stale',!freshAir);
- banner.textContent=isAirStale?'⚠ Sadamajaama viimane teadaolev mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg) on aegunud. Näidud on ajaloolised, mitte hetkeilm ega hoiatusalus.':a?'TalTechi sadamajaama mõõtmine '+local(a.observed_at_utc)+' (Eesti aeg).':'TalTechi sadamajaama värske mõõtmine puudub või on aegunud.';
+ banner.hidden=!!freshAir;
+ banner.textContent=isAirStale?'Näidud pärinevad varasemast vaatlusest.':!active()?'Avalik andmefail puudub või on aegunud.':'Sadamajaama värske vaatlus puudub.';
  const missing=[];
  if(isAirStale)missing.push('värsked sadamajaama mõõtmised');
  else {
@@ -1155,7 +1159,7 @@ function okfRenderFogSummary(place){
 function okfHourTable(hours,place){
  put('okf-flag-detail','Puuduta tingmärki, et lugeda selle selgitust. Märgid on mudelipõhised tähelepanutasemed. 0 °C ei kinnita teede jäätumist; puuduv märk ei tõenda ohutust.');
  const root=$('okf-hour-table');root.replaceChildren();
- const selected=Number($('okf-hours').value)===24?24:12,list=hours.slice(0,selected);
+ const selected=Number($('okf-hours').value),list=hours.slice(0,selected);
  const head=el(root,'thead'),tr=el(head,'tr');el(tr,'th','','Aeg');
  for(const h of list)el(tr,'th','',new Intl.DateTimeFormat('et-EE',{timeZone:'Europe/Tallinn',hour:'2-digit',minute:'2-digit'}).format(new Date(h.t*1000)));
  const body=el(root,'tbody');
@@ -1267,6 +1271,7 @@ function renderForecast(){
  okfSvgIcon($('okf-current-icon'),kind,true);
  put('okf-current-desc',first?temp(first.temp)+' · '+kind.label:'Prognoosiandmed puuduvad');
  okfHourTable(hours,place);
+ put('okf-extremes',temperatureSummary(model));
  okfRenderFogSummary(place);
  const day=okfPeriod(model,24),twoDays=okfPeriod(model,48);
  okfPeriodRender('okf-24',day);okfPeriodRender('okf-48',twoDays);
@@ -1444,7 +1449,8 @@ function renderLocalStations(){
  put('ka-wind-period',airport?'METAR-is kasutatakse tavaliselt vaatlusele eelnenud 10 minuti keskmist.':'XML-voog uueneb iga 10 minuti järel. Tuule keskmistamise periood on kinnitamata.');
  put('ka-bay-compass-title',airport?'Tuul Pärnu lennujaamas · EEPU':'Tuul Pärnu lahel · Pärnu rannikujaam');
  $('ka-wind-bay-svg').classList.toggle('airport',airport);
- put('ka-time',stamp);
+ const siteTime=airport?report?.observed_at_utc:obs?.feed_timestamp_utc;
+ put('ka-time',site?stamp+' · '+sourceAgeLabel(siteTime):fresh(siteTime,1440)?(airport?'Viimase METAR-vaatluse aeg ':'Viimase XML-voo aeg ')+local(siteTime)+' · '+sourceAgeLabel(siteTime):stamp);
  put('ka-banner',airport?(site?'Lennujaama METAR-vaatlus · NOAA Aviation Weather Center':'Viimase tunni EEPU vaatlus puudub.'):site?'Üksikjaama mõõtmise täpne aeg on kinnitamata.':'Jaama värsked andmed puuduvad.');
  $('ka-banner').classList.toggle('stale',!site);
  const t=site?.air_temperature_c, chill=publicWindChill(t,site?.wind_ms);
@@ -1455,7 +1461,7 @@ function renderLocalStations(){
  setTemperatureClass('ka-windchill-tile',chill);
  put('ka-windchill-note','Arvutus kasutab Pärnu jaama õhutemperatuuri ja keskmist tuult. Temperatuur peab olema kuni +10 °C ja tuul vähemalt 1,4 m/s.');
  for(const [id,value] of [['temperature',t],['windchill',chill],['pressure',site?.pressure_hpa],['humidity',airport?site?.dewpoint_c:site?.humidity_pct]]){
-  put('ka-'+id+'-age',numeric(value)?stamp:id==='windchill'?'Arvutus puudub':'Näit puudub');
+  put('ka-'+id+'-age',numeric(value)?'':id==='windchill'?'Arvutus puudub':'Näit puudub');
  }
  put('ka-pressure',numeric(site?.pressure_hpa)?fmt(site.pressure_hpa,1)+' hPa':'—');
  put('ka-humidity',airport?temp(site?.dewpoint_c):numeric(site?.humidity_pct)?fmt(site.humidity_pct,1)+' %':'—');
@@ -1641,6 +1647,6 @@ window.addEventListener('online',updateOnline);window.addEventListener('offline'
 tickClock();load();loadRivers();loadMarine();
 setInterval(tickClock,60000);setInterval(()=>{if(!document.hidden)load()},120000);setInterval(show,60000);setInterval(()=>{if(!document.hidden)loadRivers()},600000);setInterval(()=>{if(!document.hidden)loadMarine()},300000);
 </script>
-<script src="./radar.js?v=20261124-history"></script>
+<script src="./radar.js?v=20261127-freshness"></script>
 </body>
 </html>

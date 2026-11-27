@@ -67,10 +67,14 @@
    else if(fresh&&data.motion&&t?.status==='võimalik saabumine'&&t.eta_window_start_utc>=f&&t.eta_window_start_utc<=t.eta_from_frame_utc&&t.eta_from_frame_utc<=t.eta_window_end_utc&&t.eta_window_end_utc<=f+5400&&now<=t.eta_window_end_utc){
     value=now>=t.eta_window_start_utc?'Võimalik saabumine kuni '+clock(t.eta_window_end_utc):clock(t.eta_window_start_utc)+'–'+clock(t.eta_window_end_utc);
     detail='Radarikaja hinnanguline saabumisvahemik.';
-   }else if(name==='Pärnu linn'){
-    value='Saabumisaega ei saa hinnata';
-    detail=!fresh?'Vajalik on kuni 15 minuti vanune radarikaader.':!data.motion?data.reason||'Liikumissuund on kinnitamata.':t?.eta_window_end_utc<now?'Eelmise hinnangu aeg on möödunud.':'Sajuala jõudmine Pärnu lähedale 90 minuti jooksul on kinnitamata.';
-   }else continue;
+   }else if(!fresh){
+    value='Värske radarikaader puudub';
+    detail=Number.isFinite(f)?'Viimase kaadri aeg '+clock(f)+'. Praegust sadu ei saa hinnata.':'Kaadri mõõtmisaeg puudub.';
+   }else{
+    const observed=data.observations?.find(x=>x.name===name);
+    value=observed?.echo_detected===false?'Läheduses radarikaja ei tuvastatud':'Kohalik kajavaatlus puudub';
+    detail='Viimane kaader '+clock(f)+' · '+(observed?.echo_detected===false?'umbes 6 km raadiuses. ':'')+'Saabumisaeg on kinnitamata.';
+   }
    const card=document.createElement('article');card.className='panel';
    for(const [tag,txt] of [['h3',name],['strong',value],['p',detail]]){const el=document.createElement(tag);el.textContent=txt;card.append(el);}
    panel.append(card);
