@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths: ['scripts/update_public_radar.py', '.github/workflows/radar.yml', 'docs/data/state.json']
   schedule:
-    - cron: '3-59/10 * * * *'
+    - cron: '3-59/5 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
