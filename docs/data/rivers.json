@@ -1,17 +1,17 @@
 {
  "schema": "river-monitor-v1",
- "generated_at_utc": "2026-11-27T16:16:12Z",
+ "generated_at_utc": "2026-11-27T17:16:15Z",
  "observations": {
   "source": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
   "source_status": "ok",
-  "feed_timestamp_utc": "2026-11-27T16:16:13Z",
+  "feed_timestamp_utc": "2026-11-27T17:16:16Z",
   "station_measurement_time_verified": false,
   "datum_note": "Sisevete waterlevel: cm Amsterdami nulli suhtes, üksikjaama mõõtmishetk kinnitamata",
   "stations": [
    {
     "code": "41137",
     "name": "Aesoo",
-    "cm": 93.0,
+    "cm": 92.0,
     "station_time_verified": false
    },
    {
@@ -35,7 +35,7 @@
    {
     "code": "41198",
     "name": "Nurme",
-    "cm": 126.0,
+    "cm": 124.0,
     "station_time_verified": false
    },
    {
@@ -47,7 +47,7 @@
    {
     "code": "41140",
     "name": "Riisa",
-    "cm": 141.0,
+    "cm": 140.0,
     "station_time_verified": false
    },
    {
