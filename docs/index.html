@@ -692,7 +692,7 @@ details.info p{font-size:11px;color:var(--muted)}
     <div id="rivers-observed" class="rivers-grid" aria-label="Operatiivsed jõenäidud"></div>
     <details class="panel reading-details water-guide"><summary>Kuidas näitu lugeda?</summary>
     <p class="fineprint"><strong>Operatiivne XML ei kinnita üksikjaama mõõtmise aega.</strong> Kuva allika väljastatud viimane teadaolev näit, mitte sõltumatult tõendatud hetkeseis. Ajalugu (WL avg) uueneb üldjuhul kord ööpäevas. Operatiivse XML-i veetaseme võrdlusnivoo on allika dokumentatsiooni järgi Amsterdami null, ajaloolistel kirjetel jaama graafiku null. Neid ei võrrelda omavahel. Meretaseme EH2000 tähelepanupiirid ei kehti jõgedele; jõeseire ei saada üleujutuse tõuketeavitusi.</p></details>
-    <h3 class="rivers-subtitle">Viimase 72 tunni ajalookirjed</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes. Näidatud on eraldi viimase tunnikeskmise aeg ja meie viimase ajalooandmete päringu aeg.</p>
+    <h3 class="rivers-subtitle">Viimased 72 avaldatud tunninäitu</h3><p class="fineprint">Tunnikeskmised, mitte reaalaja mõõtmised. Veetase sentimeetrites iga jaama graafiku nulli suhtes. Näidatud on eraldi viimase tunnikeskmise aeg ja meie viimase ajalooandmete päringu aeg.</p>
     <div id="rivers-history" class="rivers-grid" aria-label="Jõgede ajaloolised graafikud"></div>
     <p class="fineprint">Allikad: <a target="_blank" rel="noopener noreferrer" href="https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/">Keskkonnaagentuuri XML</a> ja <a target="_blank" rel="noopener noreferrer" href="https://keskkonnaandmed.envir.ee/f_hydroseire">hüdroloogia ajaloo API</a>. Vanad või puuduvad andmed ei tähenda ohutuid olusid. Ametlikud hoiatused: <a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ilmateenistus</a>.</p>
    </section>
@@ -1381,9 +1381,10 @@ function renderFamilySources(w){
  for(const [code,title] of places){
   const models=w.places?.[code]?.models||[];
   for(const id of modelOrder){
-   const m=models.find(x=>x?.id===id),ok=!!(m&&fresh(m.source_received_at_utc,id==='fmi_meps'?35:240)&&Array.isArray(m.hours)&&m.hours.some(x=>numeric(x?.t)&&x.t>Date.now()/1000-60));
+   const m=models.find(x=>x?.id===id),usable=forecastModel(code,id);
+   const status=usable?(usable.retained_previous?'Viimane salvestatud':'Värske'):'Puudub / aegunud';
    const row=el(body,'tr');
-   for(const val of [modelNames[id],title,ok?'Värske':'Puudub / aegunud',m?.source_received_at_utc?local(m.source_received_at_utc):'—'])el(row,'td','',val);
+   for(const val of [modelNames[id],title,status,m?.source_received_at_utc?local(m.source_received_at_utc):'—'])el(row,'td','',val);
   }
  }
 }
