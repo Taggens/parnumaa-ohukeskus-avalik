@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-28T14:01:13Z",
+  "generated_at_utc": "2026-11-28T14:16:13Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-28T14:01:15Z",
+    "feed_timestamp_utc": "2026-11-28T14:16:14Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -15,8 +15,8 @@
         "water_temperature_c": 1.4,
         "air_temperature_c": -1.2,
         "wind_ms": 4.4,
-        "gust_ms": 5.4,
-        "wind_direction_deg": 141.0
+        "gust_ms": 5.8,
+        "wind_direction_deg": 136.0
       },
       {
         "code": "86031",
@@ -24,23 +24,23 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 25.0,
-        "water_temperature_c": 6.2,
-        "air_temperature_c": -1.3,
-        "wind_ms": 2.0,
-        "gust_ms": 3.4,
-        "wind_direction_deg": 169.0
+        "water_temperature_c": 6.3,
+        "air_temperature_c": -1.5,
+        "wind_ms": 2.8,
+        "gust_ms": 4.4,
+        "wind_direction_deg": 143.0
       },
       {
         "code": "26128",
         "name": "Virtsu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 22.0,
-        "water_temperature_c": 3.7,
-        "air_temperature_c": 1.9,
+        "sea_level_eh2000_cm": 23.0,
+        "water_temperature_c": 3.6,
+        "air_temperature_c": 2.0,
         "wind_ms": 2.5,
         "gust_ms": 3.8,
-        "wind_direction_deg": 228.0
+        "wind_direction_deg": 213.0
       },
       {
         "code": "26226",
@@ -49,9 +49,9 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": -2.0,
+        "air_temperature_c": -2.3,
         "wind_ms": 0.4,
-        "gust_ms": 0.5,
+        "gust_ms": 0.6,
         "wind_direction_deg": 0.0
       }
     ],
@@ -60,10 +60,10 @@
         "water_temperature_c": 1.4,
         "air_temperature_c": -1.2,
         "wind_ms": 4.4,
-        "gust_ms": 5.4,
-        "wind_direction_deg": 141.0,
-        "pressure_hpa": 1042.8,
-        "humidity_pct": 84.5,
+        "gust_ms": 5.8,
+        "wind_direction_deg": 136.0,
+        "pressure_hpa": 1042.9,
+        "humidity_pct": 84.1,
         "code": "41803",
         "name": "Pärnu"
       },
@@ -80,7 +80,7 @@
       },
       {
         "water_temperature_c": 1.4,
-        "air_temperature_c": -1.0,
+        "air_temperature_c": -1.2,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -91,7 +91,7 @@
       },
       {
         "water_temperature_c": 1.0,
-        "air_temperature_c": -1.3,
+        "air_temperature_c": -2.9,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-28T14:01:17Z",
+    "checked": "2026-11-28T14:16:16Z",
     "items": [
       {
         "area": "Peipsi järv",
