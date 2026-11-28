@@ -388,7 +388,12 @@ details.info p{font-size:11px;color:var(--muted)}
 
  .rivers-subtitle{margin:22px 0 8px}.rivers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.river-card{min-width:0}.river-cardtop{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.river-status{font-size:.76rem;color:#b5eee2;border:1px solid #48796f;border-radius:7px;padding:3px 7px}.river-old{color:#f5ca91;border-color:#8d7155}.river-big{font-size:1.7rem;font-weight:750;font-variant-numeric:tabular-nums;margin:9px 0}.rivers-chart{display:block;width:100%;height:auto}@media(max-width:850px){.rivers-grid{grid-template-columns:1fr}}
 .marine-subtitle{margin:22px 0 10px}.marine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.marine-card{min-width:0}.marine-card-head{display:flex;gap:12px;justify-content:space-between;align-items:start;flex-wrap:wrap}.marine-tag{font-size:.76rem;padding:3px 8px;border-radius:7px;border:1px solid #507f75;color:#baecdf}.marine-tag.missing{color:#ffd2a0;border-color:#8a735d}.marine-number{font-size:1.9rem;font-weight:750;font-variant-numeric:tabular-nums;margin:8px 0 4px}.marine-number.missing{color:var(--muted)}.marine-card.marine-watch{border-color:#beac62;background:#342d21}.marine-card.marine-high{border-color:#d78a56;background:#372921}.marine-card.marine-severe{border-color:#e06c72;background:#452629}.marine-meta{color:#b7c8d4;font-size:.8rem;line-height:1.6;margin:7px 0}.marine-metrics{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px}.marine-metrics>span{border:1px solid #39576c;padding:6px 9px;border-radius:8px;font-variant-numeric:tabular-nums;font-size:.85rem}@media(max-width:800px){.marine-grid{grid-template-columns:1fr}}
-#data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}</style>
+#data-message[hidden]{display:none}.water-guide{margin:14px 0}.water-guide summary{cursor:pointer;font-weight:650}.radar-scale{margin-top:12px;font-size:14px}.radar-scale>div{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));margin-top:8px}.radar-scale span{text-align:center;border-top:9px solid var(--rate);padding-top:4px;font-size:clamp(11px,2.5vw,14px);font-variant-numeric:tabular-nums}.feedback-form{max-width:42rem;display:grid;gap:1rem}
+.feedback-form label{display:grid;gap:.4rem}
+.feedback-form select,.feedback-form textarea{width:100%;box-sizing:border-box}
+.feedback-form textarea{background:#132a3a;color:#dfe9ee;border:1px solid #416273;border-radius:9px;padding:.75rem;font:inherit;resize:vertical}
+.feedback-form button{justify-self:start}
+</style>
 <style>
 #live .station-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
 #live .station-comparison>.panel{margin:0;min-width:0}
@@ -414,6 +419,7 @@ details.info p{font-size:11px;color:var(--muted)}
    <button type="button" class="nav-link" data-section="rivers"><span class="nav-icon">🌊</span> Jõeseire</button>
    <button type="button" class="nav-link" data-section="marine"><span class="nav-icon">⚓</span> Mereseire</button>
    <button type="button" class="nav-link" data-section="sources"><span class="nav-icon">◷</span> Allikad</button>
+   <button type="button" class="nav-link" data-section="feedback"><span class="nav-icon" aria-hidden="true">✉</span> Tagasiside</button>
   </nav>
  </aside>
  <div id="drawer-scrim" aria-hidden="true"></div>
@@ -733,6 +739,17 @@ details.info p{font-size:11px;color:var(--muted)}
    </section>
    <aside id="official-warnings" class="panel" aria-labelledby="official-warning-title"><strong id="official-warning-title">Keskkonnaagentuuri ametlikud hoiatused</strong><div id="official-warning-list">Kontrollin hoiatusvoogu…</div><a href="https://www.ilmateenistus.ee/ilm/prognoosid/hoiatused/" target="_blank" rel="noopener noreferrer">Ametlik hoiatuskaart ↗</a></aside>
    <footer id="page-footer" class="footer"><span>Pärnu Ilmakeskus · Avalik vaade · Andmete puudumine ≠ ohutu olukord · <a href="https://m.me/ch/Tfgs2U37qe5dkC1e/" target="_blank" rel="noopener noreferrer" aria-label="Pärnu Ilmakeskuse Messengeri chat">💬 Ilmakeskuse Messenger</a></span><span id="footer-updated">—</span></footer>
+   <section id="feedback" class="screen" aria-labelledby="feedback-heading">
+    <div class="section-header"><h2 id="feedback-heading">Tagasiside</h2></div>
+    <form class="panel feedback-form" id="feedback-form" method="post">
+     <label>Millise lehe kohta?<select required name="Leht" id="feedback-page"><option value="">Vali leht</option></select></label>
+     <label>Teema<select required name="Teema"><option value="">Vali teema</option><option>Teata veast</option><option>Tee ettepanek</option><option>Muu</option></select></label>
+     <label>Sõnum<textarea required name="Sõnum" rows="5" maxlength="4000"></textarea></label>
+     <p class="fineprint">Sõnum salvestatakse Google’i kaudu ilmakeskuse administraatorile.</p>
+     <p id="feedback-state" role="status">Tagasisidevormi ühenduse kontroll…</p>
+     <button type="submit" disabled>Saada tagasiside</button>
+    </form>
+   </section>
   </main>
  </div>
 </div>
@@ -743,7 +760,7 @@ const stationNames=['Audru','Häädemeeste','Ikla','Kanaküla','Lihula','Nurme',
 const modelNames={ecmwf_ifs025:'ECMWF IFS',icon_eu:'DWD ICON-EU',gfs_global:'NOAA GFS',metno_nordic:'MET Nordic',dmi_harmonie_arome_europe:'DMI HARMONIE',fmi_meps:'FMI HARMONIE–MEPS'};
 const modelOrder=Object.keys(modelNames);
 const roadLabels={dry:'Kuiv',wet:'Märg',ice:'Jää',slipperyRoad:'Libe',slushOnRoad:'Lörtsine',snowOnTheRoad:'Lumine'};
-const titles={live:'Live-ilm',forecast:'Ilmaprognoos',radar:'Sajuradar',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad'};
+const titles={live:'Live-ilm',forecast:'Ilmaprognoos',radar:'Sajuradar',roads:'Teeolud',rivers:'Jõeseire',marine:'Mereseire',sources:'Andmeallikad',feedback:'Tagasiside'};
 const $=id=>document.getElementById(id);
 const put=(id,str)=>{$(id).textContent=str};
 const el=(parent,tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;if(value!==undefined)node.textContent=value;parent.append(node);return node};
@@ -1601,6 +1618,21 @@ function show(){
  renderLive();renderForecast();renderRoads();renderSources();renderFamilyExtras();renderMarine();
 }
 const sections=Object.keys(titles);
+const feedbackForm=$('feedback-form');
+for(const item of document.querySelectorAll('.nav-link[data-section]')){
+ $('feedback-page').add(new Option(titles[item.dataset.section],titles[item.dataset.section]));
+}
+fetch('./feedback-config.json',{cache:'no-store'}).then(r=>r.json()).then(config=>{
+ if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(config.endpoint))throw Error();
+ feedbackForm.action=config.endpoint;
+ feedbackForm.querySelector('button').disabled=false;
+ $('feedback-state').hidden=true;
+}).catch(()=>put('feedback-state','Sõnumite vastuvõtt pole praegu saadaval.'));
+feedbackForm.addEventListener('submit',event=>{
+ const message=feedbackForm.elements.namedItem('Sõnum');
+ message.value=message.value.trim();
+ if(feedbackForm.querySelector('button').disabled || !message.reportValidity())event.preventDefault();
+});
 function selectSection(id,changeHash=true){
  if(!sections.includes(id))return;
  sections.forEach(n=>{$(n).classList.toggle('active',n===id);const b=document.querySelector('[data-section="'+n+'"]');b.classList.toggle('active',n===id);if(n===id)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
