@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-28T12:16:12Z",
+  "generated_at_utc": "2026-11-28T12:31:12Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-28T12:16:14Z",
+    "feed_timestamp_utc": "2026-11-28T12:31:13Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -12,23 +12,23 @@
         "kind": "coast",
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": 19.0,
-        "water_temperature_c": 1.5,
-        "air_temperature_c": -1.0,
-        "wind_ms": 2.8,
-        "gust_ms": 3.9,
-        "wind_direction_deg": 168.0
+        "water_temperature_c": 1.6,
+        "air_temperature_c": -1.2,
+        "wind_ms": 3.1,
+        "gust_ms": 4.4,
+        "wind_direction_deg": 159.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 24.0,
+        "sea_level_eh2000_cm": 25.0,
         "water_temperature_c": 6.2,
         "air_temperature_c": -1.1,
-        "wind_ms": 1.7,
-        "gust_ms": 2.9,
-        "wind_direction_deg": 149.0
+        "wind_ms": 1.6,
+        "gust_ms": 3.1,
+        "wind_direction_deg": 157.0
       },
       {
         "code": "26128",
@@ -38,9 +38,9 @@
         "sea_level_eh2000_cm": 23.0,
         "water_temperature_c": 3.5,
         "air_temperature_c": 1.6,
-        "wind_ms": 1.9,
-        "gust_ms": 3.5,
-        "wind_direction_deg": 186.0
+        "wind_ms": 1.7,
+        "gust_ms": 2.6,
+        "wind_direction_deg": 202.0
       },
       {
         "code": "26226",
@@ -49,21 +49,21 @@
         "station_measurement_time_verified": false,
         "sea_level_eh2000_cm": null,
         "water_temperature_c": null,
-        "air_temperature_c": 2.4,
-        "wind_ms": 0.3,
+        "air_temperature_c": 1.1,
+        "wind_ms": 0.4,
         "gust_ms": 0.6,
         "wind_direction_deg": 0.0
       }
     ],
     "local_weather_stations": [
       {
-        "water_temperature_c": 1.5,
-        "air_temperature_c": -1.0,
-        "wind_ms": 2.8,
-        "gust_ms": 3.9,
-        "wind_direction_deg": 168.0,
+        "water_temperature_c": 1.6,
+        "air_temperature_c": -1.2,
+        "wind_ms": 3.1,
+        "gust_ms": 4.4,
+        "wind_direction_deg": 159.0,
         "pressure_hpa": 1042.9,
-        "humidity_pct": 82.6,
+        "humidity_pct": 83.0,
         "code": "41803",
         "name": "Pärnu"
       },
@@ -90,8 +90,8 @@
         "name": "Audru"
       },
       {
-        "water_temperature_c": 1.0,
-        "air_temperature_c": -1.7,
+        "water_temperature_c": null,
+        "air_temperature_c": null,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-28T12:16:16Z",
+    "checked": "2026-11-28T12:31:15Z",
     "items": [
       {
         "area": "Peipsi järv",
@@ -132,10 +132,10 @@
   },
   "airport": {
     "code": "EEPU",
-    "observed_at_utc": "2026-11-28T11:50:00Z",
-    "air_temperature_c": -1.0,
+    "observed_at_utc": "2026-11-28T12:20:00Z",
+    "air_temperature_c": -2.0,
     "dewpoint_c": -3.0,
-    "wind_ms": 2.57,
+    "wind_ms": 3.09,
     "gust_ms": null,
     "wind_direction_deg": 190.0,
     "pressure_hpa": 1042.0
