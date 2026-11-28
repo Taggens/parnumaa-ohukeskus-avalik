@@ -1,9 +1,9 @@
 {
   "schema": "marine-monitor-v1",
-  "generated_at_utc": "2026-11-28T04:01:12Z",
+  "generated_at_utc": "2026-11-28T04:16:11Z",
   "official_observations": {
     "source_status": "ok",
-    "feed_timestamp_utc": "2026-11-28T04:01:13Z",
+    "feed_timestamp_utc": "2026-11-28T04:16:12Z",
     "station_measurement_time_verified": false,
     "stations": [
       {
@@ -11,36 +11,36 @@
         "name": "Pärnu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 24.0,
+        "sea_level_eh2000_cm": 25.0,
         "water_temperature_c": 1.6,
-        "air_temperature_c": -2.6,
-        "wind_ms": 1.5,
+        "air_temperature_c": -2.5,
+        "wind_ms": 1.4,
         "gust_ms": 2.1,
-        "wind_direction_deg": 41.0
+        "wind_direction_deg": 47.0
       },
       {
         "code": "86031",
         "name": "Häädemeeste",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 32.0,
+        "sea_level_eh2000_cm": 31.0,
         "water_temperature_c": 6.4,
         "air_temperature_c": -2.4,
-        "wind_ms": 1.4,
-        "gust_ms": 2.6,
-        "wind_direction_deg": 106.0
+        "wind_ms": 1.7,
+        "gust_ms": 3.2,
+        "wind_direction_deg": 118.0
       },
       {
         "code": "26128",
         "name": "Virtsu",
         "kind": "coast",
         "station_measurement_time_verified": false,
-        "sea_level_eh2000_cm": 29.0,
-        "water_temperature_c": 3.7,
-        "air_temperature_c": -2.5,
-        "wind_ms": 1.4,
-        "gust_ms": 2.2,
-        "wind_direction_deg": 115.0
+        "sea_level_eh2000_cm": 28.0,
+        "water_temperature_c": 3.8,
+        "air_temperature_c": -2.4,
+        "wind_ms": 1.6,
+        "gust_ms": 2.3,
+        "wind_direction_deg": 113.0
       },
       {
         "code": "26226",
@@ -51,25 +51,25 @@
         "water_temperature_c": null,
         "air_temperature_c": -1.4,
         "wind_ms": 0.7,
-        "gust_ms": 1.2,
-        "wind_direction_deg": 18.0
+        "gust_ms": 1.3,
+        "wind_direction_deg": 19.0
       }
     ],
     "local_weather_stations": [
       {
         "water_temperature_c": 1.6,
-        "air_temperature_c": -2.6,
-        "wind_ms": 1.5,
+        "air_temperature_c": -2.5,
+        "wind_ms": 1.4,
         "gust_ms": 2.1,
-        "wind_direction_deg": 41.0,
-        "pressure_hpa": 1041.2,
-        "humidity_pct": 81.2,
+        "wind_direction_deg": 47.0,
+        "pressure_hpa": 1041.4,
+        "humidity_pct": 81.6,
         "code": "41803",
         "name": "Pärnu"
       },
       {
-        "water_temperature_c": null,
-        "air_temperature_c": null,
+        "water_temperature_c": 1.1,
+        "air_temperature_c": -2.6,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -80,7 +80,7 @@
       },
       {
         "water_temperature_c": 1.4,
-        "air_temperature_c": -2.5,
+        "air_temperature_c": -2.6,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -91,7 +91,7 @@
       },
       {
         "water_temperature_c": 1.1,
-        "air_temperature_c": -2.5,
+        "air_temperature_c": -2.6,
         "wind_ms": null,
         "gust_ms": null,
         "wind_direction_deg": null,
@@ -110,7 +110,7 @@
   },
   "automatic_alerts": false,
   "warnings": {
-    "checked": "2026-11-28T04:01:15Z",
+    "checked": "2026-11-28T04:16:14Z",
     "items": []
   },
   "airport": {
